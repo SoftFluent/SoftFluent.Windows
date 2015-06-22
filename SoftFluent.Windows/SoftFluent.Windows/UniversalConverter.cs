@@ -1,8 +1,4 @@
-﻿#if NETFX_CORE
-using Windows.UI.Xaml.Data;
-#else
-#endif
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;
@@ -27,7 +23,7 @@ namespace SoftFluent.Windows
         /// <returns>
         /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (_cases.Count == 0)
                 return ConvertUtilities.ChangeType(value, targetType, culture);
@@ -56,7 +52,7 @@ namespace SoftFluent.Windows
         /// <returns>
         /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return ConvertUtilities.ChangeType(parameter, targetType, culture);
         }
@@ -67,7 +63,7 @@ namespace SoftFluent.Windows
         /// <value>
         /// The default value to use if no case matches.
         /// </value>
-        public object DefaultValue { get; set; }
+        public virtual object DefaultValue { get; set; }
 
         /// <summary>
         /// Gets the list of cases.
@@ -75,7 +71,7 @@ namespace SoftFluent.Windows
         /// <value>
         /// The list of cases.
         /// </value>
-        public ObservableCollection<UniversalConverterCase> Switch
+        public virtual ObservableCollection<UniversalConverterCase> Switch
         {
             get
             {
@@ -108,7 +104,7 @@ namespace SoftFluent.Windows
         /// <returns>
         /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
-        public object Convert(object value, Type targetType, object parameter, string language)
+        public virtual object Convert(object value, Type targetType, object parameter, string language)
         {
             return Convert(value, targetType, parameter, CultureInfoFromName(language));
         }
@@ -123,7 +119,7 @@ namespace SoftFluent.Windows
         /// <returns>
         /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        public virtual object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             return ConvertBack(value, targetType, parameter, CultureInfoFromName(language));
         }

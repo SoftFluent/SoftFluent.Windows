@@ -23,11 +23,6 @@ namespace SoftFluent.Windows
             Data = data;
             Properties = new ObservableCollection<PropertyGridProperty>();
             ScanProperties();
-            //ReadOnlyAttribute roa = AssemblyUtilities.GetAttribute<ReadOnlyAttribute>(Data.GetType());
-            //if (roa != null && roa.IsReadOnly)
-            //{
-            //    Grid.IsReadOnly = true;
-            //} // else keep the default
         }
 
         public PropertyGrid Grid { get; private set; }

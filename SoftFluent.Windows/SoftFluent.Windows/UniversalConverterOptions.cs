@@ -33,12 +33,7 @@ namespace SoftFluent.Windows
         /// </summary>
         NullMatchesType = 0x8,
 
-#if !NETFX_CORE && !SILVERLIGHT
-        /// <summary>
-        /// Determines if javascript expression may throw errors.
-        /// </summary>
-        DontThrowJavascriptErrors = 0x10,
-#endif
+        //DontThrowJavascriptErrors = 0x10,
 
         /// <summary>
         /// Use the converter parameter as the converted value.

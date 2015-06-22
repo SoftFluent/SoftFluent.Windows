@@ -114,11 +114,7 @@ namespace SoftFluent.Windows
             if (string.IsNullOrEmpty(name))
                 return null;
 
-#if NETFX_CORE || SILVERLIGHT
-            return Type.GetType(name, false);
-#else
             return ReflectionUtilities.GetType(name);
-#endif
         }
 
         private string ValueToCompareToString(IFormatProvider provider, bool forceConvert)
@@ -371,13 +367,8 @@ namespace SoftFluent.Windows
 
                     if (Value == null)
                     {
-#if NETFX_CORE
-                        if (tvtc.IsValueType())
-                            break;
-#else
                         if (tvtc.IsValueType)
                             break;
-#endif
 
                         ret = (Options & UniversalConverterOptions.NullMatchesType) == UniversalConverterOptions.NullMatchesType;
                         break;

@@ -163,7 +163,7 @@ namespace SoftFluent.Windows
                 where = (b) => true;
             }
 
-            foreach (DependencyProperty prop in PropertyGridUtilities.EnumerateMarkupDependencyProperties(element))
+            foreach (DependencyProperty prop in Extensions.EnumerateMarkupDependencyProperties(element))
             {
                 BindingExpression expr = BindingOperations.GetBindingExpression(element, prop);
                 if (expr != null && expr.ParentBinding != null && where(expr.ParentBinding))

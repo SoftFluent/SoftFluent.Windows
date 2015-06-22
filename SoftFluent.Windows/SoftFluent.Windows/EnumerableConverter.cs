@@ -10,9 +10,14 @@ namespace SoftFluent.Windows
 {
     public class EnumerableConverter : DependencyObject, IValueConverter
     {
-        public static readonly DependencyProperty MaxItemsProperty = DependencyProperty.Register("MaxItems", typeof(int), typeof(EnumerableConverter), new PropertyMetadata(10));
-        public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register("Separator", typeof(string), typeof(EnumerableConverter), new PropertyMetadata(", "));
-        public static readonly DependencyProperty FormatProperty = DependencyProperty.Register("Format", typeof(string), typeof(EnumerableConverter), new PropertyMetadata("{0}"));
+        public static readonly DependencyProperty MaxItemsProperty =
+            DependencyProperty.Register("MaxItems", typeof(int), typeof(EnumerableConverter), new PropertyMetadata(10));
+        
+        public static readonly DependencyProperty SeparatorProperty =
+            DependencyProperty.Register("Separator", typeof(string), typeof(EnumerableConverter), new PropertyMetadata(", "));
+        
+        public static readonly DependencyProperty FormatProperty =
+            DependencyProperty.Register("Format", typeof(string), typeof(EnumerableConverter), new PropertyMetadata("{0}"));
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

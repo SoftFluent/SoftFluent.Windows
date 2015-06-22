@@ -97,7 +97,6 @@
     <Compile Include="PropertyGridItem.cs" />
     <Compile Include="PropertyGridOptionsAttribute.cs" />
     <Compile Include="PropertyGridProperty.cs" />
-    <Compile Include="PropertyGridUtilities.cs" />
     <Compile Include="PropertyGridWindowManager.cs" />
     <Compile Include="PropertyGridWindowOptions.cs" />
     <Compile Include="Resources\SR.cs" />
