@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{11262EA6-320A-4352-96D3-64E9444F89CE}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SoftFluent.Windows</RootNamespace>
+    <AssemblyName>SoftFluent.Windows</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="PropertyGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BooleanToVisibilityConverter.cs" />
+    <Compile Include="ByteArrayControl.cs" />
+    <Compile Include="Utilities\CodeFluentRuntimeException.cs" />
+    <Compile Include="Utilities\CodeFluentValidationException.cs" />
+    <Compile Include="Utilities\UserExceptionType.cs" />
+    <Compile Include="Utilities\AssemblyUtilities.cs" />
+    <Compile Include="Utilities\AutoObject.cs" />
+    <Compile Include="Utilities\BooleanEnum.cs" />
+    <Compile Include="Utilities\ChangeTypeConverter.cs" />
+    <Compile Include="Utilities\DataBindingEvaluator.cs" />
+    <Compile Include="Utilities\DistinctDictionary.cs" />
+    <Compile Include="Utilities\DynamicObject.cs" />
+    <Compile Include="Utilities\DynamicObjectProperty.cs" />
+    <Compile Include="Utilities\ConvertUtilities.cs" />
+    <Compile Include="InvertBooleanConverter.cs" />
+    <Compile Include="Utilities\NameValueCollection.cs" />
+    <Compile Include="Utilities\NameValueCollectionCollection.cs" />
+    <Compile Include="UniversalConverter.cs" />
+    <Compile Include="UniversalConverterCase.cs" />
+    <Compile Include="UniversalConverterInput.cs" />
+    <Compile Include="UniversalConverterOperator.cs" />
+    <Compile Include="UniversalConverterOptions.cs" />
+    <Compile Include="PropertyGridDataTemplateSelector.cs" />
+    <Compile Include="DateTimePicker.cs" />
+    <Compile Include="EnumerableConverter.cs" />
+    <Compile Include="IPropertyGridCommandHandler.cs" />
+    <Compile Include="IPropertyGridEditor.cs" />
+    <Compile Include="IPropertyGridObject.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="PropertyGrid.xaml.cs">
+      <DependentUpon>PropertyGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyGridAttribute.cs" />
+    <Compile Include="PropertyGridComboBoxExtension.cs" />
+    <Compile Include="PropertyGridConverter.cs" />
+    <Compile Include="PropertyGridDataProvider.cs" />
+    <Compile Include="PropertyGridDataTemplate.cs" />
+    <Compile Include="PropertyGridEnumProperty.cs" />
+    <Compile Include="PropertyGridEventArgs.cs" />
+    <Compile Include="PropertyGridItem.cs" />
+    <Compile Include="PropertyGridOptionsAttribute.cs" />
+    <Compile Include="PropertyGridProperty.cs" />
+    <Compile Include="PropertyGridUtilities.cs" />
+    <Compile Include="PropertyGridWindowManager.cs" />
+    <Compile Include="PropertyGridWindowOptions.cs" />
+    <Compile Include="Resources\SR.cs" />
+    <Compile Include="TypeDataTemplateSelector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Strings.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
