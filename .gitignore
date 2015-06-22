@@ -215,3 +215,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+# Nuget
+SoftFluent.Windows/nuget/lib/
+SoftFluent.Windows/nuget/*.nupkg

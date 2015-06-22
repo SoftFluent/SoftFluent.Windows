@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SoftFluent.Windows</id>
+    <version>1.0.0</version>
+    <authors>SoftFluent</authors>
+    <owners>SoftFluent</owners>
+    <!--<licenseUrl></licenseUrl>-->
+    <!--<iconUrl></iconUrl>-->
+    <projectUrl>https://github.com/SoftFluent/SoftFluent.Windows</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>WPF Property Grid</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright (C) 2005-2015 SoftFluent S.A.S. All rights reserved.</copyright>
+    <tags>WPF PropertyGrid</tags>
+  </metadata>
+</package>

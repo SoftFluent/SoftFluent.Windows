@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Media;
 using SoftFluent.Windows.Utilities;
 
@@ -160,11 +159,6 @@ namespace SoftFluent.Windows.Samples
             }
         }
 
-        //public string PercentageOfSatisfactionText
-        //{
-        //    get { return PercentageOfSatisfaction.ToString(); }
-        //}
-
         [PropertyGridOptions(EditorDataTemplateResourceKey = "ColorEditor")]
         public string PreferedColorName
         {
@@ -179,8 +173,6 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty<FontFamily>(value); }
         }
 
-
-        //[PropertyGridOptions(EditorDataTemplateResourceKey = "FontEditor")]
         public Point Point
         {
             get { return GetProperty<Point>(); }
