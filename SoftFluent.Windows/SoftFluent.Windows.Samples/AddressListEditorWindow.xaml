@@ -1,0 +1,47 @@
+﻿<Window x:Class="SoftFluent.Windows.Samples.AddressListEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:windows="clr-namespace:SoftFluent.Windows;assembly=SoftFluent.Windows"
+        Title="AddressListEditorWindow" Height="300" Width="300">
+    <Window.CommandBindings>
+        <CommandBinding Command="Close" CanExecute="OnEditorWindowCloseCanExecute" Executed="OnEditorWindowCloseExecuted" />
+        <CommandBinding Command="New" CanExecute="NewCommandBinding_OnCanExecute" Executed="NewCommandBinding_OnExecuted" />
+        <CommandBinding Command="Delete" CanExecute="DeleteCommandBinding_OnCanExecute" Executed="DeleteCommandBinding_OnExecuted" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="Close" />
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <ListView Grid.ColumnSpan="2" Name="EditorSelector" SelectionMode="Single" ItemsSource="{Binding Value}" SelectedIndex="0" />
+
+                <Button Grid.Row="1" Grid.Column="0" Command="New">Add</Button>
+                <Button Grid.Row="1" Grid.Column="1" Command="Delete">Remove</Button>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="True" Width="5" />
+            <windows:PropertyGrid Grid.Column="2" SelectedObject="{Binding ElementName=EditorSelector, Path=SelectedItem}" />
+        </Grid>
+        <Button Grid.Row="1" Command="Close" Margin="5,5,5,5" HorizontalAlignment="Right" Width="100" Content="Close" />
+    </Grid>
+</Window>

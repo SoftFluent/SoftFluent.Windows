@@ -1,6 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Windows;
 using System.Windows.Media;
 using SoftFluent.Windows.Utilities;
 
@@ -15,7 +19,11 @@ namespace SoftFluent.Windows.Samples
             RowVersion = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
             WebSite = "http://www.softfluent.com";
             Status = Status.Validated;
-            Addresses = new List<Address>();
+            Addresses = new ObservableCollection<Address> { new Address { Line1 = "2018 156th Avenue NE", City = "Bellevue, WA", ZipCode = "98007", Country = "USA" } };
+            ContactDays = DaysOfWeek.WeekDays;
+            PercentageOfSatisfaction = 50;
+            PreferedColorName = "DodgerBlue";
+            PreferedFont = Fonts.SystemFontFamilies.FirstOrDefault(f => string.Equals(f.Source, "Consolas", StringComparison.OrdinalIgnoreCase));
         }
 
         public Guid Id
@@ -126,40 +134,126 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty<string>(value); }
         }
 
-        public List<Address> Addresses
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "AddressListEditor", SortOrder = 10)]
+        public ObservableCollection<Address> Addresses
         {
-            get { return GetProperty<List<Address>>(); }
-            set { SetProperty<List<Address>>(value); }
+            get { return GetProperty<ObservableCollection<Address>>(); }
+            set { SetProperty<ObservableCollection<Address>>(value); }
+        }
+
+        public DaysOfWeek ContactDays
+        {
+            get { return GetProperty<DaysOfWeek>(); }
+            set { SetProperty<DaysOfWeek>(value); }
+        }
+
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "PercentEditor")]
+        public double PercentageOfSatisfaction
+        {
+            get { return GetProperty<double>(); }
+            set
+            {
+                if (SetProperty<double>(value))
+                {
+                    OnPropertyChanged("PercentageOfSatisfactionText");
+                }
+            }
+        }
+
+        //public string PercentageOfSatisfactionText
+        //{
+        //    get { return PercentageOfSatisfaction.ToString(); }
+        //}
+
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "ColorEditor")]
+        public string PreferedColorName
+        {
+            get { return GetProperty<string>(); }
+            set { SetProperty<string>(value); }
+        }
+
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "FontEditor")]
+        public FontFamily PreferedFont
+        {
+            get { return GetProperty<FontFamily>(); }
+            set { SetProperty<FontFamily>(value); }
+        }
+
+
+        //[PropertyGridOptions(EditorDataTemplateResourceKey = "FontEditor")]
+        public Point Point
+        {
+            get { return GetProperty<Point>(); }
+            set { SetProperty<Point>(value); }
         }
     }
 
     public class Address : AutoObject
     {
+        [PropertyGridOptions(SortOrder = 10)]
         public string Line1
         {
             get { return GetProperty<string>(); }
             set { SetProperty<string>(value); }
         }
+
+        [PropertyGridOptions(SortOrder = 20)]
         public string Line2
         {
             get { return GetProperty<string>(); }
             set { SetProperty<string>(value); }
         }
+
+        [PropertyGridOptions(SortOrder = 30)]
         public string ZipCode
         {
             get { return GetProperty<string>(); }
             set { SetProperty<string>(value); }
         }
+
+        [PropertyGridOptions(SortOrder = 40)]
         public string City
         {
             get { return GetProperty<string>(); }
             set { SetProperty<string>(value); }
         }
+
+        [PropertyGridOptions(SortOrder = 50)]
         public string Country
         {
             get { return GetProperty<string>(); }
             set { SetProperty<string>(value); }
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(Line1);
+            if (!string.IsNullOrEmpty(Line2))
+            {
+                sb.AppendLine(Line2);
+            }
+
+            sb.Append(City);
+            sb.Append(" ");
+            sb.AppendLine(ZipCode);
+            sb.Append(Country);
+            return sb.ToString();
+        }
+    }
+
+    [Flags]
+    public enum DaysOfWeek
+    {
+        NoDay = 0,
+        Monday = 1,
+        Tuesday = 2,
+        Wednesday = 4,
+        Thursday = 8,
+        Friday = 16,
+        Saturday = 32,
+        Sunday = 64,
+        WeekDays = Monday | Tuesday | Wednesday | Thursday | Friday
     }
 
     public enum Gender
@@ -177,5 +271,52 @@ namespace SoftFluent.Windows.Samples
         [PropertyGrid(Name = "Foreground", Value = "Black")]
         [PropertyGrid(Name = "Background", Value = "Green")]
         Validated
+    }
+
+    public class PointConverter : TypeConverter
+    {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if (sourceType == typeof(string))
+            {
+                return true;
+            }
+
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            string s = value as string;
+            if (s != null)
+            {
+                string[] v = s.Split(new[] { ';' });
+                return new Point(int.Parse(v[0]), int.Parse(v[1]));
+            }
+
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            if (destinationType == typeof(string))
+            {
+                return ((Point)value).X + ";" + ((Point)value).Y;
+            }
+            return base.ConvertTo(context, culture, value, destinationType);
+        }
+    }
+
+    [TypeConverter(typeof(PointConverter))]
+    public struct Point
+    {
+        public int X { get; private set; }
+        public int Y { get; private set; }
+
+        public Point(int x, int y) : this()
+        {
+            X = x;
+            Y = y;
+        }
     }
 }
