@@ -469,7 +469,7 @@ namespace SoftFluent.Windows
                 return;
             }
 
-            ReadOnlyAttribute roa = AssemblyUtilities.GetAttribute<ReadOnlyAttribute>(e.NewValue.GetType());
+            ReadOnlyAttribute roa = e.NewValue.GetType().GetAttribute<ReadOnlyAttribute>();
             if (roa != null && roa.IsReadOnly)
             {
                 grid.IsReadOnly = true;

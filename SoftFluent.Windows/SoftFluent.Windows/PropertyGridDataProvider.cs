@@ -97,11 +97,11 @@ namespace SoftFluent.Windows
             }
             property.IsFlagsEnum = descriptor.PropertyType.IsEnum && ConvertUtilities.IsFlagsEnum(descriptor.PropertyType);
 
-            DefaultValueAttribute att = AssemblyUtilities.GetAttribute<DefaultValueAttribute>(descriptor);
+            DefaultValueAttribute att = descriptor.GetAttribute<DefaultValueAttribute>();
             property.HasDefaultValue = att != null;
             property.DefaultValue = att != null ? att.Value : null;
 
-            PropertyGridOptionsAttribute options = AssemblyUtilities.GetAttribute<PropertyGridOptionsAttribute>(descriptor);
+            PropertyGridOptionsAttribute options = descriptor.GetAttribute<PropertyGridOptionsAttribute>();
             if (options != null)
             {
                 if (options.SortOrder != 0)
@@ -136,7 +136,7 @@ namespace SoftFluent.Windows
 
             bool forceReadWrite = false;
             PropertyGridProperty property = null;
-            PropertyGridOptionsAttribute options = AssemblyUtilities.GetAttribute<PropertyGridOptionsAttribute>(descriptor);
+            PropertyGridOptionsAttribute options = descriptor.GetAttribute<PropertyGridOptionsAttribute>();
             if (options != null)
             {
                 forceReadWrite = options.ForceReadWrite;
@@ -148,7 +148,7 @@ namespace SoftFluent.Windows
 
             if (property == null)
             {
-                options = AssemblyUtilities.GetAttribute<PropertyGridOptionsAttribute>(descriptor.PropertyType);
+                options = descriptor.PropertyType.GetAttribute<PropertyGridOptionsAttribute>();
                 if (options != null)
                 {
                     if (!forceReadWrite)

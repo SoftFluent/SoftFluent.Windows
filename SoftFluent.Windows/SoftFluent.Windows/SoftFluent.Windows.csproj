@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -58,15 +59,10 @@
     <Compile Include="BooleanToVisibilityConverter.cs" />
     <Compile Include="ByteArrayControl.cs" />
     <Compile Include="Properties\AssemblyVersionInfo.cs" />
-    <Compile Include="Utilities\CodeFluentRuntimeException.cs" />
-    <Compile Include="Utilities\CodeFluentValidationException.cs" />
-    <Compile Include="Utilities\UserExceptionType.cs" />
-    <Compile Include="Utilities\AssemblyUtilities.cs" />
-    <Compile Include="Utilities\AutoObject.cs" />
-    <Compile Include="Utilities\BooleanEnum.cs" />
-    <Compile Include="Utilities\ChangeTypeConverter.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
+    <Compile Include="Utilities\ReflectionUtilities.cs" />
+    <Compile Include="AutoObject.cs" />
     <Compile Include="Utilities\DataBindingEvaluator.cs" />
-    <Compile Include="Utilities\DistinctDictionary.cs" />
     <Compile Include="Utilities\DynamicObject.cs" />
     <Compile Include="Utilities\DynamicObjectProperty.cs" />
     <Compile Include="Utilities\ConvertUtilities.cs" />

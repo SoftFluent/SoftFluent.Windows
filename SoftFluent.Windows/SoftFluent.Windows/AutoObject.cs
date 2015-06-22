@@ -6,8 +6,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using SoftFluent.Windows.Resources;
+using SoftFluent.Windows.Utilities;
 
-namespace SoftFluent.Windows.Utilities
+namespace SoftFluent.Windows
 {
     /// <summary>
     /// Defines a utility class to implement objects with typed properties without private fields.
@@ -576,7 +577,7 @@ namespace SoftFluent.Windows.Utilities
             if (!RaisePropertyChanged && !forceRaise)
                 return false;
 
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(name));

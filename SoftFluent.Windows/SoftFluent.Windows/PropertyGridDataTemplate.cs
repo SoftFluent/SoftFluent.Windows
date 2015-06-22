@@ -49,7 +49,7 @@ namespace SoftFluent.Windows
                         }
                         else
                         {
-                            type = AssemblyUtilities.GetType(name, false);
+                            type = ReflectionUtilities.GetType(name);
                         }
                         if (type != null)
                         {
@@ -74,7 +74,7 @@ namespace SoftFluent.Windows
                         if (string.IsNullOrWhiteSpace(name))
                             continue;
 
-                        Type type = AssemblyUtilities.GetType(name, false);
+                        Type type = ReflectionUtilities.GetType(name);
                         if (type != null)
                         {
                             _resolvedCollectionItemPropertyTypes.Add(type);

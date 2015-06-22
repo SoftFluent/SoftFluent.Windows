@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text;
 using System.Threading;
@@ -238,7 +239,7 @@ namespace SoftFluent.Windows.Utilities
         /// <returns>
         /// The name used as the return of a ToString() call, or null if the default value is to be used.
         /// </returns>
-        public string ToStringName { get; set; }
+        public virtual string ToStringName { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
@@ -271,7 +272,7 @@ namespace SoftFluent.Windows.Utilities
         /// Gets the attributes.
         /// </summary>
         /// <value>The attributes.</value>
-        public IList<Attribute> Attributes
+        public virtual IList<Attribute> Attributes
         {
             get
             {
@@ -291,7 +292,7 @@ namespace SoftFluent.Windows.Utilities
         /// <returns>
         /// The class name of the object, or null if the class does not have a name.
         /// </returns>
-        public string ClassName { get; set; }
+        public virtual string ClassName { get; set; }
 
         string ICustomTypeDescriptor.GetClassName()
         {
@@ -305,7 +306,7 @@ namespace SoftFluent.Windows.Utilities
         /// <returns>
         /// The name of the object, or null if the object does not have a name.
         /// </returns>
-        public string ComponentName { get; set; }
+        public virtual string ComponentName { get; set; }
 
         string ICustomTypeDescriptor.GetComponentName()
         {
@@ -319,7 +320,7 @@ namespace SoftFluent.Windows.Utilities
         /// <returns>
         /// A <see cref="T:System.ComponentModel.TypeConverter"/> that is the converter for this object, or null if there is no <see cref="T:System.ComponentModel.TypeConverter"/> for this object.
         /// </returns>
-        public TypeConverter Converter { get; set; }
+        public virtual TypeConverter Converter { get; set; }
 
         TypeConverter ICustomTypeDescriptor.GetConverter()
         {
@@ -333,7 +334,7 @@ namespace SoftFluent.Windows.Utilities
         /// <returns>
         /// An <see cref="T:System.ComponentModel.EventDescriptor"/> that represents the default event for this object, or null if this object does not have events.
         /// </returns>
-        public EventDescriptor DefaultEvent { get; set; }
+        public virtual EventDescriptor DefaultEvent { get; set; }
 
         EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
         {
@@ -347,7 +348,7 @@ namespace SoftFluent.Windows.Utilities
         /// <returns>
         /// A <see cref="T:System.ComponentModel.PropertyDescriptor"/> that represents the default property for this object, or null if this object does not have properties.
         /// </returns>
-        public PropertyDescriptor DefaultProperty { get; set; }
+        public virtual PropertyDescriptor DefaultProperty { get; set; }
 
         PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
         {
@@ -358,7 +359,7 @@ namespace SoftFluent.Windows.Utilities
         /// Gets the editors.
         /// </summary>
         /// <value>The editors.</value>
-        public IDictionary<Type, object> Editors
+        public virtual IDictionary<Type, object> Editors
         {
             get
             {
@@ -382,7 +383,7 @@ namespace SoftFluent.Windows.Utilities
         /// Gets the events.
         /// </summary>
         /// <value>The events.</value>
-        public IList<EventDescriptor> Events
+        public virtual IList<EventDescriptor> Events
         {
             get
             {
@@ -441,7 +442,7 @@ namespace SoftFluent.Windows.Utilities
             List<PropertyDescriptor> list = new List<PropertyDescriptor>();
             foreach (PropertyDescriptor prop in _properties)
             {
-                if ((prop.Attributes == null) || (prop.Attributes.Count == 0))
+                if (prop.Attributes == null || prop.Attributes.Count == 0)
                     continue;
 
                 bool cont = false;
@@ -479,7 +480,7 @@ namespace SoftFluent.Windows.Utilities
         /// Gets the properties.
         /// </summary>
         /// <value>The properties.</value>
-        public IList<PropertyDescriptor> Properties
+        public virtual IList<PropertyDescriptor> Properties
         {
             get
             {
@@ -552,7 +553,7 @@ namespace SoftFluent.Windows.Utilities
         /// <param name="memberName">The name of the member to validate or null to validate the whole object.</param>
         /// <param name="separator">The separator string to use.</param>
         /// <returns>A text describing the error or null if there was no error.</returns>
-        public string ValidateMember(CultureInfo culture, string memberName, string separator)
+        public virtual string ValidateMember(CultureInfo culture, string memberName, string separator)
         {
             if (culture == null)
             {
@@ -561,22 +562,22 @@ namespace SoftFluent.Windows.Utilities
 
             if (separator == null)
             {
-                    separator = Environment.NewLine;
+                separator = Environment.NewLine;
             }
 
-            List<CodeFluentValidationException> list = new List<CodeFluentValidationException>();
+            List<ValidationException> list = new List<ValidationException>();
             ValidateMember(culture, list, memberName);
             if (list.Count == 0)
                 return null;
 
             StringBuilder sb = new StringBuilder();
-            foreach (CodeFluentValidationException e in list)
+            foreach (ValidationException e in list)
             {
                 if (sb.Length != 0)
                 {
                     sb.Append(separator);
                 }
-                sb.Append(CodeFluentRuntimeException.GetInterestingExceptionMessage(e));
+                sb.Append(e.GetAllMessages(separator));
             }
             return sb.ToString();
         }
@@ -587,7 +588,7 @@ namespace SoftFluent.Windows.Utilities
         /// <param name="culture">The culture to use for error messages.</param>
         /// <param name="list">The list of exception to fill.</param>
         /// <param name="memberName">The name of the member to validate or null to validate the whole object.</param>
-        public virtual void ValidateMember(CultureInfo culture, IList<CodeFluentValidationException> list, string memberName)
+        public virtual void ValidateMember(CultureInfo culture, IList<ValidationException> list, string memberName)
         {
             if (list == null)
                 throw new ArgumentNullException("list");

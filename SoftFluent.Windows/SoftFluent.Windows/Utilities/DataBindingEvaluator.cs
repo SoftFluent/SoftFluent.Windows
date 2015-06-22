@@ -130,47 +130,15 @@ namespace SoftFluent.Windows.Utilities
             if (propName == null)
 				throw new ArgumentException(null, "propName");
 
-#if SILVERLIGHT
-			PropertyInfo info = container.GetType().GetProperty(propName, BindingFlags.Public | BindingFlags.Instance);
-			if (info == null)
-            {
-                if (throwOnError)
-			    	throw new ArgumentException(
-				    	string.Format(@"DataBindingEvaluator: '{0}' does not contain a property with the name '{1}'.",
-					    new object[] { container.GetType().FullName, propName }), "propName");
-
-                return null;
-            }
-			
-            return info.GetValue(container, null);
-#else
-#if NETFX_CORE
-            PropertyInfo info = container.GetType().GetRuntimeProperty(propName);
-            if (info == null)
-            {
-                if (throwOnError)
-                   throw new ArgumentException(
-                        string.Format(@"DataBindingEvaluator: '{0}' does not contain a property with the name '{1}'.",
-                        new object[] { container.GetType().FullName, propName }), "propName");
-
-                return null;
-            }
-
-            return info.GetValue(container, null);
-#else
             PropertyDescriptor descriptor = TypeDescriptor.GetProperties(container).Find(propName, true);
             if (descriptor == null)
             {
                 if (throwOnError)
-                    throw new ArgumentException(
-                        string.Format(@"DataBindingEvaluator: '{0}' does not contain a property with the name '{1}'.",
-                        new object[] { container.GetType().FullName, propName }), "propName");
+                    throw new ArgumentException(string.Format(@"DataBindingEvaluator: '{0}' does not contain a property with the name '{1}'.", new object[] { container.GetType().FullName, propName }), "propName");
 
                 return null;
             }
             return descriptor.GetValue(container);
-#endif
-#endif
         }
 
         /// <summary>
@@ -203,9 +171,9 @@ namespace SoftFluent.Windows.Utilities
 				throw new ArgumentException(null, "expression");
 
 			bool numberIndex = false;
-			int length = expression.IndexOfAny(indexExprStartChars);
-			int num2 = expression.IndexOfAny(indexExprEndChars, length + 1);
-            if (((length < 0) || (num2 < 0)) || (num2 == (length + 1)))
+			int idx1 = expression.IndexOfAny(indexExprStartChars);
+			int idx2 = expression.IndexOfAny(indexExprEndChars, idx1 + 1);
+            if (idx1 < 0 || idx2 < 0 || idx2 == (idx1 + 1))
             {
                 if (throwOnError)
                     throw new ArgumentException(string.Format(@"DataBindingEvaluator: '{0}' is not a valid indexed expression.", new object[] { expression }));
@@ -215,14 +183,15 @@ namespace SoftFluent.Windows.Utilities
 
             string propName = null;
 			object index = null;
-			string s = expression.Substring(length + 1, (num2 - length) - 1).Trim();
-			if (length != 0)
+			string s = expression.Substring(idx1 + 1, (idx2 - idx1) - 1).Trim();
+			if (idx1 != 0)
 			{
-				propName = expression.Substring(0, length);
+				propName = expression.Substring(0, idx1);
 			}
+
 			if (s.Length != 0)
 			{
-				if (((s[0] == '"') && (s[s.Length - 1] == '"')) || ((s[0] == '\'') && (s[s.Length - 1] == '\'')))
+				if ((s[0] == '"' && s[s.Length - 1] == '"') || (s[0] == '\'' && s[s.Length - 1] == '\''))
 				{
 					index = s.Substring(1, s.Length - 2);
 				}
@@ -253,7 +222,7 @@ namespace SoftFluent.Windows.Utilities
             }
 			
             object propertyValue = null;
-			if ((propName != null) && (propName.Length != 0))
+			if (propName != null && propName.Length != 0)
 			{
 				propertyValue = GetPropertyValue(container, propName);
 			}
@@ -266,17 +235,13 @@ namespace SoftFluent.Windows.Utilities
 				return null;
 
             Array array = propertyValue as Array;
-			if ((array != null) && numberIndex)
+			if (array != null && numberIndex)
 				return array.GetValue((int)index);
 
             if ((propertyValue is IList) && numberIndex)
 				return ((IList)propertyValue)[(int)index];
 
-#if NETFX_CORE
-            PropertyInfo info = propertyValue.GetType().GetRuntimeProperty("Item");
-#else
             PropertyInfo info = propertyValue.GetType().GetProperty("Item", BindingFlags.Public | BindingFlags.Instance, null, null, new Type[] { index.GetType() }, null);
-#endif
             if (info == null)
             {
                 if (throwOnError)
@@ -284,7 +249,6 @@ namespace SoftFluent.Windows.Utilities
 
                 return null;
             }
-
             return info.GetValue(propertyValue, new object[] { index });
 		}
 	}

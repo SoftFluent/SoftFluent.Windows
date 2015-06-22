@@ -102,7 +102,7 @@ namespace SoftFluent.Windows
 
             if (property.Descriptor != null)
             {
-                att = AssemblyUtilities.GetAttribute<PropertyGridOptionsAttribute>(property.Descriptor);
+                att = property.Descriptor.GetAttribute<PropertyGridOptionsAttribute>();
             }
 
             if (att == null)

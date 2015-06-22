@@ -708,26 +708,12 @@ namespace SoftFluent.Windows.Utilities
 				case "system.object":
 					return typeof(object);
 
-#if !SILVERLIGHT && !NETFX_CORE
                 case "system.xml.xmldocument":
                     return typeof(XmlDocument);
-#endif
 
 				default:
-#if SILVERLIGHT
-                    Type type = Type.GetType(fullTypeName, false, true);
-#else
-#if NETFX_CORE
-                    Type type = Type.GetType(fullTypeName, false);
-#else
-                    Type type = AssemblyUtilities.GetType(fullTypeName, false);
-#endif
-#endif
-#if NETFX_CORE
-                    if ((nullable) && (type != null) && (type.IsValueType()))
-#else
+                    Type type = ReflectionUtilities.GetType(fullTypeName);
                     if ((nullable) && (type != null) && (type.IsValueType))
-#endif
                         return typeof(Nullable<>).MakeGenericType(type);
 
                     return type;
@@ -746,11 +732,7 @@ namespace SoftFluent.Windows.Utilities
 
             foreach (Type iface in collectionType.GetInterfaces())
             {
-#if NETFX_CORE
-                if (!iface.IsGenericType())
-#else
                 if (!iface.IsGenericType)
-#endif
                     continue;
 
                 if (iface.GetGenericTypeDefinition() == typeof(IDictionary<,>))
@@ -1048,18 +1030,6 @@ namespace SoftFluent.Windows.Utilities
             return (T)ChangeType(value, typeof(T), defaultValue, provider);
         }
 
-#if !NETFX_CORE
-        internal static bool IsChangeTypeConverter(TypeConverter cvt)
-        {
-            if (cvt == null)
-                return false;
-
-            if (!cvt.GetType().IsGenericType)
-                return false;
-
-            return (cvt.GetType().GetGenericTypeDefinition() == typeof(ChangeTypeConverter<>));
-        }
-#endif
 
         private static bool CanChangeType(Type conversionType)
         {
@@ -1392,7 +1362,7 @@ namespace SoftFluent.Windows.Utilities
                     try
                     {
                         TypeConverter cvt = TypeDescriptor.GetConverter(value);
-                        if ((cvt != null) && (!IsChangeTypeConverter(cvt)) && (cvt.CanConvertTo(conversionType)))
+                        if ((cvt != null) && (cvt.CanConvertTo(conversionType)))
                             return cvt.ConvertTo(null, provider as CultureInfo, value, conversionType);
 
                         cvt = TypeDescriptor.GetConverter(conversionType);
@@ -1856,7 +1826,7 @@ namespace SoftFluent.Windows.Utilities
                     try
                     {
                         TypeConverter cvt = TypeDescriptor.GetConverter(value);
-                        if ((cvt != null) && (!IsChangeTypeConverter(cvt)) && (cvt.CanConvertTo(conversionType)))
+                        if ((cvt != null) && (cvt.CanConvertTo(conversionType)))
                             return cvt.ConvertTo(null, provider as CultureInfo, value, conversionType);
                         
 
@@ -2265,7 +2235,7 @@ namespace SoftFluent.Windows.Utilities
             try
             {
                 TypeConverter cvt = TypeDescriptor.GetConverter(obj);
-                if ((cvt != null) && (!IsChangeTypeConverter(cvt)) && (cvt.CanConvertTo(type)))
+                if ((cvt != null) && (cvt.CanConvertTo(type)))
                 {
                     value = cvt.ConvertTo(null, provider as CultureInfo, obj, type);
                     return true;
@@ -3270,11 +3240,6 @@ namespace SoftFluent.Windows.Utilities
 
             if (obj is bool)
                 return ((bool)obj);
-
-#if !NETFX_CORE
-            if (obj is BooleanEnum)
-                return (((BooleanEnum)obj) == BooleanEnum.True);
-#endif
 
             if (obj is bool?)
             {

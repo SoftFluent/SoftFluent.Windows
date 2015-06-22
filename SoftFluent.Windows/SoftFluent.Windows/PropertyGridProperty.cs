@@ -426,7 +426,7 @@ namespace SoftFluent.Windows
             {
                 if (PropertyType == typeof(string))
                 {
-                    Value = CodeFluentRuntimeException.GetAllMessages(e);
+                    Value = e.GetAllMessages();
                 }
                 IsError = true;
             }

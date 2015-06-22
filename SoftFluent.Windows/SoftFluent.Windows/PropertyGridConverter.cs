@@ -16,7 +16,7 @@ namespace SoftFluent.Windows
             if (string.IsNullOrWhiteSpace(typeName))
                 return null;
 
-            return AssemblyUtilities.GetType(typeName, false);
+            return ReflectionUtilities.GetType(typeName);
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

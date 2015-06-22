@@ -46,17 +46,17 @@ namespace SoftFluent.Windows.Utilities
         /// <param name="name">The property name.</param>
         /// <param name="type">The property type.</param>
         /// <param name="attributes">The property custom attributes.</param>
-        protected void Construct(string name, Type type, IEnumerable<Attribute> attributes)
+        protected virtual void Construct(string name, Type type, IEnumerable<Attribute> attributes)
         {
             _type = type;
 
-            ReadOnlyAttribute ro = AssemblyUtilities.GetAttribute<ReadOnlyAttribute>(Attributes);
+            ReadOnlyAttribute ro = Attributes.GetAttribute<ReadOnlyAttribute>();
             if (ro != null)
             {
                 _isReadOnly = ro.IsReadOnly;
             }
 
-            DefaultValueAttribute dv = AssemblyUtilities.GetAttribute<DefaultValueAttribute>(Attributes);
+            DefaultValueAttribute dv = Attributes.GetAttribute<DefaultValueAttribute>();
             if (dv != null)
             {
                 HasDefaultValue = true;

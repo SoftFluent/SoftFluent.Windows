@@ -117,7 +117,7 @@ namespace SoftFluent.Windows
 #if NETFX_CORE || SILVERLIGHT
             return Type.GetType(name, false);
 #else
-            return AssemblyUtilities.GetType(name, false);
+            return ReflectionUtilities.GetType(name);
 #endif
         }
 
