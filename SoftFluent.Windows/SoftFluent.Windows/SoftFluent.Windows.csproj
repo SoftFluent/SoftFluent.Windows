@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="BooleanToVisibilityConverter.cs" />
     <Compile Include="ByteArrayControl.cs" />
+    <Compile Include="Properties\AssemblyVersionInfo.cs" />
     <Compile Include="Utilities\CodeFluentRuntimeException.cs" />
     <Compile Include="Utilities\CodeFluentValidationException.cs" />
     <Compile Include="Utilities\UserExceptionType.cs" />
