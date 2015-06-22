@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Windows.Media;
 using SoftFluent.Windows.Utilities;
@@ -31,7 +32,8 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty<Guid>(value); }
         }
 
-        [ReadOnly(true)]
+        //[ReadOnly(true)]
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "DateTimePicker")]
         public DateTime CreationDate
         {
             get { return GetProperty<DateTime>(); }
@@ -86,10 +88,29 @@ namespace SoftFluent.Windows.Samples
         }
 
         [Category("Security")]
-        public string Password
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "PasswordEditor")]
+        public SecureString Password
         {
-            get { return GetProperty<string>(); }
-            set { SetProperty<string>(value); }
+            get { return GetProperty<SecureString>(); }
+            set
+            {
+                if (SetProperty<SecureString>(value))
+                {
+                    OnPropertyChanged("PasswordString");
+                }
+            }
+        }
+
+        [Category("Security")]
+        public string PasswordString
+        {
+            get
+            {
+                if (Password == null)
+                    return null;
+
+                return Password.ConvertToUnsecureString();
+            }
         }
 
         [Category("Security")]
@@ -124,6 +145,13 @@ namespace SoftFluent.Windows.Samples
         {
             get { return GetProperty<byte[]>(); }
             set { SetProperty<byte[]>(value); }
+        }
+
+        [ReadOnly(true)]
+        public byte[] RowVersion2
+        {
+            get { return RowVersion; }
+            set { RowVersion = value; }
         }
 
         [PropertyGridOptions(EditorDataTemplateResourceKey = "CustomEditor", SortOrder = -10)]
@@ -178,6 +206,14 @@ namespace SoftFluent.Windows.Samples
             get { return GetProperty<Point>(); }
             set { SetProperty<Point>(value); }
         }
+
+        public bool SampleBoolean
+        {
+            get { return GetProperty<bool>(); }
+            set { SetProperty<bool>(value); }
+        }
+
+
     }
 
     public class Address : AutoObject
@@ -305,7 +341,8 @@ namespace SoftFluent.Windows.Samples
         public int X { get; private set; }
         public int Y { get; private set; }
 
-        public Point(int x, int y) : this()
+        public Point(int x, int y)
+            : this()
         {
             X = x;
             Y = y;

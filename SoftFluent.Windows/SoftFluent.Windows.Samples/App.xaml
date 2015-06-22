@@ -29,14 +29,31 @@
 
         <DataTemplate x:Key="CustomEditor">
             <DockPanel LastChildFill="true" ToolTip="{Binding Value, Mode=OneWay}">
+
                 <Button IsEnabled="{Binding IsReadWrite}" Width="24" HorizontalContentAlignment="Center" Content="..." DockPanel.Dock="Right"
                         Command="{x:Static local:PropertyGrid.BrowseCommand}" CommandParameter="CustomEditorWindow" />
+                
+                <Button Width="Auto" HorizontalContentAlignment="Center" Content="Preview" DockPanel.Dock="Right"
+                        Command="{x:Static local:PropertyGrid.BrowseCommand}" CommandParameter="UrlPreviewWindow" />
+                
                 <TextBox IsReadOnly="{Binding IsReadOnly}" 
                          Background="{Binding IsDefaultValue, Converter={StaticResource BoolToDefaultValueBackgroundConverter}}" 
                          Text="{Binding TextValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          DockPanel.Dock="Left" />
             </DockPanel>
         </DataTemplate>
+
+        <Window x:Shared="false" x:Key="UrlPreviewWindow" Name="UrlPreviewWindow" Title="Text" Height="400" Width="400">
+            <Window.CommandBindings>
+                <CommandBinding Command="Close" CanExecute="OnEditorWindowCloseCanExecute" Executed="OnEditorWindowCloseExecuted" />
+            </Window.CommandBindings>
+            <Window.InputBindings>
+                <KeyBinding Key="Escape" Command="Close" />
+            </Window.InputBindings>
+            <Grid>
+                <WebBrowser samples:Utilities.BindableSource="{Binding Value, Mode=OneWay}"></WebBrowser>
+            </Grid>
+        </Window>
 
         <Window x:Shared="false" x:Key="CustomEditorWindow" Name="CustomEditorWindow" Title="Text" Height="400" Width="400">
             <Window.CommandBindings>
@@ -127,6 +144,12 @@
                     <Binding Source="{StaticResource Fonts}" />
                 </ComboBox.ItemsSource>
             </ComboBox>
+        </DataTemplate>
+
+
+
+        <DataTemplate x:Key="PasswordEditor">
+            <PasswordBox samples:Utilities.BindPassword="True" samples:Utilities.BindablePassword="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></PasswordBox>
         </DataTemplate>
     </Application.Resources>
 </Application>
