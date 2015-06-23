@@ -26,20 +26,20 @@ namespace SoftFluent.Windows
         public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (_cases.Count == 0)
-                return ConvertUtilities.ChangeType(value, targetType, culture);
+                return ServiceProvider.ChangeType(value, targetType, culture);
 
             foreach (UniversalConverterCase c in _cases)
             {
                 if (c.Matches(value, parameter, culture))
                 {
                     if ((c.Options & UniversalConverterOptions.ConvertedValueIsConverterParameter) == UniversalConverterOptions.ConvertedValueIsConverterParameter)
-                        return ConvertUtilities.ChangeType(parameter, targetType, culture);
+                        return ServiceProvider.ChangeType(parameter, targetType, culture);
 
-                    return ConvertUtilities.ChangeType(c.ConvertedValue, targetType, culture);
+                    return ServiceProvider.ChangeType(c.ConvertedValue, targetType, culture);
                 }
             }
 
-            return ConvertUtilities.ChangeType(DefaultValue, targetType, culture);
+            return ServiceProvider.ChangeType(DefaultValue, targetType, culture);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace SoftFluent.Windows
         /// </returns>
         public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ConvertUtilities.ChangeType(parameter, targetType, culture);
+            return ServiceProvider.ChangeType(parameter, targetType, culture);
         }
 
         /// <summary>

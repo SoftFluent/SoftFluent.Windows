@@ -60,11 +60,11 @@ namespace SoftFluent.Windows.Utilities
             if (dv != null)
             {
                 HasDefaultValue = true;
-                _defaultValue = ConvertUtilities.ChangeType(dv.Value, _type);
+                _defaultValue = ServiceProvider.ChangeType(dv.Value, _type);
             }
             else
             {
-                _defaultValue = ConvertUtilities.ChangeType(null, _type);
+                _defaultValue = ServiceProvider.ChangeType(null, _type);
             }
         }
 
@@ -91,7 +91,7 @@ namespace SoftFluent.Windows.Utilities
             }
             set
             {
-                _defaultValue = ConvertUtilities.ChangeType(value, _type);
+                _defaultValue = ServiceProvider.ChangeType(value, _type);
             }
         }
 

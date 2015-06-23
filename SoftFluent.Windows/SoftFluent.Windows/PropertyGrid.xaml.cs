@@ -367,7 +367,7 @@ namespace SoftFluent.Windows
 
                 if (IncrementGuidCommand.Equals(e.Command))
                 {
-                    Guid g = ConvertUtilities.ChangeType(tb.Text.Trim(), Guid.Empty);
+                    Guid g = ServiceProvider.ChangeType(tb.Text.Trim(), Guid.Empty);
 
                     byte[] bytes = g.ToByteArray();
                     bytes[15]++;

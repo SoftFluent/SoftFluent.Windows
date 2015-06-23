@@ -266,8 +266,8 @@ namespace SoftFluent.Windows
                 if (Value == null)
                     return null;
 
-                bool def = HasDefaultValue ? ConvertUtilities.ChangeType(DefaultValue, false) : false;
-                return ConvertUtilities.ChangeType(Value, def);
+                bool def = HasDefaultValue ? ServiceProvider.ChangeType(DefaultValue, false) : false;
+                return ServiceProvider.ChangeType(Value, def);
             }
             set
             {
@@ -310,7 +310,7 @@ namespace SoftFluent.Windows
 
                 if (Descriptor != null)
                 {
-                    Value = ConvertUtilities.ChangeType(value, Descriptor.PropertyType);
+                    Value = ServiceProvider.ChangeType(value, Descriptor.PropertyType);
                     return;
                 }
                 Value = value;
@@ -398,7 +398,7 @@ namespace SoftFluent.Windows
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            return ConvertUtilities.TryChangeType(value, type, provider, out changedValue);
+            return ServiceProvider.TryChangeType(value, type, provider, out changedValue);
         }
 
         public virtual bool RaiseOnPropertyChanged(string name)

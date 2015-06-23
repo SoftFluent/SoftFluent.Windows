@@ -24,7 +24,7 @@ namespace SoftFluent.Windows
             Type parameterType = GetParameterAsType(parameter);
             if (parameterType != null)
             {
-                value = ConvertUtilities.ChangeType(value, parameterType, culture);
+                value = ServiceProvider.ChangeType(value, parameterType, culture);
             }
 
             object convertedValue;
@@ -34,7 +34,7 @@ namespace SoftFluent.Windows
             }
             else
             {
-                convertedValue = ConvertUtilities.ChangeType(value, targetType, culture);
+                convertedValue = ServiceProvider.ChangeType(value, targetType, culture);
             }
 
             return convertedValue;
@@ -49,7 +49,7 @@ namespace SoftFluent.Windows
             }
             else
             {
-                convertedValue = ConvertUtilities.ChangeType(value, targetType, culture);
+                convertedValue = ServiceProvider.ChangeType(value, targetType, culture);
             }
 
             return convertedValue;

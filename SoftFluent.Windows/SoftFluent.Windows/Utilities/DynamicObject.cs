@@ -122,10 +122,10 @@ namespace SoftFluent.Windows.Utilities
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            defaultValue = ConvertUtilities.ChangeType(defaultValue, type);
+            defaultValue = ServiceProvider.ChangeType(defaultValue, type);
             object obj;
             if (_values.TryGetValue(name, out obj))
-                return ConvertUtilities.ChangeType(obj, type, defaultValue);
+                return ServiceProvider.ChangeType(obj, type, defaultValue);
 
             return defaultValue;
         }
@@ -144,7 +144,7 @@ namespace SoftFluent.Windows.Utilities
 
             object obj;
             if (_values.TryGetValue(name, out obj))
-                return ConvertUtilities.ChangeType(obj, defaultValue);
+                return ServiceProvider.ChangeType(obj, defaultValue);
 
             return defaultValue;
         }

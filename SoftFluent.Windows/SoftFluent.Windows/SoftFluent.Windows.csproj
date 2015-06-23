@@ -56,8 +56,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseConverter.cs" />
     <Compile Include="ByteArrayControl.cs" />
+    <Compile Include="ConverterExtensions.cs" />
+    <Compile Include="IConverter.cs" />
     <Compile Include="Properties\AssemblyVersionInfo.cs" />
+    <Compile Include="ServiceProvider.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\ReflectionUtilities.cs" />
     <Compile Include="AutoObject.cs" />

@@ -14,6 +14,19 @@ namespace SoftFluent.Windows.Utilities
 {
     internal static class Extensions
     {
+        public static string Nullify(this string thisString)
+        {
+            return Nullify(thisString, true);
+        }
+
+        public static string Nullify(this string thisString, bool trim)
+        {
+            if (string.IsNullOrWhiteSpace(thisString))
+                return null;
+
+            return trim ? thisString.Trim() : thisString;
+        }
+
         public static bool EqualsIgnoreCase(this string thisString, string text)
         {
             return EqualsIgnoreCase(thisString, text, false);
@@ -23,8 +36,8 @@ namespace SoftFluent.Windows.Utilities
         {
             if (trim)
             {
-                thisString = ConvertUtilities.Nullify(thisString, true);
-                text = ConvertUtilities.Nullify(text, true);
+                thisString = Nullify(thisString, true);
+                text = Nullify(text, true);
             }
 
             if (thisString == null)
@@ -287,6 +300,14 @@ namespace SoftFluent.Windows.Utilities
         public static IEnumerable<T> GetAttributes<T>(this MemberInfo element) where T : Attribute
         {
             return (IEnumerable<T>)Attribute.GetCustomAttributes(element, typeof(T));
+        }
+
+        public static bool IsNullable(this Type type)
+        {
+            if (type == null)
+                return false;
+
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
 }

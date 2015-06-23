@@ -605,7 +605,7 @@ namespace SoftFluent.Windows.Utilities
             if ((list == null) || (list.Count == 0))
                 return defaultValue;
 
-            return ConvertUtilities.ChangeType(list[0], defaultValue);
+            return ServiceProvider.ChangeType(list[0], defaultValue);
         }
 
         /// <summary>
@@ -629,7 +629,7 @@ namespace SoftFluent.Windows.Utilities
             if (o == null)
                 return defaultValue;
 
-            return ConvertUtilities.ChangeType(o, defaultValue);
+            return ServiceProvider.ChangeType(o, defaultValue);
         }
 
         /// <summary>
@@ -1128,7 +1128,7 @@ namespace SoftFluent.Windows.Utilities
                 else
                 {
                     // add last
-                    table[c.Name] = ConvertUtilities.ChangeType<T>(c[c.Count - 1]);
+                    table[c.Name] = ServiceProvider.ChangeType<T>(c[c.Count - 1]);
                 }
             }
             return table;

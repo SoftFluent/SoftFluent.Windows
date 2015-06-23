@@ -89,7 +89,7 @@ namespace SoftFluent.Windows
             if (type1.IsAssignableFrom(type2))
             {
                 // bool? is assignable from bool, but we don't want that match
-                if (!ConvertUtilities.IsNullable(type1) || ConvertUtilities.IsNullable(type2))
+                if (!type1.IsNullable() || type2.IsNullable())
                     return true;
             }
 

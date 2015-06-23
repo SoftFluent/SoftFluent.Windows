@@ -38,7 +38,7 @@ namespace SoftFluent.Windows
                 }
                 return sb.ToString();
             }
-            return ConvertUtilities.ChangeType(value, targetType);
+            return ServiceProvider.ChangeType(value, targetType);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

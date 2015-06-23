@@ -72,7 +72,7 @@ namespace SoftFluent.Windows.Utilities
 			if (expression == null)
 				throw new ArgumentNullException("expression");
 
-            expression = ConvertUtilities.Nullify(expression, true);
+            expression = expression.Nullify();
 			if (expression == null)
 				throw new ArgumentException(null, "expression");
 
@@ -126,7 +126,7 @@ namespace SoftFluent.Windows.Utilities
 			if (container == null)
 				throw new ArgumentNullException("container");
 
-            propName = ConvertUtilities.Nullify(propName, true);
+            propName = propName.Nullify();
             if (propName == null)
 				throw new ArgumentException(null, "propName");
 
@@ -166,7 +166,7 @@ namespace SoftFluent.Windows.Utilities
 			if (container == null)
 				throw new ArgumentNullException("container");
 
-            expression = ConvertUtilities.Nullify(expression, true);
+            expression = expression.Nullify();
             if (expression == null)
 				throw new ArgumentException(null, "expression");
 

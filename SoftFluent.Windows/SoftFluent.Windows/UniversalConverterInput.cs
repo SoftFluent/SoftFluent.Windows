@@ -224,7 +224,7 @@ namespace SoftFluent.Windows
                     if ((Options & UniversalConverterOptions.Convert) == UniversalConverterOptions.Convert)
                     {
                         object cvalue;
-                        if (ConvertUtilities.TryChangeType(ValueToCompare, Value.GetType(), provider, out cvalue))
+                        if (ServiceProvider.TryChangeType(ValueToCompare, Value.GetType(), provider, out cvalue))
                         {
                             if (Value.Equals(cvalue))
                             {

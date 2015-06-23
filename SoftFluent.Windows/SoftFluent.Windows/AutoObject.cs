@@ -268,8 +268,7 @@ namespace SoftFluent.Windows
             object obj;
             if (_defaultValues.TryGetValue(name, out obj))
             {
-                //defaultValue = (T)obj;
-                defaultValue = ConvertUtilities.ChangeType<T>(obj);
+                defaultValue = ServiceProvider.ChangeType<T>(obj);
             }
             else
             {
@@ -283,7 +282,7 @@ namespace SoftFluent.Windows
 
                 if (att != null)
                 {
-                    defaultValue = ConvertUtilities.ChangeType(att.Value, default(T));
+                    defaultValue = ServiceProvider.ChangeType(att.Value, default(T));
                 }
                 else
                 {
@@ -317,7 +316,7 @@ namespace SoftFluent.Windows
             object defaultValue = pi.PropertyType.IsValueType ? Activator.CreateInstance(pi.PropertyType) : null;
             DefaultValueAttribute att = System.Attribute.GetCustomAttribute(pi, typeof(DefaultValueAttribute), true) as DefaultValueAttribute;
             if (att != null)
-                return ConvertUtilities.ChangeType(att.Value, defaultValue);
+                return ServiceProvider.ChangeType(att.Value, defaultValue);
 
             return defaultValue;
         }
@@ -532,7 +531,7 @@ namespace SoftFluent.Windows
             if (!Properties.TryGetValue(name, out obj))
                 return defaultValue;
 
-            return ConvertUtilities.ChangeType(obj, defaultValue);
+            return ServiceProvider.ChangeType(obj, defaultValue);
         }
 
         /// <summary>
