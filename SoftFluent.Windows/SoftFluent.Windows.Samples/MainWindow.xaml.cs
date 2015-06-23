@@ -10,7 +10,6 @@ namespace SoftFluent.Windows.Samples
         public MainWindow()
         {
             InitializeComponent();
-            PropertyGrid.SelectedObject = new Customer();
         }
     }
 }

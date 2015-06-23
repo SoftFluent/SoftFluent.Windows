@@ -153,7 +153,7 @@ namespace SoftFluent.Windows
                     {
                         if (att.EnumValues == null || att.EnumValues.Length != att.EnumNames.Length)
                         {
-                            att.EnumValues = new string[att.EnumNames.Length];
+                            att.EnumValues = new object[att.EnumNames.Length];
                             for (int i = 0; i < att.EnumNames.Length; i++)
                             {
                                 att.EnumValues[i] = string.Format("{0}", att.EnumNames[i]);

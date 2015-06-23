@@ -372,7 +372,7 @@ namespace SoftFluent.Windows
         public virtual bool CopyProperties(AutoObject target, bool raisePropertyChanged)
         {
             if (target == null)
-                throw new ArgumentNullException("clone");
+                throw new ArgumentNullException("target");
 
             bool b = target.RaisePropertyChanged;
             target.RaisePropertyChanged = raisePropertyChanged;
