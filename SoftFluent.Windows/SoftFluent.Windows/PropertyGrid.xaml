@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:windows="clr-namespace:SoftFluent.Windows"
-             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
 
         <Style TargetType="ToolTip">
             <Style.Triggers>
-                <Trigger Property="Content" Value="{x:Static System:String.Empty}">
+                <Trigger Property="Content" Value="{x:Static system:String.Empty}">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </Trigger>
                 <Trigger Property="Content" Value="{x:Null}">
@@ -156,11 +156,9 @@
         <DataTemplate x:Key="DateTimePicker">
             <windows:DateTimePicker SelectedDate="{Binding Value, UpdateSourceTrigger=PropertyChanged}" SelectedDateTime="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
         </DataTemplate>
-
         <DataTemplate x:Key="ColorEnumEditor">
             <TextBox Text="{Binding TextValue}" Foreground="{Binding EnumAttributes.Foreground}" Background="{Binding EnumAttributes.Background}"  />
         </DataTemplate>
-
         <DataTemplate x:Key="BigTextEditor">
             <Grid>
                 <TextBox Text="{Binding TextValue, Mode=OneWay}" MaxLines="1" VerticalContentAlignment="Center" IsEnabled="False" Background="{Binding Attributes.Background}" Foreground="{Binding Attributes.Foreground}" />
@@ -186,12 +184,6 @@
             <Grid>
                 <TextBox Text="{Binding TextValue, Mode=OneWay}" IsReadOnly="True" />
                 <Button HorizontalAlignment="Right" Content="..." Width="24" Command="{x:Static windows:PropertyGrid.BrowseCommand}" CommandParameter="ReadOnlyObjectEditorWindow" />
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="UrlEditor">
-            <Grid>
-                <TextBox Text="{Binding TextValue, Mode=OneWay}" IsReadOnly="True" />
-                <Button HorizontalAlignment="Right" Content="..." Width="24" Command="{x:Static windows:PropertyGrid.BrowseCommand}" CommandParameter="UrlEditorWindow" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ProgressEditor">
@@ -254,11 +246,11 @@
                                 <ComboBox ItemsSource="{windows:PropertyGridComboBox {Binding}}" SelectedValue="{Binding Value, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" />
                             </DataTemplate>
                         </windows:PropertyGridDataTemplate>
-                        <!--<ssb:PropertyGridDataTemplate PropertyType="System.Boolean|System.Nullable`1[System.Boolean]" IsReadOnly="False">
+                        <!--<windows:PropertyGridDataTemplate PropertyType="System.Boolean|System.Nullable`1[System.Boolean]" IsReadOnly="False">
                             <DataTemplate>
-                                <ComboBox ItemsSource="{ssb:PropertyGridComboBox {Binding}}" SelectedValue="{Binding Value}" SelectedValuePath="Value" />
+                                <ComboBox ItemsSource="{windows:PropertyGridComboBox {Binding}}" SelectedValue="{Binding Value}" SelectedValuePath="Value" />
                             </DataTemplate>
-                        </ssb:PropertyGridDataTemplate>-->
+                        </windows:PropertyGridDataTemplate>-->
                         <windows:PropertyGridDataTemplate PropertyType="System.Nullable`1[System.Boolean]">
                             <DataTemplate>
                                 <CheckBox IsThreeState="True" IsChecked="{Binding BooleanValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsReadWrite}" />

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace SoftFluent.Windows.Samples
 {
@@ -124,6 +127,23 @@ namespace SoftFluent.Windows.Samples
             {
                 Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
             }
+        }
+    }
+
+    public class BooleanValueProvider : MarkupExtension
+    {
+        public bool IsNullable { get; set; }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            var items = new ObservableCollection<KeyValuePair<string, object>>();
+            items.Add(new KeyValuePair<string, object>("Yes", true));
+            items.Add(new KeyValuePair<string, object>("No", false));
+            if (IsNullable)
+            {
+                items.Add(new KeyValuePair<string, object>("", null));
+            }
+            return items;
         }
     }
 }

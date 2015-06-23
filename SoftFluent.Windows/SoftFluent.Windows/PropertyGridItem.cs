@@ -1,5 +1,3 @@
-using SoftFluent.Windows.Utilities;
-
 namespace SoftFluent.Windows
 {
     public class PropertyGridItem : AutoObject

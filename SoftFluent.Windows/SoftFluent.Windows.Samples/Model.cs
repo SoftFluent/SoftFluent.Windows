@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Windows.Media;
-using SoftFluent.Windows.Utilities;
 
 namespace SoftFluent.Windows.Samples
 {
@@ -24,6 +23,8 @@ namespace SoftFluent.Windows.Samples
             PercentageOfSatisfaction = 50;
             PreferedColorName = "DodgerBlue";
             PreferedFont = Fonts.SystemFontFamilies.FirstOrDefault(f => string.Equals(f.Source, "Consolas", StringComparison.OrdinalIgnoreCase));
+            SampleNullableBooleanDropDownList = false;
+            SampleBooleanDropDownList = true;
         }
 
         public Guid Id
@@ -208,10 +209,38 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty<Point>(value); }
         }
 
+        [DisplayName("Boolean (Checkbox)")]
+        [Category("Boolean")]
         public bool SampleBoolean
         {
             get { return GetProperty<bool>(); }
             set { SetProperty<bool>(value); }
+        }
+
+        [DisplayName("Boolean (Checkbox three states)")]
+        [Category("Boolean")]
+        public bool? SampleNullableBoolean
+        {
+            get { return GetProperty<bool?>(); }
+            set { SetProperty<bool?>(value); }
+        }
+
+        [DisplayName("Boolean (DropDownList)")]
+        [Category("Boolean")]
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "BooleanDropDownListEditor")]
+        public bool SampleBooleanDropDownList
+        {
+            get { return GetProperty<bool>(); }
+            set { SetProperty<bool>(value); }
+        }
+
+        [DisplayName("Boolean (DropDownList 3 states)")]
+        [Category("Boolean")]
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "NullableBooleanDropDownListEditor")]
+        public bool? SampleNullableBooleanDropDownList
+        {
+            get { return GetProperty<bool?>(); }
+            set { SetProperty<bool?>(value); }
         }
     }
 
