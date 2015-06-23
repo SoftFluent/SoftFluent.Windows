@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Reflection;
 using SoftFluent.Windows.Utilities;
 
@@ -32,7 +31,7 @@ namespace SoftFluent.Windows
                 {
                     if (fi.Name.Equals(string.Format("{0}", base.Value)))
                     {
-                        PropertyGridDataProvider.AddDynamicProperties(fi.GetCustomAttributes().OfType<PropertyGridAttribute>(), EnumAttributes);
+                        PropertyGridDataProvider.AddDynamicProperties(fi.GetAttributes<PropertyGridAttribute>(), EnumAttributes);
                     }
                 }
             }

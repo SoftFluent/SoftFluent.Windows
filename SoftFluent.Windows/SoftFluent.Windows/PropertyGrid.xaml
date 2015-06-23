@@ -20,14 +20,6 @@
             </Style.Triggers>
         </Style>
 
-        <windows:UniversalConverter x:Key="BoolToDefaultValueBackgroundConverter">
-            <windows:UniversalConverter.Switch>
-                <windows:UniversalConverterCase Value="true" ConvertedValue="#F0F0F0" />
-            </windows:UniversalConverter.Switch>
-        </windows:UniversalConverter>
-        
-        <windows:BooleanToVisibilityConverter x:Key="BoolToVis" />
-
         <windows:PropertyGridConverter x:Key="PropertyGridConverter" />
         <Style x:Key="ValidationTextBox2" TargetType="{x:Type TextBox}">
             <Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
@@ -46,13 +38,13 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <CollectionViewSource x:Key="PropertiesSource">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Category" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
-        
+
         <Window x:Shared="false" FocusManager.FocusedElement="{Binding ElementName=EditorSelector}" Name="CollectionEditorWindow" x:Key="CollectionEditorWindow" Height="500" Width="700" Title="Collection Editor">
             <Window.CommandBindings>
                 <CommandBinding Command="Close" CanExecute="OnEditorWindowCloseCanExecute" Executed="OnEditorWindowCloseExecuted" />
@@ -213,7 +205,7 @@
                 <TextBox Background="{Binding Attributes.Background}" Foreground="{Binding Attributes.Foreground}" FontSize="{Binding Attributes.FontSize}" FontFamily="{Binding Attributes.FontFamily}" Text="{Binding TextValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Style="{StaticResource ValidationTextBox2}" />
             </Grid>
         </DataTemplate>
-        
+
     </UserControl.Resources>
     <DataGrid MinRowHeight="24" PreviewKeyUp="OnUIElementPreviewKeyUp" ToggleButton.Checked="OnToggleButtonIsCheckedChanged" ToggleButton.Indeterminate="OnToggleButtonIsCheckedChanged" ToggleButton.Unchecked="OnToggleButtonIsCheckedChanged" HorizontalGridLinesBrush="#D0D0D0" VerticalGridLinesBrush="#D0D0D0" AutoGenerateColumns="False" SelectionUnit="Cell" SelectionMode="Single" CanUserReorderColumns="False" CanUserResizeRows="False" FrozenColumnCount="1" HeadersVisibility="None"  Name="PropertiesGrid" ItemsSource="{Binding Source={StaticResource PropertiesSource}}">
         <DataGrid.Columns>
@@ -325,16 +317,16 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="True" Padding="2" >
-                                            <Expander.Header>
-                                                <DockPanel>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" />
-                                                </DockPanel>
-                                            </Expander.Header>
-                                            <Expander.Content>
-                                                <ItemsPresenter />
-                                            </Expander.Content>
-                                        </Expander>
+                                    <Expander IsExpanded="True" Padding="2" >
+                                        <Expander.Header>
+                                            <DockPanel>
+                                                <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" />
+                                            </DockPanel>
+                                        </Expander.Header>
+                                        <Expander.Content>
+                                            <ItemsPresenter />
+                                        </Expander.Content>
+                                    </Expander>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>

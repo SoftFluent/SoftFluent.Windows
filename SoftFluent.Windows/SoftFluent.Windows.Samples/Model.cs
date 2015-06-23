@@ -148,6 +148,7 @@ namespace SoftFluent.Windows.Samples
         }
 
         [ReadOnly(true)]
+        [DisplayName("Row Version (Hex Dump)")]
         public byte[] RowVersion2
         {
             get { return RowVersion; }
@@ -212,8 +213,6 @@ namespace SoftFluent.Windows.Samples
             get { return GetProperty<bool>(); }
             set { SetProperty<bool>(value); }
         }
-
-
     }
 
     public class Address : AutoObject

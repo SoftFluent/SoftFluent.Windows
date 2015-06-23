@@ -492,7 +492,7 @@ namespace SoftFluent.Windows
         {
             if (!Dispatcher.CheckAccess())
             {
-                Dispatcher.Invoke(() => OnSourcePropertyChanged(sender, e));
+                Dispatcher.Invoke(new Action(() => OnSourcePropertyChanged(sender, e)));
             }
             else
             {

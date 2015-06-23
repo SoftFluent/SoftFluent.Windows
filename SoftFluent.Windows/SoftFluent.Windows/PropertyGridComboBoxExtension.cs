@@ -239,11 +239,11 @@ namespace SoftFluent.Windows
 
             FieldInfo fi = type.GetField(name, BindingFlags.Static | BindingFlags.Public);
             displayName = fi.Name;
-            BrowsableAttribute ba = fi.GetCustomAttribute<BrowsableAttribute>();
+            BrowsableAttribute ba = fi.GetAttribute<BrowsableAttribute>();
             if (ba != null && !ba.Browsable)
                 return false;
 
-            DescriptionAttribute da = fi.GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute da = fi.GetAttribute<DescriptionAttribute>();
             if (da != null && !string.IsNullOrWhiteSpace(da.Description))
             {
                 displayName = da.Description;

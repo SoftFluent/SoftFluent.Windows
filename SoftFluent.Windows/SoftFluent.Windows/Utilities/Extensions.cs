@@ -283,5 +283,10 @@ namespace SoftFluent.Windows.Utilities
             }
             return null;
         }
+
+        public static IEnumerable<T> GetAttributes<T>(this MemberInfo element) where T : Attribute
+        {
+            return (IEnumerable<T>)Attribute.GetCustomAttributes(element, typeof(T));
+        }
     }
 }

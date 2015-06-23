@@ -106,7 +106,7 @@ namespace SoftFluent.Windows
             }
 
             AddDynamicProperties(descriptor.Attributes.OfType<PropertyGridAttribute>(), property.Attributes);
-            AddDynamicProperties(descriptor.PropertyType.GetCustomAttributes().OfType<PropertyGridAttribute>(), property.TypeAttributes);
+            AddDynamicProperties(descriptor.PropertyType.GetAttributes<PropertyGridAttribute>(), property.TypeAttributes);
         }
 
         public static void AddDynamicProperties(IEnumerable<PropertyGridAttribute> attributes, DynamicObject dynamicObject)
