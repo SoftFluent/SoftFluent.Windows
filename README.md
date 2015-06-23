@@ -4,6 +4,8 @@ This repository contains useful controls/converter/classes to work with WPF.
 
 This repository contains a customizable `PropertyGrid` for WPF. 
 
+![](https://github.com/SoftFluent/SoftFluent.Windows/wiki/Getting-Started-Result.png)
+
 - Many data types are supported by default: String, Boolean, Date, DateTime, Number, Enum, Multi-Valued Enum, Byte[], Guid, etc.,
 - Property names are decamelized by default unless you use the `DisplayNameAttribute`,
 - Common attributes are supported: `DisplayNameAttribute`, `DescriptionAttribute`, `CategoryAttribute`, `BrowsableAttribute`, `ReadOnlyAttribute`,
@@ -27,4 +29,4 @@ The `AutoObject` class is a light class which implements INotifyPropertyChanged 
 
 # UniversalConverter
 
-Stop writing boring converters. You'll find some example on our blog: <http://blog.codefluententities.com/2015/02/03/wpf-universal-converter>
+Stop writing boring converters, use the `UniversalConverter`! You'll find some examples on our blog: <http://blog.codefluententities.com/2015/02/03/wpf-universal-converter>
