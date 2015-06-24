@@ -65,14 +65,22 @@
     <Compile Include="BaseTypeResolver.cs" />
     <Compile Include="ByteArrayControl.cs" />
     <Compile Include="ChangeTypeConverter.cs" />
-    <Compile Include="ConversionService.cs" />
-    <Compile Include="DecamelizationService.cs" />
+    <Compile Include="ConversionService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DecamelizationService.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DecamelizeOptions.cs" />
     <Compile Include="DecamelizeTextOptions.cs" />
     <Compile Include="Diagnostics\Tracing.cs" />
     <Compile Include="IConverter.cs" />
-    <Compile Include="IDecamelizer.cs" />
-    <Compile Include="ITypeResolver.cs" />
+    <Compile Include="IDecamelizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITypeResolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyVersionInfo.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="TypeResolutionService.cs" />
