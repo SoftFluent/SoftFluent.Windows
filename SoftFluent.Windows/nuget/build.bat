@@ -1,5 +1,8 @@
-mkdir lib
-mkdir lib\net40
+mkdir package\lib
+mkdir package\lib
+mkdir package\lib\net40
 
-copy "..\SoftFluent.Windows\bin\Release" "lib\net40"
-nuget pack
+copy "..\SoftFluent.Windows\bin\Release" "package\lib\net40"
+copy "SoftFluent.Windows.csproj.nuspec" "package\"
+nuget pack "package\SoftFluent.Windows.csproj.nuspec"
+rmdir /S /Q package
