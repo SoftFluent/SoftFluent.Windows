@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -160,7 +161,7 @@ namespace SoftFluent.Windows
 
             if (where == null)
             {
-                where = (b) => true;
+                where = b => true;
             }
 
             foreach (DependencyProperty prop in Extensions.EnumerateMarkupDependencyProperties(element))
@@ -367,7 +368,7 @@ namespace SoftFluent.Windows
 
                 if (IncrementGuidCommand.Equals(e.Command))
                 {
-                    Guid g = ServiceProvider.ChangeType(tb.Text.Trim(), Guid.Empty);
+                    Guid g = ConversionService.ChangeType(tb.Text.Trim(), Guid.Empty);
 
                     byte[] bytes = g.ToByteArray();
                     bytes[15]++;
@@ -383,10 +384,10 @@ namespace SoftFluent.Windows
             const string GuidParameters = "DNBPX";
             string p = string.Format("{0}", parameter).ToUpperInvariant();
             if (p.Length == 0)
-                return GuidParameters[0].ToString();
+                return GuidParameters[0].ToString(CultureInfo.InvariantCulture);
 
             char ch = GuidParameters.FirstOrDefault(c => c == p[0]);
-            return ch == 0 ? GuidParameters[0].ToString() : ch.ToString();
+            return ch == 0 ? GuidParameters[0].ToString(CultureInfo.InvariantCulture) : ch.ToString(CultureInfo.InvariantCulture);
         }
 
         protected virtual void OnGuidCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -546,12 +547,12 @@ namespace SoftFluent.Windows
             if (button != null)
             {
                 PropertyGridItem item = button.DataContext as PropertyGridItem;
-                if (item != null && item.Property.PropertyType.IsEnum && ConvertUtilities.IsFlagsEnum(item.Property.PropertyType))
+                if (item != null && item.Property.PropertyType.IsEnum && Extensions.IsFlagsEnum(item.Property.PropertyType))
                 {
                     if (button.IsChecked.HasValue)
                     {
-                        ulong itemValue = ConvertUtilities.EnumToUInt64(item.Value);
-                        ulong propertyValue = ConvertUtilities.EnumToUInt64(item.Property.Value);
+                        ulong itemValue = Extensions.EnumToUInt64(item.Value);
+                        ulong propertyValue = Extensions.EnumToUInt64(item.Property.Value);
                         ulong newValue;
                         if (button.IsChecked.Value)
                         {
@@ -568,7 +569,7 @@ namespace SoftFluent.Windows
                         {
                             newValue = propertyValue & ~itemValue;
                         }
-                        item.Property.Value = ConvertUtilities.EnumToObject(item.Property.PropertyType, newValue);
+                        item.Property.Value = Extensions.EnumToObject(item.Property.PropertyType, newValue);
                         ListBoxItem li = button.GetVisualSelfOrParent<ListBoxItem>();
                         if (li != null)
                         {
@@ -579,28 +580,21 @@ namespace SoftFluent.Windows
                                 {
                                     foreach (PropertyGridItem gridItem in parent.Items.OfType<PropertyGridItem>())
                                     {
-                                        gridItem.IsChecked = ConvertUtilities.EnumToUInt64(gridItem.Value) == 0;
+                                        gridItem.IsChecked = Extensions.EnumToUInt64(gridItem.Value) == 0;
                                     }
                                 }
                                 else
                                 {
                                     foreach (PropertyGridItem gridItem in parent.Items.OfType<PropertyGridItem>())
                                     {
-                                        ulong gridItemValue = ConvertUtilities.EnumToUInt64(gridItem.Value);
+                                        ulong gridItemValue = Extensions.EnumToUInt64(gridItem.Value);
                                         if (gridItemValue == 0)
                                         {
                                             gridItem.IsChecked = newValue == 0;
                                             continue;
                                         }
 
-                                        if ((newValue & gridItemValue) == gridItemValue)
-                                        {
-                                            gridItem.IsChecked = true;
-                                        }
-                                        else
-                                        {
-                                            gridItem.IsChecked = false;
-                                        }
+                                        gridItem.IsChecked = (newValue & gridItemValue) == gridItemValue;
                                     }
                                 }
                             }

@@ -148,7 +148,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="45" />
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" Text="{Binding Value}" IsReadOnly="{Binding IsReadOnly}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" FontFamily="{Binding Attributes.FontFamily}" />
+                <TextBox Grid.Row="0" AcceptsReturn="True" Text="{Binding Value}" IsReadOnly="{Binding IsReadOnly}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" FontFamily="{Binding Attributes.FontFamily}" />
                 <Button Name="BigTextEditorWindowClose" Grid.Row="1" IsDefault="True" Content="Close" Command="Close" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" />
             </Grid>
         </Window>
@@ -157,7 +157,7 @@
             <windows:DateTimePicker SelectedDate="{Binding Value, UpdateSourceTrigger=PropertyChanged}" SelectedDateTime="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
         </DataTemplate>
         <DataTemplate x:Key="ColorEnumEditor">
-            <TextBox Text="{Binding TextValue}" Foreground="{Binding EnumAttributes.Foreground}" Background="{Binding EnumAttributes.Background}"  />
+            <TextBox Text="{Binding Value}" IsReadOnly="{Binding IsReadOnly}" Foreground="{Binding EnumAttributes.Foreground}" Background="{Binding EnumAttributes.Background}"  />
         </DataTemplate>
         <DataTemplate x:Key="BigTextEditor">
             <Grid>

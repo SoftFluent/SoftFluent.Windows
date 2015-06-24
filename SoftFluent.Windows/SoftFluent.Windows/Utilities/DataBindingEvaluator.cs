@@ -9,11 +9,11 @@ namespace SoftFluent.Windows.Utilities
     /// <summary>
     /// A utility class equivalent to the System.Web.DataBinder class, but that does not require a reference to the System.Web assembly.
     /// </summary>
-	internal static class DataBindingEvaluator
+	public static class DataBindingEvaluator
 	{
-		private static readonly char[] expressionPartSeparator = new char[] { '.' };
-		private static readonly char[] indexExprEndChars = new char[] { ']', ')' };
-		private static readonly char[] indexExprStartChars = new char[] { '[', '(' };
+		private static readonly char[] expressionPartSeparator = { '.' };
+		private static readonly char[] indexExprEndChars = { ']', ')' };
+		private static readonly char[] indexExprStartChars = { '[', '(' };
 
         /// <summary>
         /// Evaluates data-binding expressions at run time.
@@ -21,12 +21,13 @@ namespace SoftFluent.Windows.Utilities
         /// <param name="container">The object reference against which the expression is evaluated. This must be a valid object identifier in the page's specified language.</param>
         /// <param name="expression">The navigation path from the container object to the public property value to be placed in the bound control property. This must be a string of property or field names separated by periods, such as Tables[0].DefaultView.[0].Price in C# or Tables(0).DefaultView.(0).Price in Visual Basic.</param>
         /// <param name="format">A .NET Framework format string (like those used by String.Format) that converts the Object instance returned by the data-binding expression to a String object.</param>
+        /// <param name="throwOnError">if set to <c>true</c> errors may be throw.</param>
         /// <returns>
         /// A String object that results from evaluating the data-binding expression and converting it to a string type.
         /// </returns>
-        public static string Eval(object container, string expression, string format)
+        public static string Eval(object container, string expression, string format, bool throwOnError)
         {
-            return Eval(container, expression, null, format);
+            return Eval(container, expression, null, format, throwOnError);
         }
 
         /// <summary>
@@ -36,11 +37,18 @@ namespace SoftFluent.Windows.Utilities
         /// <param name="expression">The navigation path from the container object to the public property value to be placed in the bound control property. This must be a string of property or field names separated by periods, such as Tables[0].DefaultView.[0].Price in C# or Tables(0).DefaultView.(0).Price in Visual Basic.</param>
         /// <param name="provider">The format provider.</param>
         /// <param name="format">A .NET Framework format string (like those used by String.Format) that converts the Object instance returned by the data-binding expression to a String object.</param>
-        /// <returns>A String object that results from evaluating the data-binding expression and converting it to a string type.</returns>
-        public static string Eval(object container, string expression, IFormatProvider provider, string format)
+        /// <param name="throwOnError">if set to <c>true</c> errors may be throw.</param>
+        /// <returns>
+        /// A String object that results from evaluating the data-binding expression and converting it to a string type.
+        /// </returns>
+        public static string Eval(object container, string expression, IFormatProvider provider, string format, bool throwOnError)
         {
+            if (format == null)
+            {
+                format = "{0}";
+            }
             if (provider == null)
-                return string.Format(format, Eval(container, expression));
+                return string.Format(format, Eval(container, expression, throwOnError));
 
             return string.Format(provider, format, Eval(container, expression));
         }
@@ -221,8 +229,8 @@ namespace SoftFluent.Windows.Utilities
                 return null;
             }
 			
-            object propertyValue = null;
-			if (propName != null && propName.Length != 0)
+            object propertyValue;
+			if (!string.IsNullOrEmpty(propName))
 			{
 				propertyValue = GetPropertyValue(container, propName);
 			}
@@ -241,7 +249,7 @@ namespace SoftFluent.Windows.Utilities
             if ((propertyValue is IList) && numberIndex)
 				return ((IList)propertyValue)[(int)index];
 
-            PropertyInfo info = propertyValue.GetType().GetProperty("Item", BindingFlags.Public | BindingFlags.Instance, null, null, new Type[] { index.GetType() }, null);
+            PropertyInfo info = propertyValue.GetType().GetProperty("Item", BindingFlags.Public | BindingFlags.Instance, null, null, new[] { index.GetType() }, null);
             if (info == null)
             {
                 if (throwOnError)
@@ -249,7 +257,7 @@ namespace SoftFluent.Windows.Utilities
 
                 return null;
             }
-            return info.GetValue(propertyValue, new object[] { index });
+            return info.GetValue(propertyValue, new[] { index });
 		}
 	}
 }

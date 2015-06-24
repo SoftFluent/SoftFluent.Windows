@@ -50,7 +50,7 @@ namespace SoftFluent.Windows
 
         private Calendar _calendar;
         private Popup _popup;
-        private ListBox _timeControl;
+        private readonly ListBox _timeControl;
         private TextBox _textbox;
         private bool _initialSetup;
         private bool _handleEvents = true;

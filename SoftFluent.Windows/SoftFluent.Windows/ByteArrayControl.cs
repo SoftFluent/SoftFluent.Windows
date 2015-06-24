@@ -22,8 +22,8 @@ namespace SoftFluent.Windows
         public static readonly DependencyProperty AddHeaderProperty = DependencyProperty.Register("AddHeader", typeof(bool), typeof(ByteArrayControl),
             new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange, OnAddHeaderChanged));
 
-        private Panel _canvas;
-        private TextBlock _text;
+        private readonly Panel _canvas;
+        private readonly TextBlock _text;
         private bool _dontDisposeStream;
         private Stream _stream;
         private ScrollBar _verticalScrollBar;
@@ -305,6 +305,11 @@ namespace SoftFluent.Windows
             _dontDisposeStream = false;
         }
 
+        public static string ToHexaDump(byte[] bytes)
+        {
+            return ToHexaDump(bytes, 0, bytes != null ? bytes.Length : 0, true, 16, 0);
+        }
+
         public static string ToHexaDump(byte[] bytes, int offset, int count, bool addHeader, int rowCount, long address)
         {
             if (bytes == null)
@@ -375,7 +380,7 @@ namespace SoftFluent.Windows
             {
                 sb.AppendFormat(format, i + offset + address);
 
-                int j = 0;
+                int j;
                 for (j = 0; (j < rowCount) && ((i + j) < count); j++)
                 {
                     sb.AppendFormat("{0:X2} ", bytes[i + j + offset]);
@@ -391,7 +396,6 @@ namespace SoftFluent.Windows
                 {
                     byte b = bytes[i + j + offset];
                     char c = (char)b;
-                    //if (char.IsLetterOrDigit(c) || char.IsNumber(c) || char.IsPunctuation(c) || char.IsSymbol(c))
                     if (b > 31 && b < 128)
                     {
                         sb.Append(c);

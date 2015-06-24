@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -10,6 +11,66 @@ namespace SoftFluent.Windows
 {
     public class BaseConverter : IConverter
     {
+        private static byte GetHexaByte(char c)
+        {
+            if ((c >= '0') && (c <= '9'))
+                return (byte)(c - '0');
+
+            if ((c >= 'A') && (c <= 'F'))
+                return (byte)(c - 'A' + 10);
+
+            if ((c >= 'a') && (c <= 'f'))
+                return (byte)(c - 'a' + 10);
+
+            return 0xFF;
+        }
+
+        private static bool TryConvert(string text, out byte[] value)
+        {
+            if (text == null)
+            {
+                value = null;
+                return true;
+            }
+
+            List<byte> list = new List<byte>();
+            bool lo = false;
+            byte prev = 0;
+            int offset;
+
+            // handle 0x or 0X notation
+            if (text.Length >= 2 && text[0] == '0' && (text[1] == 'x' || text[1] == 'X'))
+            {
+                offset = 2;
+            }
+            else
+            {
+                offset = 0;
+            }
+            for (int i = 0; i < text.Length - offset; i++)
+            {
+                byte b = GetHexaByte(text[i + offset]);
+                if (b == 0xFF)
+                {
+                    value = null;
+                    return false;
+                }
+
+                if (lo)
+                {
+                    list.Add((byte)(prev * 16 + b));
+                }
+                else
+                {
+                    prev = b;
+                }
+                lo = !lo;
+            }
+
+            value = list.ToArray();
+            return true;
+        }
+
         private static bool NormalizeHexString(ref string s)
         {
             if (s == null)
@@ -61,13 +122,6 @@ namespace SoftFluent.Windows
             if (DateTimeOffset.TryParse(Convert.ToString(input, provider), provider, DateTimeStyles.None, out value))
                 return true;
 
-            DateTimeOffset? nb = input as DateTimeOffset?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             DateTime dt;
             if (TryConvert(input, provider, out dt))
             {
@@ -83,13 +137,6 @@ namespace SoftFluent.Windows
             if (TimeSpan.TryParse(Convert.ToString(input, provider), provider, out value))
                 return true;
 
-            TimeSpan? nb = input as TimeSpan?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             long l;
             if (TryConvert(input, provider, out l))
             {
@@ -102,13 +149,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out IntPtr value)
         {
-            IntPtr? nb = input as IntPtr?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             value = IntPtr.Zero;
             if (IntPtr.Size == 4)
             {
@@ -132,13 +172,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out Guid value)
         {
-            Guid? nb = input as Guid?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)
             {
@@ -157,14 +190,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out ulong value)
         {
-            ulong? nb = input as ulong?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
-            value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -189,14 +214,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out ushort value)
         {
-            ushort? nb = input as ushort?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
-            value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -221,14 +238,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out decimal value)
         {
-            decimal? nb = input as decimal?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
-            value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -253,14 +262,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out float value)
         {
-            float? nb = input as float?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
-            value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -285,13 +286,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out double value)
         {
-            double? nb = input as double?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
@@ -317,7 +311,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out char value)
         {
-            value = '\0';
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -337,14 +330,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out DateTime value)
         {
-            DateTime? nb = input as DateTime?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
-            value = DateTime.MinValue;
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -358,21 +343,12 @@ namespace SoftFluent.Windows
                 }
             }
 
-            DateTimeStyles styles = DateTimeStyles.None;
             string s = Convert.ToString(input, provider);
-            return DateTime.TryParse(s, provider, styles, out value);
+            return DateTime.TryParse(s, provider, DateTimeStyles.None, out value);
         }
 
         private static bool TryConvert(object input, IFormatProvider provider, out uint value)
         {
-            uint? nb = input as uint?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
-            value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -397,14 +373,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out byte value)
         {
-            byte? nb = input as byte?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
-            value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -429,14 +397,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out sbyte value)
         {
-            sbyte? nb = input as sbyte?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
-            value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -461,13 +421,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out short value)
         {
-            short? nb = input as short?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             value = 0;
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)
@@ -504,13 +457,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out int value)
         {
-            int? nb = input as int?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             value = 0;
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)
@@ -553,13 +499,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out long value)
         {
-            long? nb = input as long?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             value = 0;
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)
@@ -602,13 +541,6 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out bool value)
         {
-            bool? nb = input as bool?;
-            if (nb != null)
-            {
-                value = nb.Value;
-                return true;
-            }
-
             value = false;
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)
@@ -645,14 +577,12 @@ namespace SoftFluent.Windows
             return false;
         }
 
-        private static MethodInfo _enumTryParse = typeof(Enum).GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .Where(m => m.Name == "TryParse" && m.GetParameters().Length == 3)
-            .First();
+        private static readonly MethodInfo _enumTryParse = typeof(Enum).GetMethods(BindingFlags.Public | BindingFlags.Static).First(m => m.Name == "TryParse" && m.GetParameters().Length == 3);
 
         private static bool EnumTryParse(Type type, string input, out object value)
         {
             MethodInfo mi = _enumTryParse.MakeGenericMethod(type);
-            object[] args = new [] { input, true, Enum.ToObject(type, 0) };
+            object[] args = { input, true, Enum.ToObject(type, 0) };
             bool b = (bool)mi.Invoke(null, args);
             value = args[2];
             return b;
@@ -668,8 +598,20 @@ namespace SoftFluent.Windows
             if (conversionType == null)
                 throw new ArgumentNullException("conversionType");
 
+            if (conversionType == typeof(object))
+            {
+                value = input;
+                return true;
+            }
+
             if (input == null)
             {
+                if (conversionType.IsNullable())
+                {
+                    value = null;
+                    return true;
+                }
+
                 if (conversionType.IsValueType)
                 {
                     value = Activator.CreateInstance(conversionType);
@@ -691,6 +633,14 @@ namespace SoftFluent.Windows
 
             if (conversionType.IsNullable())
             {
+                // en empty string is successfully converted into a nullable
+                string inps = input as string;
+                if (string.IsNullOrWhiteSpace(inps))
+                {
+                    value = null;
+                    return true;
+                }
+
                 object vtValue;
                 Type vtType = conversionType.GetGenericArguments()[0];
                 if (TryConvert(input, vtType, provider, out vtValue))
@@ -761,8 +711,8 @@ namespace SoftFluent.Windows
                     break;
 
                 case TypeCode.DBNull:
-                    value = input == null ? Convert.DBNull : null;
-                    return input == null;
+                    value = null;
+                    return false;
 
                 case TypeCode.Decimal:
                     decimal decValue;
@@ -828,7 +778,23 @@ namespace SoftFluent.Windows
                     break;
 
                 case TypeCode.String:
-                    value = Convert.ToString(input, provider);
+                    byte[] inputBytes = input as byte[];
+                    if (inputBytes != null)
+                    {
+                        value = Extensions.ToHexa(inputBytes);
+                    }
+                    else
+                    {
+                        TypeConverter tc = TypeDescriptor.GetConverter(inputType);
+                        if (tc != null && tc.CanConvertTo(typeof(string)))
+                        {
+                            value = (string)tc.ConvertTo(input, typeof(string));
+                        }
+                        else
+                        {
+                            value = Convert.ToString(input, provider);
+                        }
+                    }
                     return true;
 
                 case TypeCode.UInt16:
@@ -964,7 +930,7 @@ namespace SoftFluent.Windows
                                 return true;
 
                             case TypeCode.Byte:
-                                value = new byte[] { (byte)input };
+                                value = new[] { (byte)input };
                                 return true;
 
                             case TypeCode.DateTime:
@@ -978,12 +944,26 @@ namespace SoftFluent.Windows
                                 return true;
 
                             case TypeCode.SByte:
-                                value = new byte[] { unchecked((byte)input) };
+                                value = new[] { unchecked((byte)input) };
                                 return true;
 
                             case TypeCode.String:
-                                value = Convert.FromBase64String((string)input);
-                                return true;
+                                try
+                                {
+                                    value = Convert.FromBase64String((string)input);
+                                    return true;
+                                }
+                                catch
+                                {
+                                    byte[] ib;
+                                    if (TryConvert((string)input, out ib))
+                                    {
+                                        value = ib;
+                                        return true;
+                                    }
+                                }
+                                value = null;
+                                return false;
 
                             default:
                                 if (input is Guid)
@@ -1037,11 +1017,11 @@ namespace SoftFluent.Windows
 
             // call a possible TryParse method
             object defaultValue = conversionType.IsValueType ? conversionType.Assembly.CreateInstance(conversionType.FullName) : null;
-            MethodInfo mi = conversionType.GetMethod("TryParse", BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(string), conversionType.MakeByRefType() }, null);
+            MethodInfo mi = conversionType.GetMethod("TryParse", BindingFlags.Static | BindingFlags.Public, null, new[] { typeof(string), conversionType.MakeByRefType() }, null);
             if (mi != null && mi.ReturnType == typeof(bool))
             {
                 object refValue = defaultValue;
-                object[] parameters = new object[] { Convert.ToString(input, provider), refValue };
+                object[] parameters = { Convert.ToString(input, provider), refValue };
                 bool b = (bool)mi.Invoke(null, parameters);
                 value = parameters[1];
                 return b;

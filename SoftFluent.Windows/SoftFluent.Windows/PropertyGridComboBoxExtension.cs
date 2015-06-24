@@ -13,7 +13,7 @@ namespace SoftFluent.Windows
 {
     public class PropertyGridComboBoxExtension : MarkupExtension
     {
-        private Binding _binding;
+        private readonly Binding _binding;
         public const string DefaultZeroName = "None";
 
         public PropertyGridComboBoxExtension(Binding binding)
@@ -55,15 +55,15 @@ namespace SoftFluent.Windows
 
                 string[] names = Enum.GetNames(enumType);
                 Array values = Enum.GetValues(enumType);
-                if (ConvertUtilities.IsFlagsEnum(enumType))
+                if (Extensions.IsFlagsEnum(enumType))
                 {
-                    ulong uvalue = ConvertUtilities.EnumToUInt64(property.Value);
+                    ulong uvalue = Extensions.EnumToUInt64(property.Value);
                     PropertyGridItem zero = null;
 
                     for (int i = 0; i < names.Length; i++)
                     {
                         string name = names[i];
-                        ulong nameValue = ConvertUtilities.EnumToUInt64(values.GetValue(i));
+                        ulong nameValue = Extensions.EnumToUInt64(values.GetValue(i));
                         string displayName;
                         if (!ShowEnumField(property, enumType, names[i], out displayName))
                             continue;
@@ -80,7 +80,7 @@ namespace SoftFluent.Windows
                         }
 
                         // determine if this name is in fact a combination of other names
-                        ulong bitsCount = (ulong)ConvertUtilities.GetEnumMaxPower(enumType) - 1; // skip first
+                        ulong bitsCount = (ulong)Extensions.GetEnumMaxPower(enumType) - 1; // skip first
                         ulong b = 1;
                         for (ulong bit = 1; bit < bitsCount; bit++) // signed, skip highest bit
                         {
@@ -163,11 +163,11 @@ namespace SoftFluent.Windows
 
                     if (att.IsFlagsEnum)
                     {
-                        ulong uvalue = ConvertUtilities.EnumToUInt64(property.Value);
+                        ulong uvalue = Extensions.EnumToUInt64(property.Value);
 
                         for (int i = 0; i < att.EnumNames.Length; i++)
                         {
-                            ulong nameValue = ConvertUtilities.EnumToUInt64(att.EnumValues[i]);
+                            ulong nameValue = Extensions.EnumToUInt64(att.EnumValues[i]);
 
                             PropertyGridItem item = CreateItem();
                             item.Property = property;
@@ -176,7 +176,7 @@ namespace SoftFluent.Windows
                             bool isChecked = true;
 
                             // determine if this name is in fact a combination of other names
-                            ulong bitsCount = (ulong)ConvertUtilities.GetEnumMaxPower(property.PropertyType) - 1; // skip first
+                            ulong bitsCount = (ulong)Extensions.GetEnumMaxPower(property.PropertyType) - 1; // skip first
                             ulong b = 1;
                             for (ulong bit = 1; bit < bitsCount; bit++) // signed, skip highest bit
                             {

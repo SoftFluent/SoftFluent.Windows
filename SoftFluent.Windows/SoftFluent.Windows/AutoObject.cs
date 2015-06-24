@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using SoftFluent.Windows.Resources;
-using SoftFluent.Windows.Utilities;
 
 namespace SoftFluent.Windows
 {
@@ -29,19 +28,9 @@ namespace SoftFluent.Windows
         /// Initializes a new instance of the <see cref="AutoObject"/> class.
         /// </summary>
         protected AutoObject()
-            :this(null)
         {
             RaisePropertyChanged = true;
             ThrowOnInvalidProperty = true;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AutoObject"/> class.
-        /// </summary>
-        /// <param name="keyValuePairs">The key value pairs.</param>
-        protected AutoObject(string keyValuePairs)
-        {
-            SetProperties(keyValuePairs, false);
         }
 
         /// <summary>
@@ -158,7 +147,7 @@ namespace SoftFluent.Windows
             if (errors.Count == 0)
                 return null;
 
-            return ConvertUtilities.Concatenate(errors, Environment.NewLine);
+            return string.Join(Environment.NewLine, errors);
         }
 
         /// <summary>
@@ -213,12 +202,12 @@ namespace SoftFluent.Windows
         /// <param name="trackChanged">if set to <c>true</c> the property is tracked in the changed properties.</param>
         /// <returns>true if the value has changed; otherwise false.</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        protected bool SetProperty<T>(object value, bool setChanged, bool trackChanged)
+        protected bool SetProperty(object value, bool setChanged, bool trackChanged)
         {
             StackFrame sf = new StackFrame(1);
             MethodBase mb = sf.GetMethod();
             string name = mb.Name.Substring(4); // Ecma 335 chapter 22.28: Name format for setter is "set_[PropertyName]"
-            return SetProperty(name, (T)value, setChanged, false, trackChanged);
+            return SetProperty(name, value, setChanged, false, trackChanged);
         }
 
         /// <summary>
@@ -229,12 +218,12 @@ namespace SoftFluent.Windows
         /// <param name="setChanged">if set to <c>true</c> set the HasChanged property to true.</param>
         /// <returns>true if the value has changed; otherwise false.</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        protected bool SetProperty<T>(object value, bool setChanged)
+        protected bool SetProperty(object value, bool setChanged)
         {
             StackFrame sf = new StackFrame(1);
             MethodBase mb = sf.GetMethod();
             string name = mb.Name.Substring(4); // Ecma 335 chapter 22.28: Name format for setter is "set_[PropertyName]"
-            return SetProperty(name, (T)value, setChanged, false, true);
+            return SetProperty(name, value, setChanged, false, true);
         }
 
         /// <summary>
@@ -244,12 +233,12 @@ namespace SoftFluent.Windows
         /// <param name="value">The value.</param>
         /// <returns>true if the value has changed; otherwise false.</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        protected bool SetProperty<T>(object value)
+        protected bool SetProperty(object value)
         {
             StackFrame sf = new StackFrame(1);
             MethodBase mb = sf.GetMethod();
             string name = mb.Name.Substring(4); // Ecma 335 chapter 22.28: Name format for setter is "set_[PropertyName]"
-            return SetProperty(name, (T)value);
+            return SetProperty(name, value);
         }
 
         /// <summary>
@@ -268,26 +257,22 @@ namespace SoftFluent.Windows
             object obj;
             if (_defaultValues.TryGetValue(name, out obj))
             {
-                defaultValue = ServiceProvider.ChangeType<T>(obj);
+                defaultValue = ConversionService.ChangeType<T>(obj);
             }
             else
             {
                 // runtime methodbase has no custom atts
                 DefaultValueAttribute att = null;
-                PropertyInfo pi = mb.DeclaringType.GetProperty(name);
-                if (pi != null)
+                if (mb.DeclaringType != null)
                 {
-                    att = System.Attribute.GetCustomAttribute(pi, typeof(DefaultValueAttribute), true) as DefaultValueAttribute;
+                    PropertyInfo pi = mb.DeclaringType.GetProperty(name);
+                    if (pi != null)
+                    {
+                        att = Attribute.GetCustomAttribute(pi, typeof(DefaultValueAttribute), true) as DefaultValueAttribute;
+                    }
                 }
 
-                if (att != null)
-                {
-                    defaultValue = ServiceProvider.ChangeType(att.Value, default(T));
-                }
-                else
-                {
-                    defaultValue = default(T);
-                }
+                defaultValue = att != null ? ConversionService.ChangeType(att.Value, default(T)) : default(T);
                 _defaultValues[name] = defaultValue;
             }
 
@@ -314,9 +299,9 @@ namespace SoftFluent.Windows
             }
 
             object defaultValue = pi.PropertyType.IsValueType ? Activator.CreateInstance(pi.PropertyType) : null;
-            DefaultValueAttribute att = System.Attribute.GetCustomAttribute(pi, typeof(DefaultValueAttribute), true) as DefaultValueAttribute;
+            DefaultValueAttribute att = Attribute.GetCustomAttribute(pi, typeof(DefaultValueAttribute), true) as DefaultValueAttribute;
             if (att != null)
-                return ServiceProvider.ChangeType(att.Value, defaultValue);
+                return ConversionService.ChangeType(att.Value, defaultValue);
 
             return defaultValue;
         }
@@ -390,38 +375,6 @@ namespace SoftFluent.Windows
             finally
             {
                 target.RaisePropertyChanged = b;
-            }
-        }
-
-        /// <summary>
-        /// Sets properties using a comma-separated list of key/value pairs.
-        /// All properties are cleared before set.
-        /// </summary>
-        /// <param name="keyValuePairs">The key value pairs.</param>
-        protected virtual void SetProperties(string keyValuePairs)
-        {
-            SetProperties(keyValuePairs, true);
-        }
-
-        /// <summary>
-        /// Sets properties using a comma-separated list of key/value pairs
-        /// </summary>
-        /// <param name="keyValuePairs">The key value pairs.</param>
-        /// <param name="clear">if set to <c>true</c> properties are cleared before set.</param>
-        protected virtual void SetProperties(string keyValuePairs, bool clear)
-        {
-            HasChanged = false;
-            if (string.IsNullOrEmpty(keyValuePairs))
-                return;
-
-            if (clear)
-            {
-                Properties.Clear();
-            }
-            IDictionary<string, string> values = new NameValueCollectionCollection(keyValuePairs).ToDictionary<string>();
-            foreach (KeyValuePair<string, string> kvp in values)
-            {
-                SetProperty(kvp.Key, kvp.Value);
             }
         }
 
@@ -531,7 +484,7 @@ namespace SoftFluent.Windows
             if (!Properties.TryGetValue(name, out obj))
                 return defaultValue;
 
-            return ServiceProvider.ChangeType(obj, defaultValue);
+            return ConversionService.ChangeType(obj, defaultValue);
         }
 
         /// <summary>

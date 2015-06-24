@@ -109,7 +109,7 @@ namespace SoftFluent.Windows
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             PropertyGridProperty property = item as PropertyGridProperty;
-            if (item == null)
+            if (property == null)
                 return base.SelectTemplate(item, container);
 
             DataTemplate propTemplate = PropertyGridOptionsAttribute.SelectTemplate(property, item, container);

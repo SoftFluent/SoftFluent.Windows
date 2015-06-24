@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;
-using SoftFluent.Windows.Utilities;
 
 namespace SoftFluent.Windows
 {
@@ -11,7 +10,7 @@ namespace SoftFluent.Windows
     /// </summary>
     public class UniversalConverter : IValueConverter
     {
-        private ObservableCollection<UniversalConverterCase> _cases = new ObservableCollection<UniversalConverterCase>();
+        private readonly ObservableCollection<UniversalConverterCase> _cases = new ObservableCollection<UniversalConverterCase>();
 
         /// <summary>
         /// Converts a value.
@@ -26,20 +25,20 @@ namespace SoftFluent.Windows
         public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (_cases.Count == 0)
-                return ServiceProvider.ChangeType(value, targetType, culture);
+                return ConversionService.ChangeType(value, targetType, culture);
 
             foreach (UniversalConverterCase c in _cases)
             {
                 if (c.Matches(value, parameter, culture))
                 {
                     if ((c.Options & UniversalConverterOptions.ConvertedValueIsConverterParameter) == UniversalConverterOptions.ConvertedValueIsConverterParameter)
-                        return ServiceProvider.ChangeType(parameter, targetType, culture);
+                        return ConversionService.ChangeType(parameter, targetType, culture);
 
-                    return ServiceProvider.ChangeType(c.ConvertedValue, targetType, culture);
+                    return ConversionService.ChangeType(c.ConvertedValue, targetType, culture);
                 }
             }
 
-            return ServiceProvider.ChangeType(DefaultValue, targetType, culture);
+            return ConversionService.ChangeType(DefaultValue, targetType, culture);
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace SoftFluent.Windows
         /// </returns>
         public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ServiceProvider.ChangeType(parameter, targetType, culture);
+            return ConversionService.ChangeType(parameter, targetType, culture);
         }
 
         /// <summary>

@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
-using SoftFluent.Windows.Utilities;
 
 namespace SoftFluent.Windows
 {
@@ -38,7 +37,7 @@ namespace SoftFluent.Windows
                 }
                 return sb.ToString();
             }
-            return ServiceProvider.ChangeType(value, targetType);
+            return ConversionService.ChangeType(value, targetType);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

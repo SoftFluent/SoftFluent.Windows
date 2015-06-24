@@ -35,7 +35,7 @@ namespace SoftFluent.Windows
                 if (_resolvedPropertyTypes == null)
                 {
                     _resolvedPropertyTypes = new List<Type>();
-                    List<string> names = ConvertUtilities.SplitToList<string>(PropertyType, '|');
+                    List<string> names = PropertyType.SplitToList<string>('|');
                     foreach (string name in names)
                     {
                         if (string.IsNullOrWhiteSpace(name))
@@ -49,7 +49,7 @@ namespace SoftFluent.Windows
                         }
                         else
                         {
-                            type = ReflectionUtilities.GetType(name);
+                            type = TypeResolutionService.ResolveType(name);
                         }
                         if (type != null)
                         {
@@ -68,13 +68,13 @@ namespace SoftFluent.Windows
                 if (_resolvedCollectionItemPropertyTypes == null)
                 {
                     _resolvedCollectionItemPropertyTypes = new List<Type>();
-                    List<string> names = ConvertUtilities.SplitToList<string>(CollectionItemPropertyType, '|');
+                    List<string> names = CollectionItemPropertyType.SplitToList<string>('|');
                     foreach (string name in names)
                     {
                         if (string.IsNullOrWhiteSpace(name))
                             continue;
 
-                        Type type = ReflectionUtilities.GetType(name);
+                        Type type = TypeResolutionService.ResolveType(name);
                         if (type != null)
                         {
                             _resolvedCollectionItemPropertyTypes.Add(type);

@@ -13,11 +13,11 @@ namespace SoftFluent.Windows.Utilities
     /// </summary>
     public class DynamicObject : ICustomTypeDescriptor, IFormattable, INotifyPropertyChanged, IDataErrorInfo
     {
-        private List<Attribute> _attributes = new List<Attribute>();
-        private List<EventDescriptor> _events = new List<EventDescriptor>();
-        private List<PropertyDescriptor> _properties = new List<PropertyDescriptor>();
-        private Dictionary<Type, object> _editors = new Dictionary<Type, object>();
-        private Dictionary<string, object> _values = new Dictionary<string, object>();
+        private readonly List<Attribute> _attributes = new List<Attribute>();
+        private readonly List<EventDescriptor> _events = new List<EventDescriptor>();
+        private readonly List<PropertyDescriptor> _properties = new List<PropertyDescriptor>();
+        private readonly Dictionary<Type, object> _editors = new Dictionary<Type, object>();
+        private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
 
         /// <summary>
         /// Occurs when a property value changes.
@@ -122,10 +122,10 @@ namespace SoftFluent.Windows.Utilities
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            defaultValue = ServiceProvider.ChangeType(defaultValue, type);
+            defaultValue = ConversionService.ChangeType(defaultValue, type);
             object obj;
             if (_values.TryGetValue(name, out obj))
-                return ServiceProvider.ChangeType(obj, type, defaultValue);
+                return ConversionService.ChangeType(obj, type, defaultValue);
 
             return defaultValue;
         }
@@ -144,7 +144,7 @@ namespace SoftFluent.Windows.Utilities
 
             object obj;
             if (_values.TryGetValue(name, out obj))
-                return ServiceProvider.ChangeType(obj, defaultValue);
+                return ConversionService.ChangeType(obj, defaultValue);
 
             return defaultValue;
         }
@@ -249,7 +249,7 @@ namespace SoftFluent.Windows.Utilities
         /// </returns>
         public override string ToString()
         {
-            return ToStringName == null ? base.ToString() : ToStringName;
+            return ToStringName ?? base.ToString();
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace SoftFluent.Windows.Utilities
             if (string.IsNullOrEmpty(format))
                 return ToString();
 
-            return ConvertUtilities.Format(this, format, formatProvider);
+            return Extensions.Format(this, format, formatProvider);
         }
 
         /// <summary>
@@ -393,13 +393,13 @@ namespace SoftFluent.Windows.Utilities
 
         EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
         {
-            if ((attributes == null) || (attributes.Length == 0))
+            if (attributes == null || attributes.Length == 0)
                 return ((ICustomTypeDescriptor)this).GetEvents();
 
             List<EventDescriptor> list = new List<EventDescriptor>();
             foreach (EventDescriptor evt in _events)
             {
-                if ((evt.Attributes == null) || (evt.Attributes.Count == 0))
+                if (evt.Attributes.Count == 0)
                     continue;
 
                 bool cont = false;
@@ -436,13 +436,13 @@ namespace SoftFluent.Windows.Utilities
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
-            if ((attributes == null) || (attributes.Length == 0))
+            if (attributes == null || attributes.Length == 0)
                 return ((ICustomTypeDescriptor)this).GetProperties();
 
             List<PropertyDescriptor> list = new List<PropertyDescriptor>();
             foreach (PropertyDescriptor prop in _properties)
             {
-                if (prop.Attributes == null || prop.Attributes.Count == 0)
+                if (prop.Attributes.Count == 0)
                     continue;
 
                 bool cont = false;

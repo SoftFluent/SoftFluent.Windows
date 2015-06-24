@@ -1,5 +1,4 @@
 ﻿using System;
-using SoftFluent.Windows.Utilities;
 
 namespace SoftFluent.Windows
 {
@@ -114,7 +113,7 @@ namespace SoftFluent.Windows
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            return ReflectionUtilities.GetType(name);
+            return TypeResolutionService.ResolveType(name);
         }
 
         private string ValueToCompareToString(IFormatProvider provider, bool forceConvert)
@@ -127,7 +126,7 @@ namespace SoftFluent.Windows
             {
                 if (forceConvert || (Options & UniversalConverterOptions.Convert) == UniversalConverterOptions.Convert)
                 {
-                    v = ConvertUtilities.ChangeType<string>(ValueToCompare, null, provider);
+                    v = ConversionService.ChangeType<string>(ValueToCompare, null, provider);
                     if (v == null)
                     {
                         v = string.Format(provider, "{0}", ValueToCompare);
@@ -137,12 +136,15 @@ namespace SoftFluent.Windows
 
             if ((Options & UniversalConverterOptions.Trim) == UniversalConverterOptions.Trim)
             {
-                v = v.Trim();
+                if (v != null)
+                {
+                    v = v.Trim();
+                }
             }
 
             if ((Options & UniversalConverterOptions.Nullify) == UniversalConverterOptions.Nullify)
             {
-                if (v.Length == 0)
+                if (v != null && v.Length == 0)
                 {
                     v = null;
                 }
@@ -158,7 +160,7 @@ namespace SoftFluent.Windows
             string v = Value as string;
             if (v == null)
             {
-                v = ConvertUtilities.ChangeType<string>(Value, null, provider);
+                v = ConversionService.ChangeType<string>(Value, null, provider);
                 if (v == null)
                 {
                     v = string.Format(provider, "{0}", Value);
@@ -186,9 +188,6 @@ namespace SoftFluent.Windows
             bool ret = false;
             string v;
             string vtc;
-            Type tvtc;
-            IComparable cv;
-            IComparable cvtc;
             UniversalConverterInput clone;
             switch (Operator)
             {
@@ -224,7 +223,7 @@ namespace SoftFluent.Windows
                     if ((Options & UniversalConverterOptions.Convert) == UniversalConverterOptions.Convert)
                     {
                         object cvalue;
-                        if (ServiceProvider.TryChangeType(ValueToCompare, Value.GetType(), provider, out cvalue))
+                        if (ConversionService.TryChangeType(ValueToCompare, Value.GetType(), provider, out cvalue))
                         {
                             if (Value.Equals(cvalue))
                             {
@@ -304,13 +303,14 @@ namespace SoftFluent.Windows
                 case UniversalConverterOperator.LesserThan:
                 case UniversalConverterOperator.GreaterThanOrEqual:
                 case UniversalConverterOperator.GreaterThan:
-                    cv = Value as IComparable;
+                    IComparable cv = Value as IComparable;
                     if (cv == null || ValueToCompare == null)
                         break;
 
+                    IComparable cvtc;
                     if (!Value.GetType().IsAssignableFrom(ValueToCompare.GetType()))
                     {
-                        cvtc = ConvertUtilities.ChangeType(ValueToCompare, Value.GetType(), provider) as IComparable;
+                        cvtc = ConversionService.ChangeType(ValueToCompare, Value.GetType(), provider) as IComparable;
                     }
                     else
                     {
@@ -361,7 +361,7 @@ namespace SoftFluent.Windows
 
                 case UniversalConverterOperator.IsType:
                 case UniversalConverterOperator.IsOfType:
-                    tvtc = ValueToCompareToType(provider);
+                    Type tvtc = ValueToCompareToType(provider);
                     if (tvtc == null)
                         break;
 

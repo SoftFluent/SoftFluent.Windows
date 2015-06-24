@@ -11,30 +11,19 @@ namespace SoftFluent.Windows
             EnumAttributes = new DynamicObject();
         }
 
-        public override void OnDescribed()
+        public override void OnValueChanged()
         {
-        }
-
-        public virtual DynamicObject EnumAttributes { get; private set; }
-
-        public override object Value
-        {
-            get
+            base.OnValueChanged();
+            EnumAttributes.Properties.Clear();
+            foreach (FieldInfo fi in PropertyType.GetFields(BindingFlags.Static | BindingFlags.Public))
             {
-                return base.Value;
-            }
-            set
-            {
-                base.Value = value;
-                EnumAttributes.Properties.Clear();
-                foreach (FieldInfo fi in PropertyType.GetFields(BindingFlags.Static | BindingFlags.Public))
+                if (fi.Name.Equals(string.Format("{0}", base.Value)))
                 {
-                    if (fi.Name.Equals(string.Format("{0}", base.Value)))
-                    {
-                        PropertyGridDataProvider.AddDynamicProperties(fi.GetAttributes<PropertyGridAttribute>(), EnumAttributes);
-                    }
+                    PropertyGridDataProvider.AddDynamicProperties(fi.GetAttributes<PropertyGridAttribute>(), EnumAttributes);
                 }
             }
         }
+
+        public virtual DynamicObject EnumAttributes { get; private set; }
     }
 }

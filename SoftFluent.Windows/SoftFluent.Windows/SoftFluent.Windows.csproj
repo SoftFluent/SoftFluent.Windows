@@ -24,6 +24,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +35,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -57,20 +61,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseConverter.cs" />
+    <Compile Include="BaseDecamelizer.cs" />
+    <Compile Include="BaseTypeResolver.cs" />
     <Compile Include="ByteArrayControl.cs" />
-    <Compile Include="ConverterExtensions.cs" />
+    <Compile Include="ChangeTypeConverter.cs" />
+    <Compile Include="ConversionService.cs" />
+    <Compile Include="DecamelizationService.cs" />
+    <Compile Include="DecamelizeOptions.cs" />
+    <Compile Include="DecamelizeTextOptions.cs" />
+    <Compile Include="Diagnostics\Tracing.cs" />
     <Compile Include="IConverter.cs" />
+    <Compile Include="IDecamelizer.cs" />
+    <Compile Include="ITypeResolver.cs" />
     <Compile Include="Properties\AssemblyVersionInfo.cs" />
     <Compile Include="ServiceProvider.cs" />
+    <Compile Include="TypeResolutionService.cs" />
     <Compile Include="Utilities\Extensions.cs" />
-    <Compile Include="Utilities\ReflectionUtilities.cs" />
     <Compile Include="AutoObject.cs" />
     <Compile Include="Utilities\DataBindingEvaluator.cs" />
     <Compile Include="Utilities\DynamicObject.cs" />
     <Compile Include="Utilities\DynamicObjectProperty.cs" />
-    <Compile Include="Utilities\ConvertUtilities.cs" />
-    <Compile Include="Utilities\NameValueCollection.cs" />
-    <Compile Include="Utilities\NameValueCollectionCollection.cs" />
     <Compile Include="UniversalConverter.cs" />
     <Compile Include="UniversalConverterCase.cs" />
     <Compile Include="UniversalConverterInput.cs" />

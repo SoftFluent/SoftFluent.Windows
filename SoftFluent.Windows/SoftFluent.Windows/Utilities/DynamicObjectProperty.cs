@@ -60,11 +60,11 @@ namespace SoftFluent.Windows.Utilities
             if (dv != null)
             {
                 HasDefaultValue = true;
-                _defaultValue = ServiceProvider.ChangeType(dv.Value, _type);
+                _defaultValue = ConversionService.ChangeType(dv.Value, _type);
             }
             else
             {
-                _defaultValue = ServiceProvider.ChangeType(null, _type);
+                _defaultValue = ConversionService.ChangeType(null, _type);
             }
         }
 
@@ -91,7 +91,7 @@ namespace SoftFluent.Windows.Utilities
             }
             set
             {
-                _defaultValue = ServiceProvider.ChangeType(value, _type);
+                _defaultValue = ConversionService.ChangeType(value, _type);
             }
         }
 
@@ -111,15 +111,7 @@ namespace SoftFluent.Windows.Utilities
 
         private static Attribute[] GetAttributes(IEnumerable<Attribute> attributes)
         {
-            List<Attribute> list;
-            if (attributes == null)
-            {
-                list = new List<Attribute>();
-            }
-            else
-            {
-                list = new List<Attribute>(attributes);
-            }
+            List<Attribute> list = attributes == null ? new List<Attribute>() : new List<Attribute>(attributes);
             return list.ToArray();
         }
 

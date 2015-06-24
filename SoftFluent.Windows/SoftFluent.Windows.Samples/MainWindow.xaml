@@ -1,14 +1,12 @@
 ﻿<Window x:Class="SoftFluent.Windows.Samples.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        
         xmlns:samples="clr-namespace:SoftFluent.Windows.Samples"
         Title="MainWindow" Height="638" Width="608">
 <Grid>
     <Grid.Resources>
         <samples:Customer x:Key="Customer"/>
     </Grid.Resources>
-    <windows:PropertyGrid xmlns:windows="clr-namespace:SoftFluent.Windows;assembly=SoftFluent.Windows" 
-                            SelectedObject="{StaticResource Customer}" />
+    <sfw:PropertyGrid xmlns:sfw="clr-namespace:SoftFluent.Windows;assembly=SoftFluent.Windows" SelectedObject="{StaticResource Customer}" />
 </Grid>
 </Window>

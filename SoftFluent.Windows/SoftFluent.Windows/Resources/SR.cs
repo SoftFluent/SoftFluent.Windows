@@ -12,11 +12,7 @@ namespace SoftFluent.Windows.Resources
 
 		private SR()
 		{
-#if NETFX_CORE
-            _resources = new ResourceManager("CodeFluent.Runtime.Resources.Strings", GetType().GetTypeInfo().Module.Assembly);
-#else
             _resources = new ResourceManager("CodeFluent.Runtime.Resources.Strings", GetType().Module.Assembly);
-#endif
         }
 
         private static SR GetLoader()
@@ -46,46 +42,6 @@ namespace SoftFluent.Windows.Resources
 			return GetString(null, name, args);
 		}
 
-		public static string GetString(string name, object arg0)
-		{
-			return GetString(null, name, new object[]{arg0});
-		}
-
-		public static string GetString(string name, object arg0, object arg1)
-		{
-			return GetString(null, name, new object[]{arg0, arg1});
-		}
-
-		public static string GetString(string name, object arg0, object arg1, object arg2)
-		{
-			return GetString(null, name, new object[]{arg0, arg1, arg2});
-		}
-		
-		public static string GetString(string name, object arg0, object arg1, object arg2, object arg3)
-		{
-			return GetString(null, name, new object[]{arg0, arg1, arg2, arg3});
-		}
-
-		public static string GetString(CultureInfo culture, string name, object arg0)
-		{
-			return GetString(culture, name, new object[]{arg0});
-		}
-
-		public static string GetString(CultureInfo culture, string name, object arg0, object arg1)
-		{
-			return GetString(culture, name, new object[]{arg0, arg1});
-		}
-
-		public static string GetString(CultureInfo culture, string name, object arg0, object arg1, object arg2)
-		{
-			return GetString(culture, name, new object[]{arg0, arg1, arg2});
-		}
-		
-		public static string GetString(CultureInfo culture, string name, object arg0, object arg1, object arg2, object arg3)
-		{
-			return GetString(culture, name, new object[]{arg0, arg1, arg2, arg3});
-		}
-		
         public static string GetString(CultureInfo culture, string name, params object[] args)
         {
             SR loader = GetLoader();

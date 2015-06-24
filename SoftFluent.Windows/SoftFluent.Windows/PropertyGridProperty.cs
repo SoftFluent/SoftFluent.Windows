@@ -25,6 +25,7 @@ namespace SoftFluent.Windows
             DataProvider = dataProvider;
             PropertyType = typeof(object);
             Attributes = new DynamicObject();
+            TypeAttributes = new DynamicObject();
         }
 
         public override string ToString()
@@ -98,7 +99,6 @@ namespace SoftFluent.Windows
             }
 
             enumType = null;
-            nullable = false;
             return false;
         }
 
@@ -121,16 +121,16 @@ namespace SoftFluent.Windows
         public virtual PropertyGridOptionsAttribute Options { get; set; }
         public virtual object Tag { get; set; }
 
-        public virtual Type PropertyType { get { return GetProperty<Type>(); } set { SetProperty<Type>(value); } }
-        public virtual string Name { get { return GetProperty<string>(); } set { SetProperty<string>(value); } }
-        public virtual bool IsError { get { return GetProperty<bool>(); } set { SetProperty<bool>(value); } }
-        public virtual bool IsFlagsEnum { get { return GetProperty<bool>(); } set { SetProperty<bool>(value); } }
-        public virtual string Category { get { return GetProperty<string>(); } set { SetProperty<string>(value); } }
-        public virtual string DisplayName { get { return GetProperty<string>(); } set { SetProperty<string>(value); } }
-        public virtual string Description { get { return GetProperty<string>(); } set { SetProperty<string>(value); } }
-        public virtual bool HasDefaultValue { get { return GetProperty<bool>(); } set { SetProperty<bool>(value); } }
-        public virtual PropertyDescriptor Descriptor { get { return GetProperty<PropertyDescriptor>(); } set { SetProperty<PropertyDescriptor>(value); } }
-        public virtual TypeConverter Converter { get { return GetProperty<TypeConverter>(); } set { SetProperty<TypeConverter>(value); } }
+        public virtual Type PropertyType { get { return GetProperty<Type>(); } set { SetProperty(value); } }
+        public virtual string Name { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        public virtual bool IsError { get { return GetProperty<bool>(); } set { SetProperty(value); } }
+        public virtual bool IsFlagsEnum { get { return GetProperty<bool>(); } set { SetProperty(value); } }
+        public virtual string Category { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        public virtual string DisplayName { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        public virtual string Description { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        public virtual bool HasDefaultValue { get { return GetProperty<bool>(); } set { SetProperty(value); } }
+        public virtual PropertyDescriptor Descriptor { get { return GetProperty<PropertyDescriptor>(); } set { SetProperty(value); } }
+        public virtual TypeConverter Converter { get { return GetProperty<TypeConverter>(); } set { SetProperty(value); } }
 
         public virtual object DefaultValue
         {
@@ -140,7 +140,7 @@ namespace SoftFluent.Windows
             }
             set
             {
-                if (SetProperty<object>(value))
+                if (SetProperty(value))
                 {
                     OnPropertyChanged("IsDefaultValue");
                 }
@@ -172,7 +172,7 @@ namespace SoftFluent.Windows
                 if (!IsCollection)
                     return null;
 
-                return ConvertUtilities.GetItemType(PropertyType);
+                return Extensions.GetElementType(PropertyType);
             }
         }
 
@@ -201,7 +201,7 @@ namespace SoftFluent.Windows
             }
             set
             {
-                SetProperty<bool>(value);
+                SetProperty(value);
             }
         }
 
@@ -266,8 +266,8 @@ namespace SoftFluent.Windows
                 if (Value == null)
                     return null;
 
-                bool def = HasDefaultValue ? ServiceProvider.ChangeType(DefaultValue, false) : false;
-                return ServiceProvider.ChangeType(Value, def);
+                bool def = HasDefaultValue && ConversionService.ChangeType(DefaultValue, false);
+                return ConversionService.ChangeType(Value, def);
             }
             set
             {
@@ -288,7 +288,7 @@ namespace SoftFluent.Windows
                 if (Converter != null && Converter.CanConvertTo(typeof(string)))
                     return (string)Converter.ConvertTo(Value, typeof(string));
 
-                return string.Format("{0}", Value);
+                return ConversionService.ChangeType<string>(Value);
             }
             set
             {
@@ -305,13 +305,16 @@ namespace SoftFluent.Windows
                         Value = Converter.ConvertTo(value, Descriptor.PropertyType);
                         return;
                     }
-                    return;
                 }
 
                 if (Descriptor != null)
                 {
-                    Value = ServiceProvider.ChangeType(value, Descriptor.PropertyType);
-                    return;
+                    object v;
+                    if (ConversionService.TryChangeType(value, Descriptor.PropertyType, out v))
+                    {
+                        Value = v;
+                        return;
+                    }
                 }
                 Value = value;
             }
@@ -345,14 +348,7 @@ namespace SoftFluent.Windows
                 return;
 
             ICloneable c = Value as ICloneable;
-            if (c != null)
-            {
-                _clonedValue = c.Clone();
-            }
-            else
-            {
-                _clonedValue = Value;
-            }
+            _clonedValue = c != null ? c.Clone() : Value;
             _valueCloned = true;
         }
 
@@ -398,7 +394,7 @@ namespace SoftFluent.Windows
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            return ServiceProvider.TryChangeType(value, type, provider, out changedValue);
+            return ConversionService.TryChangeType(value, type, provider, out changedValue);
         }
 
         public virtual bool RaiseOnPropertyChanged(string name)
@@ -451,7 +447,7 @@ namespace SoftFluent.Windows
             if (DisplayName == null)
                 return 1;
 
-            return DisplayName.CompareTo(other.DisplayName);
+            return string.Compare(DisplayName, other.DisplayName, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

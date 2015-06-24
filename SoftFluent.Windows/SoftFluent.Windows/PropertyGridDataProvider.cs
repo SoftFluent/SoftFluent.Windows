@@ -80,16 +80,20 @@ namespace SoftFluent.Windows
             property.Descriptor = descriptor;
             property.Name = descriptor.Name;
             property.PropertyType = descriptor.PropertyType;
-            property.Converter = descriptor.Converter;
+
+            // unset by default. conversion service does the default job
+            //property.Converter = descriptor.Converter;
+
             property.Category = string.IsNullOrWhiteSpace(descriptor.Category) || descriptor.Category.EqualsIgnoreCase(CategoryAttribute.Default.Category) ? Grid.DefaultCategoryName : descriptor.Category;
             property.IsReadOnly = descriptor.IsReadOnly;
             property.Description = descriptor.Description;
             property.DisplayName = descriptor.DisplayName;
             if (property.DisplayName == descriptor.Name)
             {
-                property.DisplayName = ConvertUtilities.Decamelize(property.DisplayName);
+                property.DisplayName = DecamelizationService.Decamelize(property.DisplayName);
             }
-            property.IsFlagsEnum = descriptor.PropertyType.IsEnum && ConvertUtilities.IsFlagsEnum(descriptor.PropertyType);
+
+            property.IsFlagsEnum = descriptor.PropertyType.IsEnum && Extensions.IsFlagsEnum(descriptor.PropertyType);
 
             DefaultValueAttribute att = descriptor.GetAttribute<DefaultValueAttribute>();
             property.HasDefaultValue = att != null;
