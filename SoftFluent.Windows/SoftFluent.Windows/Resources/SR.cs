@@ -12,7 +12,7 @@ namespace SoftFluent.Windows.Resources
 
 		private SR()
 		{
-            _resources = new ResourceManager("CodeFluent.Runtime.Resources.Strings", GetType().Module.Assembly);
+            _resources = new ResourceManager(typeof(SR).Namespace + ".Strings", GetType().Module.Assembly);
         }
 
         private static SR GetLoader()

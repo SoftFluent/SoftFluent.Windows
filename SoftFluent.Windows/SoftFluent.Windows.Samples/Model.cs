@@ -186,7 +186,9 @@ namespace SoftFluent.Windows.Samples
 
         public List<string> ListOfStrings
         {
-            get { return GetProperty<List<string>>(); }
+            get {
+                return GetProperty<List<string>>();
+            }
             set { SetProperty(value); }
         }
 

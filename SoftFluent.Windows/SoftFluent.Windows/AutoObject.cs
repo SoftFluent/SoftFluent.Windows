@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
@@ -202,11 +201,8 @@ namespace SoftFluent.Windows
         /// <param name="trackChanged">if set to <c>true</c> the property is tracked in the changed properties.</param>
         /// <returns>true if the value has changed; otherwise false.</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        protected bool SetProperty(object value, bool setChanged, bool trackChanged)
+        protected bool SetProperty(object value, bool setChanged, bool trackChanged, [CallerMemberName] string name = null)
         {
-            StackFrame sf = new StackFrame(1);
-            MethodBase mb = sf.GetMethod();
-            string name = mb.Name.Substring(4); // Ecma 335 chapter 22.28: Name format for setter is "set_[PropertyName]"
             return SetProperty(name, value, setChanged, false, trackChanged);
         }
 
@@ -218,11 +214,8 @@ namespace SoftFluent.Windows
         /// <param name="setChanged">if set to <c>true</c> set the HasChanged property to true.</param>
         /// <returns>true if the value has changed; otherwise false.</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        protected bool SetProperty(object value, bool setChanged)
+        protected bool SetProperty(object value, bool setChanged, [CallerMemberName] string name = null)
         {
-            StackFrame sf = new StackFrame(1);
-            MethodBase mb = sf.GetMethod();
-            string name = mb.Name.Substring(4); // Ecma 335 chapter 22.28: Name format for setter is "set_[PropertyName]"
             return SetProperty(name, value, setChanged, false, true);
         }
 
@@ -233,11 +226,8 @@ namespace SoftFluent.Windows
         /// <param name="value">The value.</param>
         /// <returns>true if the value has changed; otherwise false.</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        protected bool SetProperty(object value)
+        protected bool SetProperty(object value, [CallerMemberName] string name = null)
         {
-            StackFrame sf = new StackFrame(1);
-            MethodBase mb = sf.GetMethod();
-            string name = mb.Name.Substring(4); // Ecma 335 chapter 22.28: Name format for setter is "set_[PropertyName]"
             return SetProperty(name, value);
         }
 
@@ -247,12 +237,8 @@ namespace SoftFluent.Windows
         /// <typeparam name="T">The property type</typeparam>
         /// <returns>The value automatically converted into the requested type.</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        protected virtual T GetProperty<T>()
+        protected virtual T GetProperty<T>([CallerMemberName] string name = null)
         {
-            StackFrame sf = new StackFrame(1);
-            MethodBase mb = sf.GetMethod();
-            string name = mb.Name.Substring(4); // Ecma 335 chapter 22.28: Name format for getter is "get_[PropertyName]"
-
             T defaultValue;
             object obj;
             if (_defaultValues.TryGetValue(name, out obj))
@@ -263,13 +249,11 @@ namespace SoftFluent.Windows
             {
                 // runtime methodbase has no custom atts
                 DefaultValueAttribute att = null;
-                if (mb.DeclaringType != null)
+
+                PropertyInfo pi = GetType().GetProperty(name);
+                if (pi != null)
                 {
-                    PropertyInfo pi = mb.DeclaringType.GetProperty(name);
-                    if (pi != null)
-                    {
-                        att = Attribute.GetCustomAttribute(pi, typeof(DefaultValueAttribute), true) as DefaultValueAttribute;
-                    }
+                    att = Attribute.GetCustomAttribute(pi, typeof(DefaultValueAttribute), true) as DefaultValueAttribute;
                 }
 
                 defaultValue = att != null ? ConversionService.ChangeType(att.Value, default(T)) : default(T);

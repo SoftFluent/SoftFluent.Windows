@@ -39,6 +39,14 @@ namespace SoftFluent.Windows
 
         public event EventHandler<PropertyGridEventArgs> PropertyChanged;
 
+        public DataGrid BaseGrid
+        {
+            get
+            {
+                return PropertiesGrid;
+            }
+        }
+
         public event RoutedEventHandler Browse
         {
             add { AddHandler(BrowseEvent, value); }
