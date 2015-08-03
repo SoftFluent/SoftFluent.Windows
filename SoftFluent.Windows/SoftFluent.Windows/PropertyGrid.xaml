@@ -21,6 +21,9 @@
         </Style>
 
         <windows:PropertyGridConverter x:Key="PropertyGridConverter" />
+        <Style x:Key="ValidationLabel" TargetType="{x:Type Label}">
+            <Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+        </Style>
         <Style x:Key="ValidationTextBox2" TargetType="{x:Type TextBox}">
             <Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
         </Style>
@@ -165,9 +168,6 @@
                 <Button HorizontalAlignment="Right" Content="..." Width="24" Command="{x:Static windows:PropertyGrid.BrowseCommand}" CommandParameter="BigTextEditorWindow" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="ByteArrayHexaEditor">
-            <TextBox Text="{Binding Value, Mode=OneWay, Converter={StaticResource PropertyGridConverter}}" VerticalContentAlignment="Center" IsEnabled="False" />
-        </DataTemplate>
         <DataTemplate x:Key="ObjectEditor">
             <Grid>
                 <TextBox Text="{Binding TextValue, Mode=OneWay}" IsReadOnly="True" />
@@ -195,6 +195,11 @@
         <DataTemplate x:Key="TextEditor">
             <Grid>
                 <TextBox Background="{Binding Attributes.Background}" Foreground="{Binding Attributes.Foreground}" FontSize="{Binding Attributes.FontSize}" FontFamily="{Binding Attributes.FontFamily}" Text="{Binding TextValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Style="{StaticResource ValidationTextBox2}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="FormatTextEditor">
+            <Grid>
+                <Label Padding="3,0,0,0" Height="20" VerticalContentAlignment="Center" ContentStringFormat="{Binding Attributes.Format}" Background="{Binding Attributes.Background}" Foreground="{Binding Attributes.Foreground}" FontSize="{Binding Attributes.FontSize}" FontFamily="{Binding Attributes.FontFamily}" Content="{Binding TextValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Style="{StaticResource ValidationLabel}" />
             </Grid>
         </DataTemplate>
 

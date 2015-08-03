@@ -22,7 +22,7 @@ namespace SoftFluent.Windows.Samples
             ArrayOfStrings = ListOfStrings.ToArray();
             CreationDateAndTime = DateTime.Now;
             Description = "press button to edit...";
-            ByteArray = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+            ByteArray1 = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
             WebSite = "http://www.softfluent.com";
             Status = Status.Valid;
             Addresses = new ObservableCollection<Address> { new Address { Line1 = "2018 156th Avenue NE", City = "Bellevue, WA", ZipCode = "98007", Country = "USA" } };
@@ -154,10 +154,11 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty(value); }
         }
 
-        [PropertyGridOptions(EditorDataTemplateResourceKey = "TextEditor")]
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "FormatTextEditor")]
+        [PropertyGrid(Name = "Format", Value = "0x{0}")]
         [ReadOnly(true)]
         [DisplayName("Byte Array (hex format)")]
-        public byte[] ByteArray
+        public byte[] ByteArray1
         {
             get { return GetProperty<byte[]>(); }
             set { SetProperty(value); }
@@ -167,8 +168,8 @@ namespace SoftFluent.Windows.Samples
         [DisplayName("Byte Array (press button for hex dump)")]
         public byte[] ByteArray2
         {
-            get { return ByteArray; }
-            set { ByteArray = value; }
+            get { return ByteArray1; }
+            set { ByteArray1 = value; }
         }
 
         [PropertyGridOptions(EditorDataTemplateResourceKey = "CustomEditor", SortOrder = -10)]
@@ -186,9 +187,7 @@ namespace SoftFluent.Windows.Samples
 
         public List<string> ListOfStrings
         {
-            get {
-                return GetProperty<List<string>>();
-            }
+            get { return GetProperty<List<string>>(); }
             set { SetProperty(value); }
         }
 
