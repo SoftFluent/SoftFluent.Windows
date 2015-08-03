@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("SoftFluent.Windows")]
+[assembly: AssemblyTitle("SoftFluent.Windows.Samples")]
 [assembly: AssemblyDescription("SoftFluent's Windows (WPF) tools")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]

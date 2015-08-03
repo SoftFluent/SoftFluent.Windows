@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>SoftFluent.Windows</id>
-    <version>1.0.0.1</version>
+    <version>1.0.0.2</version>
     <authors>SoftFluent</authors>
     <owners>SoftFluent</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
