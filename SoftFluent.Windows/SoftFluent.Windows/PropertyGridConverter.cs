@@ -23,16 +23,16 @@ namespace SoftFluent.Windows
             Type parameterType = GetParameterAsType(parameter);
             if (parameterType != null)
             {
-                value = ConversionService.ChangeType(value, parameterType, culture);
+                value = ConversionService.ChangeType(value, parameterType, null, culture);
             }
 
-            object convertedValue = targetType == null ? value : ConversionService.ChangeType(value, targetType, culture);
+            object convertedValue = targetType == null ? value : ConversionService.ChangeType(value, targetType, null, culture);
             return convertedValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            object convertedValue = targetType == null ? value : ConversionService.ChangeType(value, targetType, culture);
+            object convertedValue = targetType == null ? value : ConversionService.ChangeType(value, targetType, null, culture);
             return convertedValue;
         }
     }

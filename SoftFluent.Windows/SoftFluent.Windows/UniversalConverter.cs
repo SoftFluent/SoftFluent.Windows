@@ -34,11 +34,11 @@ namespace SoftFluent.Windows
                     if ((c.Options & UniversalConverterOptions.ConvertedValueIsConverterParameter) == UniversalConverterOptions.ConvertedValueIsConverterParameter)
                         return ConversionService.ChangeType(parameter, targetType, culture);
 
-                    return ConversionService.ChangeType(c.ConvertedValue, targetType, culture);
+                    return ConversionService.ChangeType(c.ConvertedValue, targetType, null, culture);
                 }
             }
 
-            return ConversionService.ChangeType(DefaultValue, targetType, culture);
+            return ConversionService.ChangeType(DefaultValue, targetType, null, culture);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace SoftFluent.Windows
         /// </returns>
         public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ConversionService.ChangeType(parameter, targetType, culture);
+            return ConversionService.ChangeType(parameter, targetType, null, culture);
         }
 
         /// <summary>
