@@ -98,7 +98,7 @@ namespace SoftFluent.Windows.Samples
         [ReadOnly(true)]
         public Status StatusColor
         {
-            get { return GetProperty<Status>("Status", Status.Unknown); }
+            get { return GetProperty<Status>(Status.Unknown, "Status"); }
             set { SetProperty("Status", value); }
         }
 
@@ -210,7 +210,7 @@ namespace SoftFluent.Windows.Samples
         [DisplayName("Percentage Of Satisfaction (int)")]
         public int PercentageOfSatisfactionInt
         {
-            get { return GetProperty<int>("PercentageOfSatisfaction", 0); }
+            get { return GetProperty<int>(0, "PercentageOfSatisfaction"); }
             set { SetProperty("PercentageOfSatisfaction", value); }
         }
 

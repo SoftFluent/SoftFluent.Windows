@@ -194,14 +194,20 @@ namespace SoftFluent.Windows
         {
             get
             {
+                bool def = false;
                 if (DataProvider != null && DataProvider.Grid != null && DataProvider.Grid.IsReadOnly)
-                    return true;
+                {
+                    def = true;
+                }
 
-                return GetProperty<bool>();
+                return GetProperty(def);
             }
             set
             {
-                SetProperty(value);
+                if (SetProperty(value))
+                {
+                    OnPropertyChanged("IsReadWrite");
+                }
             }
         }
 

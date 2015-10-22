@@ -260,7 +260,7 @@ namespace SoftFluent.Windows
                 _defaultValues[name] = defaultValue;
             }
 
-            return GetProperty(name, defaultValue);
+            return GetProperty(defaultValue, name);
         }
 
         /// <summary>
@@ -456,10 +456,10 @@ namespace SoftFluent.Windows
         /// Gets a property value.
         /// </summary>
         /// <typeparam name="T">The property type.</typeparam>
-        /// <param name="name">The property name. May not be null.</param>
         /// <param name="defaultValue">The default value.</param>
+        /// <param name="name">The property name. May not be null.</param>
         /// <returns></returns>
-        protected virtual T GetProperty<T>(string name, T defaultValue)
+        protected virtual T GetProperty<T>(T defaultValue, [CallerMemberName] string name = null)
         {
             if (name == null)
                 throw new ArgumentNullException("name");
