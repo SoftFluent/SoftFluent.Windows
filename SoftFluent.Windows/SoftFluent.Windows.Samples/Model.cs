@@ -89,6 +89,7 @@ namespace SoftFluent.Windows.Samples
                 if (SetProperty(value))
                 {
                     OnPropertyChanged("StatusColor");
+                    OnPropertyChanged("StatusColorString");
                 }
             }
         }
@@ -98,8 +99,16 @@ namespace SoftFluent.Windows.Samples
         [ReadOnly(true)]
         public Status StatusColor
         {
-            get { return GetProperty<Status>(Status.Unknown, "Status"); }
-            set { SetProperty("Status", value); }
+            get { return Status; }
+            set { Status = value; }
+        }
+
+        [PropertyGridOptions(IsEnum = true, EnumNames =  new string [] {"1N\\/AL1D", "\\/AL1D", "UNKN0WN"}, EnumValues = new object[] { Status.Invalid, Status.Valid, Status.Unknown })]
+        [DisplayName("Status (enum as string list)")]
+        public string StatusColorString
+        {
+            get { return Status.ToString(); }
+            set { Status = (Status)Enum.Parse(typeof(Status), value); }
         }
 
         public TimeSpan TimeSpan

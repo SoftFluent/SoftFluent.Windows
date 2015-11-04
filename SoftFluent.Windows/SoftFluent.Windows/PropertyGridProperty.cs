@@ -124,6 +124,7 @@ namespace SoftFluent.Windows
         public virtual Type PropertyType { get { return GetProperty<Type>(); } set { SetProperty(value); } }
         public virtual string Name { get { return GetProperty<string>(); } set { SetProperty(value); } }
         public virtual bool IsError { get { return GetProperty<bool>(); } set { SetProperty(value); } }
+        public virtual bool IsEnum { get { return GetProperty<bool>(); } set { SetProperty(value); } }
         public virtual bool IsFlagsEnum { get { return GetProperty<bool>(); } set { SetProperty(value); } }
         public virtual string Category { get { return GetProperty<string>(); } set { SetProperty(value); } }
         public virtual string DisplayName { get { return GetProperty<string>(); } set { SetProperty(value); } }

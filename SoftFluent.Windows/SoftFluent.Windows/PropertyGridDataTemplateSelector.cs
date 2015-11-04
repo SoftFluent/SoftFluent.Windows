@@ -84,23 +84,45 @@ namespace SoftFluent.Windows
             return false;
         }
 
-        public virtual bool IsAssignableFrom(Type type1, Type type2)
+        public virtual bool IsAssignableFrom(Type type, Type propertyType, PropertyGridDataTemplate template, PropertyGridProperty property)
         {
-            if (type1.IsAssignableFrom(type2))
+            if (type == null)
+                throw new ArgumentNullException("type");
+
+            if (propertyType == null)
+                throw new ArgumentNullException("propertyType");
+
+            if (template == null)
+                throw new ArgumentNullException("template");
+
+            if (property == null)
+                throw new ArgumentNullException("property");
+
+            if (type.IsAssignableFrom(propertyType))
             {
                 // bool? is assignable from bool, but we don't want that match
-                if (!type1.IsNullable() || type2.IsNullable())
+                if (!type.IsNullable() || propertyType.IsNullable())
                     return true;
             }
 
             // hack for nullable enums...
-            if (type1 == PropertyGridDataTemplate.NullableEnumType)
+            if (type == PropertyGridDataTemplate.NullableEnumType)
             {
                 Type enumType;
                 bool nullable;
-                PropertyGridProperty.IsExtendedEnum(type2, out enumType, out nullable);
+                PropertyGridProperty.IsExtendedEnum(propertyType, out enumType, out nullable);
                 if (nullable)
                     return true;
+            }
+
+            var options = PropertyGridOptionsAttribute.FromProperty(property);
+            if (options != null)
+            {
+                if ((type.IsEnum || type == typeof(Enum)) && options.IsEnum)
+                {
+                    if (Extensions.IsFlagsEnum(type) == options.IsFlagsEnum)
+                        return true;
+                }
             }
 
             return false;
@@ -108,6 +130,9 @@ namespace SoftFluent.Windows
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
+            if (container == null)
+                throw new ArgumentNullException("container");
+
             PropertyGridProperty property = item as PropertyGridProperty;
             if (property == null)
                 return base.SelectTemplate(item, container);
@@ -142,7 +167,7 @@ namespace SoftFluent.Windows
                     {
                         foreach (Type type in template.ResolvedCollectionItemPropertyTypes)
                         {
-                            if (IsAssignableFrom(type, property.CollectionItemPropertyType))
+                            if (IsAssignableFrom(type, property.CollectionItemPropertyType, template, property))
                                 return template.DataTemplate;
                         }
                     }
@@ -154,7 +179,7 @@ namespace SoftFluent.Windows
 
                     foreach (Type type in template.ResolvedPropertyTypes)
                     {
-                        if (IsAssignableFrom(type, property.PropertyType))
+                        if (IsAssignableFrom(type, property.PropertyType, template, property))
                             return template.DataTemplate;
                     }
                 }

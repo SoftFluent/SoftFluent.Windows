@@ -93,6 +93,7 @@ namespace SoftFluent.Windows
                 property.DisplayName = DecamelizationService.Decamelize(property.DisplayName);
             }
 
+            property.IsEnum = descriptor.PropertyType.IsEnum;
             property.IsFlagsEnum = descriptor.PropertyType.IsEnum && Extensions.IsFlagsEnum(descriptor.PropertyType);
 
             DefaultValueAttribute att = descriptor.GetAttribute<DefaultValueAttribute>();
@@ -106,6 +107,9 @@ namespace SoftFluent.Windows
                 {
                     property.SortOrder = options.SortOrder;
                 }
+
+                property.IsEnum = options.IsEnum;
+                property.IsFlagsEnum = options.IsFlagsEnum;
             }
 
             AddDynamicProperties(descriptor.Attributes.OfType<PropertyGridAttribute>(), property.Attributes);
