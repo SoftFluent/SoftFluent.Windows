@@ -150,6 +150,9 @@ namespace SoftFluent.Windows
         private static bool TryConvert(object input, IFormatProvider provider, out IntPtr value)
         {
             value = IntPtr.Zero;
+            if (IsNullOrEmptyString(input))
+                return false;
+
             if (IntPtr.Size == 4)
             {
                 int i;
@@ -172,6 +175,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out Guid value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = Guid.Empty;
+                return false;
+            }
+
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)
             {
@@ -188,8 +197,26 @@ namespace SoftFluent.Windows
             return Guid.TryParse(Convert.ToString(input, provider), out value);
         }
 
+        public static bool IsNullOrEmptyString(object input)
+        {
+            if (input == null)
+                return true;
+
+            string s = input as string;
+            if (s == null)
+                return false;
+
+            return string.IsNullOrWhiteSpace(s);
+        }
+
         private static bool TryConvert(object input, IFormatProvider provider, out ulong value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -214,6 +241,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out ushort value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -238,6 +271,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out decimal value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -262,6 +301,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out float value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -286,6 +331,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out double value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             value = 0;
             IConvertible ic = input as IConvertible;
             if (ic != null)
@@ -311,6 +362,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out char value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = '\0';
+                return false;
+            }
+
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -330,6 +387,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out DateTime value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = DateTime.MinValue;
+                return false;
+            }
+
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -349,6 +412,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out uint value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -373,6 +442,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out byte value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+      
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -397,6 +472,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out sbyte value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             IConvertible ic = input as IConvertible;
             if (ic != null)
             {
@@ -421,6 +502,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out short value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             value = 0;
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)
@@ -457,6 +544,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out int value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             value = 0;
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)
@@ -499,6 +592,12 @@ namespace SoftFluent.Windows
 
         private static bool TryConvert(object input, IFormatProvider provider, out long value)
         {
+            if (IsNullOrEmptyString(input))
+            {
+                value = 0;
+                return false;
+            }
+
             value = 0;
             byte[] inputBytes = input as byte[];
             if (inputBytes != null)

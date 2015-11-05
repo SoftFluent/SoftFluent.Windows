@@ -543,7 +543,6 @@ namespace SoftFluent.Windows
             PropertyGridProperty property = GetProperty(e.PropertyName);
             if (property != null)
             {
-                //Logger.TraceWithMethodName("prop:" + property.Name + " value:" + property.Value);
                 property.RefreshValueFromDescriptor();
                 OnPropertyChanged(this, new PropertyGridEventArgs(property));
             }
@@ -555,12 +554,12 @@ namespace SoftFluent.Windows
             if (button != null)
             {
                 PropertyGridItem item = button.DataContext as PropertyGridItem;
-                if (item != null && item.Property.PropertyType.IsEnum && Extensions.IsFlagsEnum(item.Property.PropertyType))
+                if (item != null && item.Property != null && item.Property.IsEnum && item.Property.IsFlagsEnum)
                 {
                     if (button.IsChecked.HasValue)
                     {
-                        ulong itemValue = Extensions.EnumToUInt64(item.Value);
-                        ulong propertyValue = Extensions.EnumToUInt64(item.Property.Value);
+                        ulong itemValue = PropertyGridComboBoxExtension.EnumToUInt64(item.Property, item.Value);
+                        ulong propertyValue = PropertyGridComboBoxExtension.EnumToUInt64(item.Property, item.Property.Value);
                         ulong newValue;
                         if (button.IsChecked.Value)
                         {
@@ -577,7 +576,10 @@ namespace SoftFluent.Windows
                         {
                             newValue = propertyValue & ~itemValue;
                         }
-                        item.Property.Value = Extensions.EnumToObject(item.Property.PropertyType, newValue);
+
+                        object propValue = PropertyGridComboBoxExtension.EnumToObject(item.Property, newValue);
+                        item.Property.Value = propValue;
+
                         ListBoxItem li = button.GetVisualSelfOrParent<ListBoxItem>();
                         if (li != null)
                         {
@@ -588,14 +590,14 @@ namespace SoftFluent.Windows
                                 {
                                     foreach (PropertyGridItem gridItem in parent.Items.OfType<PropertyGridItem>())
                                     {
-                                        gridItem.IsChecked = Extensions.EnumToUInt64(gridItem.Value) == 0;
+                                        gridItem.IsChecked = PropertyGridComboBoxExtension.EnumToUInt64(item.Property, gridItem.Value) == 0;
                                     }
                                 }
                                 else
                                 {
                                     foreach (PropertyGridItem gridItem in parent.Items.OfType<PropertyGridItem>())
                                     {
-                                        ulong gridItemValue = Extensions.EnumToUInt64(gridItem.Value);
+                                        ulong gridItemValue = PropertyGridComboBoxExtension.EnumToUInt64(item.Property, gridItem.Value);
                                         if (gridItemValue == 0)
                                         {
                                             gridItem.IsChecked = newValue == 0;

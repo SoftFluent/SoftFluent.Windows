@@ -11,6 +11,7 @@ namespace SoftFluent.Windows
         public object[] EnumValues { get; set; }
         public bool IsEnum { get; set; }
         public bool IsFlagsEnum { get; set; }
+        public int EnumMaxPower { get; set; }
         public bool CollectionEditorHasOnlyOneColumn { get; set; }
         public int SortOrder { get; set; }
         public string EditorDataTemplatePropertyPath { get; set; }
@@ -103,24 +104,6 @@ namespace SoftFluent.Windows
             if (property.Descriptor != null)
             {
                 att = property.Descriptor.GetAttribute<PropertyGridOptionsAttribute>();
-            }
-
-            if (att == null)
-            {
-                if (property.PropertyType == typeof(bool))
-                {
-                    att = new PropertyGridOptionsAttribute();
-                    att.IsEnum = true;
-                    att.EnumNames = new[] { "Yes", "No" };
-                    att.EnumValues = new object[] { true, false };
-                }
-                else if (property.PropertyType == typeof(bool?))
-                {
-                    att = new PropertyGridOptionsAttribute();
-                    att.IsEnum = true;
-                    att.EnumNames = new[] { "Yes", "No", "" };
-                    att.EnumValues = new object[] { true, false, null };
-                }
             }
             return att;
         }

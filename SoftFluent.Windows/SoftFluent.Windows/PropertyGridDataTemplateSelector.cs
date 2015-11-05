@@ -110,7 +110,7 @@ namespace SoftFluent.Windows
             {
                 Type enumType;
                 bool nullable;
-                PropertyGridProperty.IsExtendedEnum(propertyType, out enumType, out nullable);
+                PropertyGridProperty.IsEnumOrNullableEnum(propertyType, out enumType, out nullable);
                 if (nullable)
                     return true;
             }
@@ -120,7 +120,13 @@ namespace SoftFluent.Windows
             {
                 if ((type.IsEnum || type == typeof(Enum)) && options.IsEnum)
                 {
-                    if (Extensions.IsFlagsEnum(type) == options.IsFlagsEnum)
+                    if (!options.IsFlagsEnum)
+                        return true;
+
+                    if (Extensions.IsFlagsEnum(type))
+                        return true;
+
+                    if (template.IsFlagsEnum.HasValue && template.IsFlagsEnum.Value)
                         return true;
                 }
             }

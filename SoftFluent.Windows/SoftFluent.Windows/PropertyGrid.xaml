@@ -119,8 +119,8 @@
                     <RowDefinition Height="45" />
                 </Grid.RowDefinitions>
                 <windows:PropertyGrid Grid.Row="0" x:Name="SavableObjectEditorPropertiesGrid" DefaultCategoryName="General" SelectedObject="{Binding ClonedValue}" />
-                <Button Name="SavableObjectEditorWindowClose" Grid.Row="1" IsDefault="True" Content="Cancel" Command="Close" Margin="0,0,90,10" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" />
-                <Button Name="SavableObjectEditorWindowSave" Grid.Row="1" IsEnabled="{Binding ClonedValue.IsValid}" Content="Save" Command="Save" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" />
+                <Button Name="SavableObjectEditorWindowClose" Grid.Row="1" IsDefault="True" Content="Cancel" Command="Close" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" />
+                <Button Name="SavableObjectEditorWindowSave" Grid.Row="1" IsEnabled="{Binding ClonedValue.IsValid}" Content="Save" Command="Save" Margin="0,0,90,10" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" />
             </Grid>
         </Window>
         <Window x:Shared="false" x:Key="ReadOnlyObjectEditorWindow" Name="ReadOnlyObjectEditorWindow" Title="Object Editor" Height="400" Width="400">
@@ -234,7 +234,7 @@
                         </windows:PropertyGridDataTemplate>
                         <windows:PropertyGridDataTemplate PropertyType="System.Enum|System.Nullable`1[System.Enum]" IsFlagsEnum="True" IsReadOnly="False">
                             <DataTemplate>
-                                <ComboBox Name="CB" IsEditable="True" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{windows:PropertyGridComboBox {Binding}}" SelectedValue="{Binding Value}" SelectedValuePath="Value">
+                                <ComboBox Name="CB" IsEditable="True" IsReadOnly="True" Text="{Binding Value}" ItemsSource="{windows:PropertyGridComboBox {Binding}}" SelectedValue="{Binding Value}" SelectedValuePath="Value">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">

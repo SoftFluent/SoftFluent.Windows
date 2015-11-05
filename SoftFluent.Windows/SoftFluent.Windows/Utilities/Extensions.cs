@@ -57,6 +57,7 @@ namespace SoftFluent.Windows.Utilities
 
             if (!enumType.IsEnum)
                 throw new ArgumentException(null, "enumType");
+
             if (value == null)
                 throw new ArgumentNullException("value");
 

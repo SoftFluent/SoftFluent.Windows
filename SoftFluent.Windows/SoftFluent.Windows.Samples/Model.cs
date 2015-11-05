@@ -28,13 +28,14 @@ namespace SoftFluent.Windows.Samples
             Addresses = new ObservableCollection<Address> { new Address { Line1 = "2018 156th Avenue NE", City = "Bellevue, WA", ZipCode = "98007", Country = "USA" } };
             DaysOfWeek = DaysOfWeek.WeekDays;
             PercentageOfSatisfaction = 50;
-            PreferedColorName = "DodgerBlue";
-            PreferedFont = Fonts.SystemFontFamilies.FirstOrDefault(f => string.Equals(f.Source, "Consolas", StringComparison.OrdinalIgnoreCase));
+            PreferredColorName = "DodgerBlue";
+            PreferredFont = Fonts.SystemFontFamilies.FirstOrDefault(f => string.Equals(f.Source, "Consolas", StringComparison.OrdinalIgnoreCase));
             SampleNullableBooleanDropDownList = false;
             SampleBooleanDropDownList = true;
+            MultiEnumString = "First, Second";
         }
 
-        [DisplayName("Identity (see menu on right-click)")]
+        [DisplayName("Guid (see menu on right-click)")]
         public Guid Id
         {
             get { return GetProperty<Guid>(); }
@@ -42,6 +43,7 @@ namespace SoftFluent.Windows.Samples
         }
 
         //[ReadOnly(true)]
+        [Category("Dates and Times")]
         [PropertyGridOptions(EditorDataTemplateResourceKey = "DateTimePicker")]
         public DateTime CreationDateAndTime
         {
@@ -49,7 +51,6 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty(value); }
         }
 
-        [Category("Identity")]
         [PropertyGridOptions(SortOrder = 10)]
         public string FirstName
         {
@@ -57,7 +58,6 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty(value); }
         }
 
-        [Category("Identity")]
         [PropertyGridOptions(SortOrder = 20)]
         public string LastName
         {
@@ -65,7 +65,7 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty(value); }
         }
 
-        [Category("Identity")]
+        [Category("Dates and Times")]
         [PropertyGridOptions(SortOrder = 40)]
         public DateTime DateOfBirth
         {
@@ -73,7 +73,7 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty(value); }
         }
 
-        [Category("Identity")]
+        [Category("Enums")]
         [PropertyGridOptions(SortOrder = 30)]
         public Gender Gender
         {
@@ -81,6 +81,7 @@ namespace SoftFluent.Windows.Samples
             set { SetProperty(value); }
         }
 
+        [Category("Enums")]
         public Status Status
         {
             get { return GetProperty<Status>(); }
@@ -97,6 +98,7 @@ namespace SoftFluent.Windows.Samples
         [PropertyGridOptions(EditorDataTemplateResourceKey = "ColorEnumEditor", PropertyType = typeof(PropertyGridEnumProperty))]
         [DisplayName("Status (colored enum)")]
         [ReadOnly(true)]
+        [Category("Enums")]
         public Status StatusColor
         {
             get { return Status; }
@@ -105,12 +107,30 @@ namespace SoftFluent.Windows.Samples
 
         [PropertyGridOptions(IsEnum = true, EnumNames =  new string [] {"1N\\/AL1D", "\\/AL1D", "UNKN0WN"}, EnumValues = new object[] { Status.Invalid, Status.Valid, Status.Unknown })]
         [DisplayName("Status (enum as string list)")]
+        [Category("Enums")]
         public string StatusColorString
         {
             get { return Status.ToString(); }
             set { Status = (Status)Enum.Parse(typeof(Status), value); }
         }
 
+        [PropertyGridOptions(IsEnum = true, IsFlagsEnum = true, EnumNames = new string[] { "First", "Second", "Third" })]
+        [Category("Enums")]
+        public string MultiEnumString
+        {
+            get { return GetProperty<string>(); }
+            set { SetProperty(value); }
+        }
+
+        [PropertyGridOptions(IsEnum = true, IsFlagsEnum = true, EnumNames = new string[] { "None", "My First", "My Second", "My Third" }, EnumValues = new object[] { 0, 1, 2, 4 })]
+        [Category("Enums")]
+        public string MultiEnumStringWithDisplay
+        {
+            get { return GetProperty<string>(); }
+            set { SetProperty(value); }
+        }
+
+        [Category("Dates and Times")]
         public TimeSpan TimeSpan
         {
             get { return GetProperty<TimeSpan>(); }
@@ -145,7 +165,6 @@ namespace SoftFluent.Windows.Samples
             }
         }
 
-        [Category("Security")]
         [Browsable(false)]
         public string NotBrowsable
         {
@@ -182,18 +201,21 @@ namespace SoftFluent.Windows.Samples
         }
 
         [PropertyGridOptions(EditorDataTemplateResourceKey = "CustomEditor", SortOrder = -10)]
+        [DisplayName("Web Site (custom sort order)")]
         public string WebSite
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
 
+        [Category("Collections")]
         public string[] ArrayOfStrings
         {
             get { return GetProperty<string[]>(); }
             set { SetProperty(value); }
         }
 
+        [Category("Collections")]
         public List<string> ListOfStrings
         {
             get { return GetProperty<List<string>>(); }
@@ -202,6 +224,7 @@ namespace SoftFluent.Windows.Samples
 
         [PropertyGridOptions(EditorDataTemplateResourceKey = "AddressListEditor", SortOrder = 10)]
         [DisplayName("Addresses (custom editor)")]
+        [Category("Collections")]
         public ObservableCollection<Address> Addresses
         {
             get { return GetProperty<ObservableCollection<Address>>(); }
@@ -209,6 +232,7 @@ namespace SoftFluent.Windows.Samples
         }
 
         [DisplayName("Days Of Week (multi-valued enum)")]
+        [Category("Enums")]
         public DaysOfWeek DaysOfWeek
         {
             get { return GetProperty<DaysOfWeek>(); }
@@ -238,19 +262,22 @@ namespace SoftFluent.Windows.Samples
         }
 
         [PropertyGridOptions(EditorDataTemplateResourceKey = "ColorEditor")]
-        public string PreferedColorName
+        [DisplayName("Preferred Color Name (custom editor)")]
+        public string PreferredColorName
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
 
         [PropertyGridOptions(EditorDataTemplateResourceKey = "FontEditor")]
-        public FontFamily PreferedFont
+        [DisplayName("Preferred Font (custom editor)")]
+        public FontFamily PreferredFont
         {
             get { return GetProperty<FontFamily>(); }
             set { SetProperty(value); }
         }
 
+        [DisplayName("Point (auto type converter)")]
         public Point Point
         {
             get { return GetProperty<Point>(); }
@@ -265,7 +292,7 @@ namespace SoftFluent.Windows.Samples
         }
 
         [DisplayName("Boolean (Checkbox)")]
-        [Category("Boolean")]
+        [Category("Booleans")]
         public bool SampleBoolean
         {
             get { return GetProperty<bool>(); }
@@ -273,7 +300,7 @@ namespace SoftFluent.Windows.Samples
         }
 
         [DisplayName("Boolean (Checkbox three states)")]
-        [Category("Boolean")]
+        [Category("Booleans")]
         public bool? SampleNullableBoolean
         {
             get { return GetProperty<bool?>(); }
@@ -281,7 +308,7 @@ namespace SoftFluent.Windows.Samples
         }
 
         [DisplayName("Boolean (DropDownList)")]
-        [Category("Boolean")]
+        [Category("Booleans")]
         [PropertyGridOptions(EditorDataTemplateResourceKey = "BooleanDropDownListEditor")]
         public bool SampleBooleanDropDownList
         {
@@ -290,7 +317,7 @@ namespace SoftFluent.Windows.Samples
         }
 
         [DisplayName("Boolean (DropDownList 3 states)")]
-        [Category("Boolean")]
+        [Category("Booleans")]
         [PropertyGridOptions(EditorDataTemplateResourceKey = "NullableBooleanDropDownListEditor")]
         public bool? SampleNullableBooleanDropDownList
         {

@@ -75,7 +75,7 @@ namespace SoftFluent.Windows
             DataProvider.Grid.UpdateCellBindings(this, childName, where, action);
         }
 
-        public static bool IsExtendedEnum(Type type, out Type enumType, out bool nullable)
+        public static bool IsEnumOrNullableEnum(Type type, out Type enumType, out bool nullable)
         {
             if (type == null)
                 throw new ArgumentNullException("type");
@@ -421,9 +421,7 @@ namespace SoftFluent.Windows
             try
             {
                 object value = Descriptor.GetValue(DataProvider.Data);
-                //Logger.TraceWithMethodName("propB " + Name + "=" + value);
                 SetInternalValue(value);
-                //Logger.TraceWithMethodName("propA " + Name + "=" + Value);
             }
             catch (Exception e)
             {

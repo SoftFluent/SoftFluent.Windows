@@ -13,6 +13,7 @@ namespace SoftFluent.Windows
         public UniversalConverterInput()
         {
             Options = UniversalConverterOptions.Convert;
+            StringComparison = StringComparison.CurrentCultureIgnoreCase;
         }
 
         /// <summary>

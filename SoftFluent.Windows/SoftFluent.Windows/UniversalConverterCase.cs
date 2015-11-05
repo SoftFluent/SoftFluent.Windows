@@ -8,6 +8,11 @@ namespace SoftFluent.Windows
     /// </summary>
     public class UniversalConverterCase
     {
+        public UniversalConverterCase()
+        {
+            StringComparison = StringComparison.CurrentCultureIgnoreCase;
+        }
+
         /// <summary>
         /// Gets or sets the value to test.
         /// </summary>
