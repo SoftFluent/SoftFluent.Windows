@@ -25,9 +25,9 @@ namespace SoftFluent.Windows
 
         public string DefaultZeroName { get; set; }
 
-        protected virtual PropertyGridItem CreateItem()
+        public virtual PropertyGridItem CreateItem()
         {
-            return new PropertyGridItem();
+            return ActivatorService.CreateInstance<PropertyGridItem>();
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
@@ -74,6 +74,9 @@ namespace SoftFluent.Windows
             if (value != null && property.PropertyType.IsEnum)
                 return Extensions.EnumToObject(property.PropertyType, value);
 
+            if (value != null && value.GetType().IsEnum)
+                return Extensions.EnumToObject(value.GetType(), value);
+
             if (property.PropertyType != typeof(string))
                 return ConversionService.ChangeType(value, property.PropertyType);
 
@@ -94,6 +97,9 @@ namespace SoftFluent.Windows
 
             if (value != null && propertyType.IsEnum)
                 return Extensions.EnumToObject(propertyType, value);
+
+            if (value != null && value.GetType().IsEnum)
+                return Extensions.EnumToObject(value.GetType(), value);
 
             if (propertyType != typeof(string))
                 return ConversionService.ChangeType(value, propertyType);
@@ -117,6 +123,10 @@ namespace SoftFluent.Windows
                 foreach (string enumValue in enums)
                 {
                     int index = IndexOf(enumValues, enumValue);
+                    if (index < 0)
+                    {
+                        index = IndexOf(options.EnumNames, enumValue);
+                    }
                     if (index >= 0)
                     {
                         if (sb.Length > 0)
@@ -257,12 +267,12 @@ namespace SoftFluent.Windows
                 Array values = Enum.GetValues(enumType);
                 if (Extensions.IsFlagsEnum(enumType))
                 {
-                    ulong uvalue = Extensions.EnumToUInt64(property.Value);
+                    ulong uvalue = EnumToUInt64(property, property.Value);
 
                     for (int i = 0; i < names.Length; i++)
                     {
                         string name = names[i];
-                        ulong nameValue = Extensions.EnumToUInt64(values.GetValue(i));
+                        ulong nameValue = EnumToUInt64(property, values.GetValue(i));
                         string displayName;
                         if (!ShowEnumField(property, enumType, names[i], out displayName))
                             continue;
@@ -457,7 +467,7 @@ namespace SoftFluent.Windows
 
             Dictionary<string, object> ctx = new Dictionary<string, object>();
             ctx["items"] = items;
-            property.OnEvent(this, new PropertyGridEventArgs(property, ctx));
+            property.OnEvent(this, ActivatorService.CreateInstance<PropertyGridEventArgs>(property, ctx));
             return items;
         }
 

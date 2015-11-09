@@ -419,9 +419,14 @@ namespace SoftFluent.Windows
             }
         }
 
-        protected virtual PropertyGridDataProvider CreateDataProvider(object value)
+        public virtual PropertyGridDataProvider CreateDataProvider(object value)
         {
-            return new PropertyGridDataProvider(this, value);
+            return ActivatorService.CreateInstance<PropertyGridDataProvider>(this, value);
+        }
+
+        public virtual PropertyGridEventArgs CreateEventArgs(PropertyGridProperty property)
+        {
+            return ActivatorService.CreateInstance<PropertyGridEventArgs>(property);
         }
 
         private static void IsReadOnlyPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
@@ -544,7 +549,7 @@ namespace SoftFluent.Windows
             if (property != null)
             {
                 property.RefreshValueFromDescriptor();
-                OnPropertyChanged(this, new PropertyGridEventArgs(property));
+                OnPropertyChanged(this, CreateEventArgs(property));
             }
         }
 

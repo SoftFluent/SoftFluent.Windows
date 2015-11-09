@@ -66,6 +66,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivatorService.cs" />
+    <Compile Include="BaseActivator.cs" />
     <Compile Include="BaseConverter.cs" />
     <Compile Include="BaseDecamelizer.cs" />
     <Compile Include="BaseTypeResolver.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="DecamelizeOptions.cs" />
     <Compile Include="DecamelizeTextOptions.cs" />
     <Compile Include="Diagnostics\Tracing.cs" />
+    <Compile Include="IActivator.cs" />
     <Compile Include="IConverter.cs" />
     <Compile Include="IDecamelizer.cs">
       <SubType>Code</SubType>

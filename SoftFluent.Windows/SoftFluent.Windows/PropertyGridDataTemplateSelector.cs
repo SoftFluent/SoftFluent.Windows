@@ -8,7 +8,6 @@ using SoftFluent.Windows.Utilities;
 
 namespace SoftFluent.Windows
 {
-
     [ContentProperty("DataTemplates")]
     public class PropertyGridDataTemplateSelector : DataTemplateSelector
     {

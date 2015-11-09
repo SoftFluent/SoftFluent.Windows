@@ -8,6 +8,25 @@ namespace SoftFluent.Windows
         {
             object v;
             bool b = ServiceProvider.Current.GetService<IConverter>().TryChangeType(input, typeof(T), provider, out v);
+            if (!b)
+            {
+                if (v == null)
+                {
+                    if (typeof(T).IsValueType)
+                    {
+                        value = (T)Activator.CreateInstance(typeof(T));
+                    }
+                    else
+                    {
+                        value = default(T);
+                    }
+                }
+                else
+                {
+                    value = (T)v;
+                }
+                return false;
+            }
             value = (T)v;
             return b;
         }

@@ -8,7 +8,7 @@ namespace SoftFluent.Windows
         public PropertyGridEnumProperty(PropertyGridDataProvider provider)
             : base(provider)
         {
-            EnumAttributes = new DynamicObject();
+            EnumAttributes = provider.CreateDynamicObject();
         }
 
         public override void OnValueChanged()

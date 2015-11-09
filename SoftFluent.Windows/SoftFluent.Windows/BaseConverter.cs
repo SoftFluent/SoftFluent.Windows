@@ -197,6 +197,17 @@ namespace SoftFluent.Windows
             return Guid.TryParse(Convert.ToString(input, provider), out value);
         }
 
+        public static bool IsNumberType(Type type)
+        {
+            if (type == null)
+                return false;
+
+            return type == typeof(int) || type == typeof(long) || type == typeof(short) ||
+                type == typeof(uint) || type == typeof(ulong) || type == typeof(ushort) ||
+                type == typeof(bool) || type == typeof(double) || type == typeof(float) ||
+                type == typeof(decimal) || type == typeof(byte) || type == typeof(sbyte);
+        }
+
         public static bool IsNullOrEmptyString(object input)
         {
             if (input == null)
@@ -217,16 +228,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToUInt64(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToUInt64(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -247,16 +261,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToUInt16(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToUInt16(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -277,16 +294,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToDecimal(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToDecimal(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -307,16 +327,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToSingle(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToSingle(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -338,16 +361,20 @@ namespace SoftFluent.Windows
             }
 
             value = 0;
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToDouble(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToDouble(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -368,16 +395,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToChar(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToChar(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -393,16 +423,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToDateTime(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToDateTime(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -418,16 +451,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToUInt32(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToUInt32(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -447,17 +483,20 @@ namespace SoftFluent.Windows
                 value = 0;
                 return false;
             }
-      
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToByte(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToByte(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -478,16 +517,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToSByte(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToSByte(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -520,16 +562,19 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToInt16(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToInt16(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -568,16 +613,19 @@ namespace SoftFluent.Windows
                 return true;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToInt32(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToInt32(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -616,16 +664,19 @@ namespace SoftFluent.Windows
                 return true;
             }
 
-            IConvertible ic = input as IConvertible;
-            if (ic != null)
+            if (!(input is string))
             {
-                try
+                IConvertible ic = input as IConvertible;
+                if (ic != null)
                 {
-                    value = ic.ToInt64(provider);
-                    return true;
-                }
-                catch
-                {
+                    try
+                    {
+                        value = ic.ToInt64(provider);
+                        return true;
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -1085,6 +1136,13 @@ namespace SoftFluent.Windows
                     break;
             }
 
+            // catch many exceptions before they happen
+            if (IsNumberType(conversionType) && IsNullOrEmptyString(input))
+            {
+                value = Activator.CreateInstance(conversionType);
+                return false;
+            }
+
             TypeConverter ctConverter = null;
             try
             {
@@ -1115,7 +1173,7 @@ namespace SoftFluent.Windows
             }
 
             // call a possible TryParse method
-            object defaultValue = conversionType.IsValueType ? conversionType.Assembly.CreateInstance(conversionType.FullName) : null;
+            object defaultValue = conversionType.IsValueType ? Activator.CreateInstance(conversionType) : null;
             MethodInfo mi = conversionType.GetMethod("TryParse", BindingFlags.Static | BindingFlags.Public, null, new[] { typeof(string), conversionType.MakeByRefType() }, null);
             if (mi != null && mi.ReturnType == typeof(bool))
             {

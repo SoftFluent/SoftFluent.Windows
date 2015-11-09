@@ -26,7 +26,7 @@ namespace SoftFluent.Windows
 
         public PropertyGrid Grid { get; private set; }
         public object Data { get; private set; }
-        public ObservableCollection<PropertyGridProperty> Properties { get; private set; }
+        public virtual ObservableCollection<PropertyGridProperty> Properties { get; private set; }
 
         public static bool HasProperties(Type type)
         {
@@ -64,9 +64,14 @@ namespace SoftFluent.Windows
             return prop;
         }
 
-        protected virtual PropertyGridProperty CreateProperty()
+        public virtual DynamicObject CreateDynamicObject()
         {
-            return new PropertyGridProperty(this);
+            return ActivatorService.CreateInstance<DynamicObject>();
+        }
+
+        public virtual PropertyGridProperty CreateProperty()
+        {
+            return ActivatorService.CreateInstance<PropertyGridProperty>(this);
         }
 
         protected virtual void Describe(PropertyGridProperty property, PropertyDescriptor descriptor)

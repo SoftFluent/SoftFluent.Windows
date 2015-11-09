@@ -24,8 +24,8 @@ namespace SoftFluent.Windows
 
             DataProvider = dataProvider;
             PropertyType = typeof(object);
-            Attributes = new DynamicObject();
-            TypeAttributes = new DynamicObject();
+            Attributes = dataProvider.CreateDynamicObject();
+            TypeAttributes = dataProvider.CreateDynamicObject();
         }
 
         public override string ToString()

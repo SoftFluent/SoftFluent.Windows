@@ -204,7 +204,8 @@
         </DataTemplate>
 
     </UserControl.Resources>
-    <DataGrid MinRowHeight="24" PreviewKeyUp="OnUIElementPreviewKeyUp" ToggleButton.Checked="OnToggleButtonIsCheckedChanged" ToggleButton.Indeterminate="OnToggleButtonIsCheckedChanged" ToggleButton.Unchecked="OnToggleButtonIsCheckedChanged" HorizontalGridLinesBrush="#D0D0D0" VerticalGridLinesBrush="#D0D0D0" AutoGenerateColumns="False" SelectionUnit="Cell" SelectionMode="Single" CanUserReorderColumns="False" CanUserResizeRows="False" FrozenColumnCount="1" HeadersVisibility="None"  Name="PropertiesGrid" ItemsSource="{Binding Source={StaticResource PropertiesSource}}">
+    <ScrollViewer>
+    <DataGrid MinRowHeight="24" PreviewKeyUp="OnUIElementPreviewKeyUp" ToggleButton.Checked="OnToggleButtonIsCheckedChanged" ToggleButton.Indeterminate="OnToggleButtonIsCheckedChanged" ToggleButton.Unchecked="OnToggleButtonIsCheckedChanged" HorizontalGridLinesBrush="#D0D0D0" VerticalGridLinesBrush="#D0D0D0" AutoGenerateColumns="False" SelectionUnit="Cell" SelectionMode="Single" CanUserReorderColumns="False" CanUserResizeRows="False" FrozenColumnCount="1" HeadersVisibility="None" Name="PropertiesGrid" ItemsSource="{Binding Source={StaticResource PropertiesSource}}">
         <DataGrid.Columns>
             <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" Width="SizeToCells" IsReadOnly="True" Foreground="Black">
                 <DataGridTextColumn.CellStyle>
@@ -341,4 +342,5 @@
             </GroupStyle>
         </DataGrid.GroupStyle>
     </DataGrid>
+    </ScrollViewer>
 </UserControl>

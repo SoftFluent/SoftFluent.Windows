@@ -29,6 +29,11 @@ namespace SoftFluent.Windows
             {
                 _services[typeof(ITypeResolver)] = new BaseTypeResolver();
             }
+
+            if (!_services.ContainsKey(typeof(IActivator)))
+            {
+                _services[typeof(IActivator)] = new BaseActivator();
+            }
         }
 
         public static ServiceProvider Current
