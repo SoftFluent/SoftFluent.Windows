@@ -1,4 +1,4 @@
-This repository contains useful controls/converter/classes to work with WPF.
+This repository contains useful controls/converter/classes to work with WPF. The current version of the library is also [available on NuGet](https://www.nuget.org/packages/SoftFluent.Windows/).
 
 # PropertyGrid
 
