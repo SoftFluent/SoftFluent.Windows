@@ -138,7 +138,7 @@ namespace SoftFluent.Windows
             if (container == null)
                 throw new ArgumentNullException("container");
 
-            PropertyGridProperty property = item as PropertyGridProperty;
+            var property = item as PropertyGridProperty;
             if (property == null)
                 return base.SelectTemplate(item, container);
 

@@ -84,7 +84,7 @@ namespace SoftFluent.Windows
         /// <returns>true if Value is equals to the specified value.</returns>
         public virtual bool Matches(object value, object parameter, CultureInfo culture)
         {
-            UniversalConverterInput input = new UniversalConverterInput();
+            var input = new UniversalConverterInput();
             input.MaximumValue = MaximumValue;
             input.MinimumValue = MinimumValue;
             input.Operator = Operator;

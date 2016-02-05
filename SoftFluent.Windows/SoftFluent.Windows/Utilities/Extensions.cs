@@ -41,7 +41,7 @@ namespace SoftFluent.Windows.Utilities
 
             count = Math.Min(count, bytes.Length - offset);
 
-            StringBuilder sb = new StringBuilder(count * 2);
+            var sb = new StringBuilder(count * 2);
             for (int i = offset; i < (offset + count); i++)
             {
                 sb.Append(_hexaChars[bytes[i] / 16]);
@@ -110,7 +110,8 @@ namespace SoftFluent.Windows.Utilities
                 {
                     sep2 = format[2];
                 }
-                StringBuilder sb = new StringBuilder();
+
+                var sb = new StringBuilder();
                 foreach (PropertyInfo pi in obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
                 {
                     if (!pi.CanRead)
@@ -167,7 +168,7 @@ namespace SoftFluent.Windows.Utilities
                     // errrhh... so far, since lambda cannot be parsed at runtime, we do nothing...
                 }
 
-                IEnumerable enumerable = obj as IEnumerable;
+                var enumerable = obj as IEnumerable;
                 if (enumerable != null)
                 {
                     format = format.Substring(6 + enumExpression.Length);
@@ -198,7 +199,7 @@ namespace SoftFluent.Windows.Utilities
             }
             else if (format.IndexOf(',') >= 0)
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 foreach (string propName in format.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     PropertyInfo pi = obj.GetType().GetProperty(propName, BindingFlags.Instance | BindingFlags.Public);
@@ -227,17 +228,16 @@ namespace SoftFluent.Windows.Utilities
                 }
                 return sb.ToString();
             }
+
             int pos2 = format.IndexOf(':');
             if (pos2 > 0)
             {
-                //object inner = ConvertUtilities.Evaluate(obj, format.Substring(0, pos2), null);
                 object inner = DataBindingEvaluator.Eval(obj, format.Substring(0, pos2), false);
                 if (inner == null)
                     return string.Empty;
 
                 return string.Format(formatProvider, "{0:" + format.Substring(pos2 + 1) + "}", inner);
             }
-            //return (string)ConvertUtilities.Evaluate(obj, format, typeof(string), string.Empty, formatProvider);
             return DataBindingEvaluator.Eval(obj, format, formatProvider, null, false);
         }
 
@@ -251,7 +251,7 @@ namespace SoftFluent.Windows.Utilities
             if (collection == null)
                 return null;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             int i = 0;
             foreach (object o in collection)
             {
@@ -373,7 +373,7 @@ namespace SoftFluent.Windows.Utilities
 
         public static List<T> SplitToList<T>(this string thisString, params char[] separators)
         {
-            List<T> list = new List<T>();
+            var list = new List<T>();
             if (thisString != null)
             {
                 foreach (string s in thisString.Split(separators))
@@ -441,7 +441,7 @@ namespace SoftFluent.Windows.Utilities
             if (sameLevelFirst)
             {
                 int count = VisualTreeHelper.GetChildrenCount(obj);
-                List<DependencyObject> list = new List<DependencyObject>(count);
+                var list = new List<DependencyObject>(count);
                 for (int i = 0; i < count; i++)
                 {
                     DependencyObject child = VisualTreeHelper.GetChild(obj, i);
@@ -578,7 +578,7 @@ namespace SoftFluent.Windows.Utilities
                 if (item is T)
                     yield return (T)item;
 
-                DependencyObject dep = item as DependencyObject;
+                var dep = item as DependencyObject;
                 if (dep != null)
                 {
                     foreach (T child in dep.GetChildren<T>())
@@ -613,7 +613,7 @@ namespace SoftFluent.Windows.Utilities
             if (exception == null)
                 return null;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             AppendMessages(sb, exception, separator);
             return sb.ToString().Replace("..", ".");
         }
@@ -660,7 +660,7 @@ namespace SoftFluent.Windows.Utilities
             if (attributes == null)
                 return null;
 
-            foreach (Attribute att in attributes)
+            foreach (var att in attributes)
             {
                 if (typeof(T).IsAssignableFrom(att.GetType()))
                     return (T)att;

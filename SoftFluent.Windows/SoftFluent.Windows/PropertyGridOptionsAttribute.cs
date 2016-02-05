@@ -40,10 +40,10 @@ namespace SoftFluent.Windows
                         return dt;
                 }
 
-                FrameworkElement fe = container as FrameworkElement;
+                var fe = container as FrameworkElement;
                 if (fe != null)
                 {
-                    DataTemplate dt = (DataTemplate)fe.TryFindResource(att.EditorDataTemplateResourceKey);
+                    var dt = (DataTemplate)fe.TryFindResource(att.EditorDataTemplateResourceKey);
                     if (dt != null)
                         return dt;
                 }
@@ -56,14 +56,14 @@ namespace SoftFluent.Windows
                 object editor = Activator.CreateInstance(att.EditorType);
                 if (att.EditorDataTemplateSelectorPropertyPath != null)
                 {
-                    DataTemplateSelector dts = (DataTemplateSelector)DataBindingEvaluator.GetPropertyValue(editor, att.EditorDataTemplateSelectorPropertyPath);
+                    var dts = (DataTemplateSelector)DataBindingEvaluator.GetPropertyValue(editor, att.EditorDataTemplateSelectorPropertyPath);
                     return dts != null ? dts.SelectTemplate(item, container) : null;
                 }
 
                 if (att.EditorDataTemplatePropertyPath != null)
                     return (DataTemplate)DataBindingEvaluator.GetPropertyValue(editor, att.EditorDataTemplatePropertyPath);
 
-                ContentControl cc = editor as ContentControl;
+                var cc = editor as ContentControl;
                 if (cc != null)
                 {
                     if (cc.ContentTemplateSelector != null)
@@ -76,7 +76,7 @@ namespace SoftFluent.Windows
                     return cc.ContentTemplate;
                 }
 
-                ContentPresenter cp = editor as ContentPresenter;
+                var cp = editor as ContentPresenter;
                 if (cp != null)
                 {
                     if (cp.ContentTemplateSelector != null)

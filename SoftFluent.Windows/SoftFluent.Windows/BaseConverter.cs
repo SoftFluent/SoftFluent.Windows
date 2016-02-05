@@ -33,7 +33,7 @@ namespace SoftFluent.Windows
                 return true;
             }
 
-            List<byte> list = new List<byte>();
+            var list = new List<byte>();
             bool lo = false;
             byte prev = 0;
             int offset;
@@ -244,7 +244,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -263,7 +263,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -277,7 +277,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -296,7 +296,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -310,7 +310,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -329,7 +329,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -343,7 +343,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -364,7 +364,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -378,7 +378,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -397,7 +397,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -425,7 +425,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -453,7 +453,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -467,7 +467,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -486,7 +486,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -500,7 +500,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -519,7 +519,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -533,7 +533,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -564,7 +564,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -578,7 +578,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -615,7 +615,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -629,7 +629,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -666,7 +666,7 @@ namespace SoftFluent.Windows
 
             if (!(input is string))
             {
-                IConvertible ic = input as IConvertible;
+                var ic = input as IConvertible;
                 if (ic != null)
                 {
                     try
@@ -680,7 +680,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            NumberStyles styles = NumberStyles.Integer;
+            var styles = NumberStyles.Integer;
             string s = Convert.ToString(input, provider);
             if (NormalizeHexString(ref s))
             {
@@ -703,10 +703,10 @@ namespace SoftFluent.Windows
                 return false;
             }
 
-            object booll;
-            if (TryConvert(input, typeof(long), provider, out booll))
+            object b;
+            if (TryConvert(input, typeof(long), provider, out b))
             {
-                value = ((long)booll) != 0;
+                value = ((long)b) != 0;
                 return true;
             }
 

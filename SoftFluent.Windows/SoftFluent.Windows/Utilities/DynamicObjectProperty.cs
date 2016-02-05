@@ -18,9 +18,9 @@ namespace SoftFluent.Windows.Utilities
         /// </summary>
         /// <param name="descriptor">The descriptor.</param>
         public DynamicObjectProperty(PropertyDescriptor descriptor)
-            :base(descriptor)
+            : base(descriptor)
         {
-            List<Attribute> atts = new List<Attribute>();
+            var atts = new List<Attribute>();
             foreach (Attribute att in descriptor.Attributes)
             {
                 atts.Add(att);
@@ -35,7 +35,7 @@ namespace SoftFluent.Windows.Utilities
         /// <param name="type">The property type.</param>
         /// <param name="attributes">The property custom attributes.</param>
         public DynamicObjectProperty(string name, Type type, IEnumerable<Attribute> attributes)
-            :base(name, GetAttributes(attributes))
+            : base(name, GetAttributes(attributes))
         {
             Construct(name, type, attributes);
         }
@@ -50,13 +50,13 @@ namespace SoftFluent.Windows.Utilities
         {
             _type = type;
 
-            ReadOnlyAttribute ro = Attributes.GetAttribute<ReadOnlyAttribute>();
+            var ro = Attributes.GetAttribute<ReadOnlyAttribute>();
             if (ro != null)
             {
                 _isReadOnly = ro.IsReadOnly;
             }
 
-            DefaultValueAttribute dv = Attributes.GetAttribute<DefaultValueAttribute>();
+            var dv = Attributes.GetAttribute<DefaultValueAttribute>();
             if (dv != null)
             {
                 HasDefaultValue = true;
@@ -111,7 +111,7 @@ namespace SoftFluent.Windows.Utilities
 
         private static Attribute[] GetAttributes(IEnumerable<Attribute> attributes)
         {
-            List<Attribute> list = attributes == null ? new List<Attribute>() : new List<Attribute>(attributes);
+            var list = attributes == null ? new List<Attribute>() : new List<Attribute>(attributes);
             return list.ToArray();
         }
 
@@ -151,7 +151,7 @@ namespace SoftFluent.Windows.Utilities
         /// </returns>
         public override object GetValue(object component)
         {
-            DynamicObject obj = component as DynamicObject;
+            var obj = component as DynamicObject;
             if (obj != null)
                 return obj.GetPropertyValue(Name, _defaultValue);
 
@@ -206,7 +206,7 @@ namespace SoftFluent.Windows.Utilities
         /// <param name="value">The new value.</param>
         public override void SetValue(object component, object value)
         {
-            DynamicObject obj = component as DynamicObject;
+            var obj = component as DynamicObject;
             if (obj != null)
             {
                 obj.SetPropertyValue(Name, value);

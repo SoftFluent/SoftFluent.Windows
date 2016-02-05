@@ -22,8 +22,8 @@ namespace SoftFluent.Windows
         {
             if (targetType == typeof(string) && !(value is string) && value is IEnumerable)
             {
-                StringBuilder sb = new StringBuilder();
-                IEnumerable enumerable = value as IEnumerable;
+                var sb = new StringBuilder();
+                var enumerable = value as IEnumerable;
                 if (enumerable != null)
                 {
                     foreach (object obj in enumerable)

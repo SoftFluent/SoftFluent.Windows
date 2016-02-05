@@ -144,14 +144,14 @@ namespace SoftFluent.Windows
 
             if (childName == null)
             {
-                foreach (UIElement child in fe.EnumerateVisualChildren(true).OfType<UIElement>())
+                foreach (var child in fe.EnumerateVisualChildren(true).OfType<UIElement>())
                 {
                     UpdateBindings(child, where, action);
                 }
             }
             else
             {
-                FrameworkElement child = fe.FindVisualChild<FrameworkElement>(childName);
+                var child = fe.FindVisualChild<FrameworkElement>(childName);
                 if (child != null)
                 {
                     UpdateBindings(child, where, action);
@@ -190,7 +190,7 @@ namespace SoftFluent.Windows
             string resourceKey = string.Format("{0}", parameter);
             if (string.IsNullOrWhiteSpace(resourceKey))
             {
-                PropertyGridOptionsAttribute att = PropertyGridOptionsAttribute.FromProperty(property);
+                var att = PropertyGridOptionsAttribute.FromProperty(property);
                 if (att != null)
                 {
                     resourceKey = att.EditorResourceKey;
@@ -206,7 +206,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            Window editor = TryFindResource(resourceKey) as Window;
+            var editor = TryFindResource(resourceKey) as Window;
             if (editor != null)
             {
                 editor.Owner = this.GetVisualSelfOrParent<Window>();
@@ -265,7 +265,7 @@ namespace SoftFluent.Windows
                     }
                 }
 
-                IPropertyGridEditor pge = editor as IPropertyGridEditor;
+                var pge = editor as IPropertyGridEditor;
                 if (pge != null)
                 {
                     if (!pge.SetContext(property, parameter))
@@ -289,7 +289,7 @@ namespace SoftFluent.Windows
             if (property == null)
                 throw new ArgumentNullException("property");
 
-            PropertyGridOptionsAttribute att = PropertyGridOptionsAttribute.FromProperty(property);
+            var att = PropertyGridOptionsAttribute.FromProperty(property);
             if (att != null)
                 return att.CollectionEditorHasOnlyOneColumn;
 
@@ -320,7 +320,7 @@ namespace SoftFluent.Windows
             if (editor != null)
             {
                 bool? ret;
-                IPropertyGridObject go = property.DataProvider.Data as IPropertyGridObject;
+                var go = property.DataProvider.Data as IPropertyGridObject;
                 if (go != null)
                 {
                     if (go.TryShowEditor(property, editor, out ret))
@@ -341,12 +341,12 @@ namespace SoftFluent.Windows
 
         protected virtual void OnBrowseCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            RoutedEventArgs browse = new RoutedEventArgs(BrowseEvent, e.OriginalSource);
+            var browse = new RoutedEventArgs(BrowseEvent, e.OriginalSource);
             RaiseEvent(browse);
             if (browse.Handled)
                 return;
 
-            PropertyGridProperty property = PropertyGridProperty.FromEvent(e);
+            var property = PropertyGridProperty.FromEvent(e);
             if (property != null)
             {
                 property.Executed(sender, e);
@@ -359,7 +359,7 @@ namespace SoftFluent.Windows
 
         protected virtual void OnGuidCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            TextBox tb = e.OriginalSource as TextBox;
+            var tb = e.OriginalSource as TextBox;
             if (tb != null)
             {
                 if (NewGuidCommand.Equals(e.Command))
@@ -377,10 +377,8 @@ namespace SoftFluent.Windows
                 if (IncrementGuidCommand.Equals(e.Command))
                 {
                     Guid g = ConversionService.ChangeType(tb.Text.Trim(), Guid.Empty);
-
                     byte[] bytes = g.ToByteArray();
                     bytes[15]++;
-
                     tb.Text = new Guid(bytes).ToString(NormalizeGuidParameter(e.Parameter));
                     return;
                 }
@@ -400,7 +398,7 @@ namespace SoftFluent.Windows
 
         protected virtual void OnGuidCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            PropertyGridProperty property = PropertyGridProperty.FromEvent(e);
+            var property = PropertyGridProperty.FromEvent(e);
             if (property != null && (property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?)))
             {
                 e.CanExecute = true;
@@ -431,7 +429,7 @@ namespace SoftFluent.Windows
 
         private static void IsReadOnlyPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
-            PropertyGrid grid = (PropertyGrid)source;
+            var grid = (PropertyGrid)source;
             grid.PropertiesSource.Source = grid.PropertiesSource.Source;
         }
 
@@ -444,7 +442,7 @@ namespace SoftFluent.Windows
             BindingExpression expr = element.GetBindingExpression(FocusManager.FocusedElementProperty);
             if (expr != null && expr.ParentBinding != null && expr.ParentBinding.ElementName != null)
             {
-                FrameworkElement child = element.FindFocusableVisualChild<FrameworkElement>(expr.ParentBinding.ElementName);
+                var child = element.FindFocusableVisualChild<FrameworkElement>(expr.ParentBinding.ElementName);
                 if (child != null)
                 {
                     child.Focus();
@@ -454,7 +452,7 @@ namespace SoftFluent.Windows
 
         public static void RefreshSelectedObject(DependencyObject editor)
         {
-            foreach (PropertyGrid grid in editor.GetChildren<PropertyGrid>())
+            foreach (var grid in editor.GetChildren<PropertyGrid>())
             {
                 grid.RefreshSelectedObject();
             }
@@ -470,8 +468,8 @@ namespace SoftFluent.Windows
 
         private static void SelectedObjectPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
-            PropertyGrid grid = (PropertyGrid)source;
-            INotifyPropertyChanged pc = e.OldValue as INotifyPropertyChanged;
+            var grid = (PropertyGrid)source;
+            var pc = e.OldValue as INotifyPropertyChanged;
             if (pc != null)
             {
                 pc.PropertyChanged -= grid.OnDispatcherSourcePropertyChanged;
@@ -483,7 +481,7 @@ namespace SoftFluent.Windows
                 return;
             }
 
-            ReadOnlyAttribute roa = e.NewValue.GetType().GetAttribute<ReadOnlyAttribute>();
+            var roa = e.NewValue.GetType().GetAttribute<ReadOnlyAttribute>();
             if (roa != null && roa.IsReadOnly)
             {
                 grid.IsReadOnly = true;
@@ -555,10 +553,10 @@ namespace SoftFluent.Windows
 
         public virtual void OnToggleButtonIsCheckedChanged(object sender, RoutedEventArgs e)
         {
-            ToggleButton button = e.OriginalSource as ToggleButton;
+            var button = e.OriginalSource as ToggleButton;
             if (button != null)
             {
-                PropertyGridItem item = button.DataContext as PropertyGridItem;
+                var item = button.DataContext as PropertyGridItem;
                 if (item != null && item.Property != null && item.Property.IsEnum && item.Property.IsFlagsEnum)
                 {
                     if (button.IsChecked.HasValue)
@@ -585,7 +583,7 @@ namespace SoftFluent.Windows
                         object propValue = PropertyGridComboBoxExtension.EnumToObject(item.Property, newValue);
                         item.Property.Value = propValue;
 
-                        ListBoxItem li = button.GetVisualSelfOrParent<ListBoxItem>();
+                        var li = button.GetVisualSelfOrParent<ListBoxItem>();
                         if (li != null)
                         {
                             ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(li);
@@ -593,14 +591,14 @@ namespace SoftFluent.Windows
                             {
                                 if (button.IsChecked.Value && itemValue == 0)
                                 {
-                                    foreach (PropertyGridItem gridItem in parent.Items.OfType<PropertyGridItem>())
+                                    foreach (var gridItem in parent.Items.OfType<PropertyGridItem>())
                                     {
                                         gridItem.IsChecked = PropertyGridComboBoxExtension.EnumToUInt64(item.Property, gridItem.Value) == 0;
                                     }
                                 }
                                 else
                                 {
-                                    foreach (PropertyGridItem gridItem in parent.Items.OfType<PropertyGridItem>())
+                                    foreach (var gridItem in parent.Items.OfType<PropertyGridItem>())
                                     {
                                         ulong gridItemValue = PropertyGridComboBoxExtension.EnumToUInt64(item.Property, gridItem.Value);
                                         if (gridItemValue == 0)
@@ -623,10 +621,10 @@ namespace SoftFluent.Windows
         {
             if (e.Key == Key.Space)
             {
-                ListBoxItem item = e.OriginalSource as ListBoxItem;
+                var item = e.OriginalSource as ListBoxItem;
                 if (item != null)
                 {
-                    PropertyGridItem gridItem = item.DataContext as PropertyGridItem;
+                    var gridItem = item.DataContext as PropertyGridItem;
                     if (gridItem != null)
                     {
                         if (gridItem.IsChecked.HasValue)
@@ -640,8 +638,8 @@ namespace SoftFluent.Windows
 
         protected virtual void OnEditorWindowSaveExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            Window window = (Window)sender;
-            PropertyGridProperty prop = window.DataContext as PropertyGridProperty;
+            var window = (Window)sender;
+            var prop = window.DataContext as PropertyGridProperty;
             if (prop != null)
             {
                 prop.Executed(sender, e);
@@ -650,8 +648,8 @@ namespace SoftFluent.Windows
 
         protected virtual void OnEditorWindowSaveCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            Window window = (Window)sender;
-            PropertyGridProperty prop = window.DataContext as PropertyGridProperty;
+            var window = (Window)sender;
+            var prop = window.DataContext as PropertyGridProperty;
             if (prop != null)
             {
                 prop.CanExecute(sender, e);
@@ -663,8 +661,8 @@ namespace SoftFluent.Windows
 
         protected virtual void OnEditorWindowCloseExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            Window window = (Window)sender;
-            PropertyGridProperty prop = window.DataContext as PropertyGridProperty;
+            var window = (Window)sender;
+            var prop = window.DataContext as PropertyGridProperty;
             if (prop != null)
             {
                 prop.Executed(sender, e);
@@ -676,8 +674,8 @@ namespace SoftFluent.Windows
 
         protected virtual void OnEditorWindowCloseCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            Window window = (Window)sender;
-            PropertyGridProperty prop = window.DataContext as PropertyGridProperty;
+            var window = (Window)sender;
+            var prop = window.DataContext as PropertyGridProperty;
             if (prop != null)
             {
                 prop.CanExecute(sender, e);
@@ -704,19 +702,18 @@ namespace SoftFluent.Windows
 
             if (e.AddedItems.Count > 0)
             {
-                FrameworkElement obj = sender as FrameworkElement;
+                var obj = sender as FrameworkElement;
                 if (obj != null)
                 {
-                    Window window = obj.GetSelfOrParent<Window>();
+                    var window = obj.GetSelfOrParent<Window>();
                     if (window != null)
                     {
-                        PropertyGrid pg = LogicalTreeHelper.FindLogicalNode(window, childPropertyGridName) as PropertyGrid;
+                        var pg = LogicalTreeHelper.FindLogicalNode(window, childPropertyGridName) as PropertyGrid;
                         if (pg != null)
                         {
                             if (parentGrid != null)
                             {
                                 pg.DefaultCategoryName = parentGrid.DefaultCategoryName;
-                                //pg.IsReadOnly = parentGrid.IsReadOnly;
                             }
                             pg.SelectedObject = e.AddedItems[0];
                         }

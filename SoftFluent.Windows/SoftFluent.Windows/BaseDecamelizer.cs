@@ -28,7 +28,7 @@ namespace SoftFluent.Windows
                 options = new DecamelizeOptions();
             }
 
-            StringBuilder sb = new StringBuilder(text.Length);
+            var sb = new StringBuilder(text.Length);
 
             // 0=lower, 1=upper, 2=special char
             UnicodeCategory lastCategory = CharUnicodeInfo.GetUnicodeCategory(text[0]);

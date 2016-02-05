@@ -25,7 +25,7 @@ namespace SoftFluent.Windows.Diagnostics
 
                 if (typeof(TraceSource).IsAssignableFrom(pi.PropertyType))
                 {
-                    TraceSource ts = (TraceSource)pi.GetValue(null, null);
+                    var ts = (TraceSource)pi.GetValue(null, null);
                     ts.Listeners.Add(listener);
                     ts.Switch.Level = levels;
                 }

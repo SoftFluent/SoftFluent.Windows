@@ -242,7 +242,7 @@ namespace SoftFluent.Windows.Utilities
 			if (propertyValue == null)
 				return null;
 
-            Array array = propertyValue as Array;
+            var array = propertyValue as Array;
 			if (array != null && numberIndex)
 				return array.GetValue((int)index);
 

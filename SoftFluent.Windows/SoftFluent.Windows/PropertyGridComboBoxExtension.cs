@@ -110,7 +110,7 @@ namespace SoftFluent.Windows
             if (BaseConverter.IsNullOrEmptyString(value))
                 return string.Empty;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             string svalue = string.Format("{0}", value);
             ulong ul;
             if (!ulong.TryParse(svalue, out ul))
@@ -164,7 +164,7 @@ namespace SoftFluent.Windows
 
         private static List<string> ParseEnum(string text)
         {
-            List<string> enums = new List<string>();
+            var enums = new List<string>();
             string[] split = text.Split(',', ';', '|');
             if (split.Length >= 0)
             {
@@ -250,8 +250,8 @@ namespace SoftFluent.Windows
             bool isEnumOrNullableEnum = PropertyGridProperty.IsEnumOrNullableEnum(property.PropertyType, out enumType, out nullable);
 
             PropertyGridItem zero = null;
-            PropertyGridOptionsAttribute att = PropertyGridOptionsAttribute.FromProperty(property);
-            ObservableCollection<PropertyGridItem> items = new ObservableCollection<PropertyGridItem>();
+            var att = PropertyGridOptionsAttribute.FromProperty(property);
+            var items = new ObservableCollection<PropertyGridItem>();
             if (isEnumOrNullableEnum)
             {
                 if (nullable)
@@ -465,7 +465,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            Dictionary<string, object> ctx = new Dictionary<string, object>();
+            var ctx = new Dictionary<string, object>();
             ctx["items"] = items;
             property.OnEvent(this, ActivatorService.CreateInstance<PropertyGridEventArgs>(property, ctx));
             return items;
@@ -484,11 +484,11 @@ namespace SoftFluent.Windows
 
             FieldInfo fi = type.GetField(name, BindingFlags.Static | BindingFlags.Public);
             displayName = fi.Name;
-            BrowsableAttribute ba = fi.GetAttribute<BrowsableAttribute>();
+            var ba = fi.GetAttribute<BrowsableAttribute>();
             if (ba != null && !ba.Browsable)
                 return false;
 
-            DescriptionAttribute da = fi.GetAttribute<DescriptionAttribute>();
+            var da = fi.GetAttribute<DescriptionAttribute>();
             if (da != null && !string.IsNullOrWhiteSpace(da.Description))
             {
                 displayName = da.Description;
@@ -507,7 +507,7 @@ namespace SoftFluent.Windows
 
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                PropertyGridProperty property = value as PropertyGridProperty;
+                var property = value as PropertyGridProperty;
                 if (property != null)
                     return Extension.BuildItems(property, targetType, parameter, culture);
 

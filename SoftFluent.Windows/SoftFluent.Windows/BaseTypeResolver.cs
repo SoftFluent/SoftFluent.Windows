@@ -9,7 +9,7 @@ namespace SoftFluent.Windows
             if (fullName == null)
                 throw new ArgumentNullException("fullName");
 
-            Type type = Type.GetType(fullName, throwOnError);
+            var type = Type.GetType(fullName, throwOnError);
             return type;
         }
     }

@@ -35,7 +35,7 @@ namespace SoftFluent.Windows
 
         public virtual void CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            IPropertyGridCommandHandler handler = Value as IPropertyGridCommandHandler;
+            var handler = Value as IPropertyGridCommandHandler;
             if (handler != null)
             {
                 handler.CanExecute(this, sender, e);
@@ -44,7 +44,7 @@ namespace SoftFluent.Windows
 
         public virtual void Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            IPropertyGridCommandHandler handler = Value as IPropertyGridCommandHandler;
+            var handler = Value as IPropertyGridCommandHandler;
             if (handler != null)
             {
                 handler.Executed(this, sender, e);
@@ -107,7 +107,7 @@ namespace SoftFluent.Windows
             if (e == null)
                 return null;
 
-            FrameworkElement fe = e.OriginalSource as FrameworkElement;
+            var fe = e.OriginalSource as FrameworkElement;
             if (fe == null)
                 return null;
 
@@ -232,7 +232,7 @@ namespace SoftFluent.Windows
         {
             get
             {
-                IEnumerable enumerable = Value as IEnumerable;
+                var enumerable = Value as IEnumerable;
                 if (enumerable != null)
                     return enumerable.Cast<object>().Count();
 
@@ -354,7 +354,7 @@ namespace SoftFluent.Windows
             if (_valueCloned && !refresh)
                 return;
 
-            ICloneable c = Value as ICloneable;
+            var c = Value as ICloneable;
             _clonedValue = c != null ? c.Clone() : Value;
             _valueCloned = true;
         }

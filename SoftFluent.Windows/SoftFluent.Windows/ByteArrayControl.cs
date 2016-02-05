@@ -108,7 +108,7 @@ namespace SoftFluent.Windows
 
         private static object OnOffsetCoerce(DependencyObject d, object baseValue)
         {
-            ByteArrayControl bac = (ByteArrayControl)d;
+            var bac = (ByteArrayControl)d;
             if (bac._stream == null)
                 return 0L;
 
@@ -121,27 +121,27 @@ namespace SoftFluent.Windows
 
         private static void OnOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ByteArrayControl bac = (ByteArrayControl)d;
+            var bac = (ByteArrayControl)d;
             bac.ScrollToVerticalOffset((long)e.NewValue);
         }
 
         private static void OnAddHeaderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ByteArrayControl bac = (ByteArrayControl)d;
+            var bac = (ByteArrayControl)d;
             bac.ResizeContent();
             bac.SetupText();
         }
 
         private static void OnRowCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ByteArrayControl bac = (ByteArrayControl)d;
+            var bac = (ByteArrayControl)d;
             bac.ResizeContent();
             bac.SetupText();
         }
 
         private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ByteArrayControl bac = (ByteArrayControl)d;
+            var bac = (ByteArrayControl)d;
             bac.OpenStream(e.NewValue);
             bac.ResizeContent();
             bac.SetupText();
@@ -253,7 +253,7 @@ namespace SoftFluent.Windows
             if (source == null)
                 return;
 
-            Stream stream = source as Stream;
+            var stream = source as Stream;
             if (stream != null)
             {
                 if (!stream.CanRead)
@@ -279,7 +279,7 @@ namespace SoftFluent.Windows
                 return;
             }
 
-            Uri uri = source as Uri;
+            var uri = source as Uri;
             if (uri != null && uri.IsFile && File.Exists(uri.LocalPath))
             {
                 _stream = new FileStream(uri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -335,7 +335,7 @@ namespace SoftFluent.Windows
             bool b16 = address >= int.MaxValue;
             string format = b16 ? "{0:X16}  " : "{0:X8}  ";
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (addHeader)
             {
                 // Offset    00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F  0123456789ABCDEF

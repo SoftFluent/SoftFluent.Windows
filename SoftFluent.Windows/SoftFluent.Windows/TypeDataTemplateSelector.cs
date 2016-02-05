@@ -23,7 +23,7 @@ namespace SoftFluent.Windows
         {
             foreach (DataTemplate dt in DataTemplates.Where(dt => dt.DataType is Type))
             {
-                Type type = (Type)dt.DataType;
+                var type = (Type)dt.DataType;
                 if (item == null)
                 {
                     if (!type.IsValueType)

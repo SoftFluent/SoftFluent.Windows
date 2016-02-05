@@ -239,8 +239,9 @@
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="20" />
-                                                <TextBlock Text="{Binding Name}" />
+                                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200">
+                                                    <TextBlock Text="{Binding Name}"  />
+                                                </CheckBox>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>

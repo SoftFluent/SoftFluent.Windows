@@ -101,11 +101,11 @@ namespace SoftFluent.Windows
             property.IsEnum = descriptor.PropertyType.IsEnum;
             property.IsFlagsEnum = descriptor.PropertyType.IsEnum && Extensions.IsFlagsEnum(descriptor.PropertyType);
 
-            DefaultValueAttribute att = descriptor.GetAttribute<DefaultValueAttribute>();
+            var att = descriptor.GetAttribute<DefaultValueAttribute>();
             property.HasDefaultValue = att != null;
             property.DefaultValue = att != null ? att.Value : null;
 
-            PropertyGridOptionsAttribute options = descriptor.GetAttribute<PropertyGridOptionsAttribute>();
+            var options = descriptor.GetAttribute<PropertyGridOptionsAttribute>();
             if (options != null)
             {
                 if (options.SortOrder != 0)
@@ -143,7 +143,7 @@ namespace SoftFluent.Windows
 
             bool forceReadWrite = false;
             PropertyGridProperty property = null;
-            PropertyGridOptionsAttribute options = descriptor.GetAttribute<PropertyGridOptionsAttribute>();
+            var options = descriptor.GetAttribute<PropertyGridOptionsAttribute>();
             if (options != null)
             {
                 forceReadWrite = options.ForceReadWrite;
@@ -187,7 +187,7 @@ namespace SoftFluent.Windows
         protected virtual void ScanProperties()
         {
             Properties.Clear();
-            List<PropertyGridProperty> props = new List<PropertyGridProperty>();
+            var props = new List<PropertyGridProperty>();
             foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(Data))
             {
                 if (!descriptor.IsBrowsable)
@@ -200,7 +200,7 @@ namespace SoftFluent.Windows
                 }
             }
 
-            IPropertyGridObject pga = Data as IPropertyGridObject;
+            var pga = Data as IPropertyGridObject;
             if (pga != null)
             {
                 pga.FinalizeProperties(this, props);

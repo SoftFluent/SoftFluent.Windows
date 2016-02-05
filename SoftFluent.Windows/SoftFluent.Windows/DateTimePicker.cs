@@ -32,7 +32,7 @@ namespace SoftFluent.Windows
 
         private static void TimesChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
-            DateTimePicker dtp = (DateTimePicker)source;
+            var dtp = (DateTimePicker)source;
             TimeSpan tsi = dtp.TimeInterval;
             if (tsi <= TimeSpan.Zero)
             {

@@ -396,14 +396,14 @@ namespace SoftFluent.Windows.Utilities
             if (attributes == null || attributes.Length == 0)
                 return ((ICustomTypeDescriptor)this).GetEvents();
 
-            List<EventDescriptor> list = new List<EventDescriptor>();
+            var list = new List<EventDescriptor>();
             foreach (EventDescriptor evt in _events)
             {
                 if (evt.Attributes.Count == 0)
                     continue;
 
                 bool cont = false;
-                foreach (Attribute att in attributes)
+                foreach (var att in attributes)
                 {
                     if (!HasMatchingAttribute(evt, att))
                     {
@@ -422,7 +422,7 @@ namespace SoftFluent.Windows.Utilities
 
         private static bool HasMatchingAttribute(MemberDescriptor member, Attribute attribute)
         {
-            Attribute att = member.Attributes[attribute.GetType()];
+            var att = member.Attributes[attribute.GetType()];
             if (att == null)
                 return attribute.IsDefaultAttribute();
 
@@ -439,7 +439,7 @@ namespace SoftFluent.Windows.Utilities
             if (attributes == null || attributes.Length == 0)
                 return ((ICustomTypeDescriptor)this).GetProperties();
 
-            List<PropertyDescriptor> list = new List<PropertyDescriptor>();
+            var list = new List<PropertyDescriptor>();
             foreach (PropertyDescriptor prop in _properties)
             {
                 if (prop.Attributes.Count == 0)
@@ -565,12 +565,12 @@ namespace SoftFluent.Windows.Utilities
                 separator = Environment.NewLine;
             }
 
-            List<ValidationException> list = new List<ValidationException>();
+            var list = new List<ValidationException>();
             ValidateMember(culture, list, memberName);
             if (list.Count == 0)
                 return null;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (ValidationException e in list)
             {
                 if (sb.Length != 0)

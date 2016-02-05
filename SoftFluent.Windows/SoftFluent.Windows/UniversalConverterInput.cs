@@ -92,7 +92,7 @@ namespace SoftFluent.Windows
         /// <returns></returns>
         public virtual UniversalConverterInput Clone()
         {
-            UniversalConverterInput clone = new UniversalConverterInput();
+            var clone = new UniversalConverterInput();
             clone.MaximumValue = MaximumValue;
             clone.MinimumValue = MinimumValue;
             clone.Operator = Operator;
@@ -304,7 +304,7 @@ namespace SoftFluent.Windows
                 case UniversalConverterOperator.LesserThan:
                 case UniversalConverterOperator.GreaterThanOrEqual:
                 case UniversalConverterOperator.GreaterThan:
-                    IComparable cv = Value as IComparable;
+                    var cv = Value as IComparable;
                     if (cv == null || ValueToCompare == null)
                         break;
 
