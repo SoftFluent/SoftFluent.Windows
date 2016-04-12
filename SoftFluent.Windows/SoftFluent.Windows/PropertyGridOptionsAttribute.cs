@@ -21,6 +21,8 @@ namespace SoftFluent.Windows
         public object EditorDataTemplateResourceKey { get; set; }
         public Type PropertyType { get; set; }
         public bool ForceReadWrite { get; set; }
+        public bool HasDefaultValue { get; set; }
+        public object DefaultValue { get; set; }
 
         public static DataTemplate SelectTemplate(PropertyGridProperty property, object item, DependencyObject container)
         {

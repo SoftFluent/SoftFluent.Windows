@@ -19,7 +19,7 @@ namespace SoftFluent.Windows
 
         public PropertyGridComboBoxExtension(Binding binding)
         {
-            _binding = binding;
+            _binding = binding; // may be null
             DefaultZeroName = "None";
         }
 
@@ -32,6 +32,9 @@ namespace SoftFluent.Windows
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
+            if (_binding == null)
+                throw new InvalidOperationException();
+
             _binding.Converter = new Converter(this);
             return _binding.ProvideValue(serviceProvider);
         }
@@ -127,6 +130,7 @@ namespace SoftFluent.Windows
                     {
                         index = IndexOf(options.EnumNames, enumValue);
                     }
+
                     if (index >= 0)
                     {
                         if (sb.Length > 0)
@@ -159,7 +163,17 @@ namespace SoftFluent.Windows
                 }
             }
 
-            return sb.ToString();
+            string s = sb.ToString();
+            if (s.Length == 0)
+            {
+                int index = IndexOf(options.EnumValues, 0);
+                if (index >= 0)
+                {
+                    s = options.EnumNames[index];
+                }
+            }
+
+            return s;
         }
 
         private static List<string> ParseEnum(string text)
@@ -240,6 +254,20 @@ namespace SoftFluent.Windows
             return options.EnumMaxPower <= 0 ? 32 : options.EnumMaxPower;
         }
 
+        internal static bool TryGetDefaultValue(PropertyGridOptionsAttribute options, out string value)
+        {
+            value = null;
+            if (options == null || !options.IsEnum && !options.IsFlagsEnum)
+                return false;
+
+            if (options.EnumNames != null && options.EnumNames.Length > 0)
+            {
+                value = options.EnumNames.First();
+                return true;
+            }
+            return false;
+        }
+
         public virtual IEnumerable BuildItems(PropertyGridProperty property, Type targetType, object parameter, CultureInfo culture)
         {
             if (property == null)
@@ -260,6 +288,7 @@ namespace SoftFluent.Windows
                     item.Property = property;
                     item.Name = null; // "<unset>";
                     item.Value = null;
+                    item.IsUnset = true;
                     items.Add(item);
                 }
 
@@ -281,6 +310,7 @@ namespace SoftFluent.Windows
                         item.Property = property;
                         item.Name = displayName;
                         item.Value = nameValue;
+                        item.IsZero = nameValue == 0;
                         bool isChecked = true;
 
                         if (nameValue == 0)
@@ -316,6 +346,7 @@ namespace SoftFluent.Windows
                         item.Property = property;
                         item.Name = DefaultZeroName;
                         item.Value = 0;
+                        item.IsZero = true;
                         items.Add(item);
                     }
 
@@ -336,6 +367,7 @@ namespace SoftFluent.Windows
                         item.Property = property;
                         item.Name = displayName;
                         item.Value = values.GetValue(i);
+                        item.IsZero = i == 0; // first one is default
                         items.Add(item);
                     }
                 }
@@ -344,6 +376,7 @@ namespace SoftFluent.Windows
             {
                 if (att != null && att.IsEnum)
                 {
+                    bool manualFlags = false;
                     // either EnumList or EnumValues can be null but not both
                     // if not null, length must be the same
                     if (att.EnumNames == null || att.EnumNames.Length == 0)
@@ -365,6 +398,7 @@ namespace SoftFluent.Windows
                             if (att.IsFlagsEnum)
                             {
                                 ulong current = 1; // don't use zero when nothing is specified in flags mode
+                                manualFlags = true;
                                 for (int i = 0; i < att.EnumNames.Length; i++)
                                 {
                                     att.EnumValues[i] = current;
@@ -412,6 +446,14 @@ namespace SoftFluent.Windows
                             item.Property = property;
                             item.Name = att.EnumNames[i];
                             item.Value = valueConverter(att.EnumValues[i]);
+                            if (manualFlags)
+                            {
+                                item.IsZero = i == 0;
+                            }
+                            else
+                            {
+                                item.IsZero = nameValue == 0;
+                            }
                             bool isChecked = true;
 
                             if (nameValue == 0)
@@ -443,6 +485,7 @@ namespace SoftFluent.Windows
                             item.Property = property;
                             item.Name = DefaultZeroName;
                             item.Value = valueConverter(0);
+                            item.IsZero = true;
                             items.Add(item);
                         }
 
@@ -459,6 +502,7 @@ namespace SoftFluent.Windows
                             item.Property = property;
                             item.Name = att.EnumNames[i];
                             item.Value = valueConverter(att.EnumValues[i]);
+                            item.IsZero = i == 0; // first one is default
                             items.Add(item);
                         }
                     }

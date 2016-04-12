@@ -143,6 +143,7 @@ namespace SoftFluent.Windows
             {
                 if (SetProperty(value))
                 {
+                    DefaultValues["Value"] = value;
                     OnPropertyChanged("IsDefaultValue");
                 }
             }

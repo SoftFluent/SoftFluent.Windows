@@ -101,10 +101,6 @@ namespace SoftFluent.Windows
             property.IsEnum = descriptor.PropertyType.IsEnum;
             property.IsFlagsEnum = descriptor.PropertyType.IsEnum && Extensions.IsFlagsEnum(descriptor.PropertyType);
 
-            var att = descriptor.GetAttribute<DefaultValueAttribute>();
-            property.HasDefaultValue = att != null;
-            property.DefaultValue = att != null ? att.Value : null;
-
             var options = descriptor.GetAttribute<PropertyGridOptionsAttribute>();
             if (options != null)
             {
@@ -115,6 +111,30 @@ namespace SoftFluent.Windows
 
                 property.IsEnum = options.IsEnum;
                 property.IsFlagsEnum = options.IsFlagsEnum;
+            }
+
+            var att = descriptor.GetAttribute<DefaultValueAttribute>();
+            if (att != null)
+            {
+                property.HasDefaultValue = true;
+                property.DefaultValue = att.Value;
+            }
+            else if (options != null)
+            {
+                if (options.HasDefaultValue)
+                {
+                    property.HasDefaultValue = true;
+                    property.DefaultValue = options.DefaultValue;
+                }
+                else
+                {
+                    string defaultValue;
+                    if (PropertyGridComboBoxExtension.TryGetDefaultValue(options, out defaultValue))
+                    {
+                        property.DefaultValue = defaultValue;
+                        property.HasDefaultValue = true;
+                    }
+                }
             }
 
             AddDynamicProperties(descriptor.Attributes.OfType<PropertyGridAttribute>(), property.Attributes);
