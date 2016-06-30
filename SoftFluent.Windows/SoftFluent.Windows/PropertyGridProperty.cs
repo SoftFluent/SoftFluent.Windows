@@ -337,15 +337,16 @@ namespace SoftFluent.Windows
             OnPropertyChanged("IsDefaultValue");
         }
 
-        private void SetInternalValue(object value)
+        public virtual void SetValue(object value, bool setChanged, bool forceRaise, bool trackChanged)
         {
-            if (SetProperty("Value", value))
+            bool set = SetProperty("Value", value, setChanged, forceRaise, trackChanged);
+            if (set || forceRaise)
             {
                 OnValueChanged();
             }
         }
 
-        public void ResetClone()
+        public void ResetClonedValue()
         {
             _valueCloned = false;
         }
@@ -387,7 +388,7 @@ namespace SoftFluent.Windows
                     {
                         Descriptor.SetValue(DataProvider.Data, changedValue);
                         object finalValue = Descriptor.GetValue(DataProvider.Data);
-                        SetInternalValue(finalValue);
+                        SetValue(finalValue, true, false, true);
                     }
                     catch (Exception e)
                     {
@@ -414,7 +415,7 @@ namespace SoftFluent.Windows
         {
         }
 
-        public virtual void RefreshValueFromDescriptor()
+        public virtual void RefreshValueFromDescriptor(bool setChanged, bool forceRaise, bool trackChanged)
         {
             if (Descriptor == null)
                 return;
@@ -422,7 +423,7 @@ namespace SoftFluent.Windows
             try
             {
                 object value = Descriptor.GetValue(DataProvider.Data);
-                SetInternalValue(value);
+                SetValue(value, setChanged, forceRaise, trackChanged);
             }
             catch (Exception e)
             {

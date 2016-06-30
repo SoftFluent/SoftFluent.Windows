@@ -200,7 +200,7 @@ namespace SoftFluent.Windows
                 property.IsReadOnly = false;
             }
             property.OnDescribed();
-            property.RefreshValueFromDescriptor();
+            property.RefreshValueFromDescriptor(true, false, true);
             return property;
         }
 

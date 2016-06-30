@@ -546,7 +546,14 @@ namespace SoftFluent.Windows
             PropertyGridProperty property = GetProperty(e.PropertyName);
             if (property != null)
             {
-                property.RefreshValueFromDescriptor();
+                bool forceRaise = false;
+                var options = PropertyGridOptionsAttribute.FromProperty(property);
+                if (options != null)
+                {
+                    forceRaise = options.ForcePropertyChanged;
+                }
+
+                property.RefreshValueFromDescriptor(true, forceRaise, true);
                 OnPropertyChanged(this, CreateEventArgs(property));
             }
         }

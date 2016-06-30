@@ -25,7 +25,7 @@ namespace SoftFluent.Windows.Samples
             ByteArray1 = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
             WebSite = "http://www.softfluent.com";
             Status = Status.Valid;
-            Addresses = new ObservableCollection<Address> { new Address { Line1 = "2018 156th Avenue NE", City = "Bellevue, WA", ZipCode = "98007", Country = "USA" } };
+            Addresses = new ObservableCollection<Address> { new Address { Line1 = "2018 156th Avenue NE", City = "Bellevue", State = "WA", ZipCode = 98007, Country = "USA" } };
             DaysOfWeek = DaysOfWeek.WeekDays;
             PercentageOfSatisfaction = 50;
             PreferredColorName = "DodgerBlue";
@@ -33,6 +33,7 @@ namespace SoftFluent.Windows.Samples
             SampleNullableBooleanDropDownList = false;
             SampleBooleanDropDownList = true;
             MultiEnumString = "First, Second";
+            SubObject = Address.Parse("1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA");
         }
 
         [DisplayName("Guid (see menu on right-click)")]
@@ -49,6 +50,49 @@ namespace SoftFluent.Windows.Samples
         {
             get { return GetProperty<DateTime>(); }
             set { SetProperty(value); }
+        }
+
+        [DisplayName("Sub Object (Address)")]
+        [PropertyGridOptions(ForcePropertyChanged = true)]
+        public Address SubObject
+        {
+            get { return GetProperty<Address>(); }
+            set
+            {
+                // because it's a sub object we want to update the property grid
+                // when inner properties change
+                var so = SubObject;
+                if (so != null)
+                {
+                    so.PropertyChanged -= OnSubObjectPropertyChanged;
+                }
+
+                if (SetProperty(value))
+                {
+                    so = SubObject;
+                    if (so != null)
+                    {
+                        so.PropertyChanged += OnSubObjectPropertyChanged;
+                    }
+
+                    // these two properties are coupled
+                    OnPropertyChanged(nameof(SubObjectAsObject));
+                }
+            }
+        }
+
+        private void OnSubObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(SubObject), false, true);
+            OnPropertyChanged(nameof(SubObjectAsObject), false, true);
+        }
+
+        [DisplayName("Sub Object (Address as Object)")]
+        [PropertyGridOptions(EditorDataTemplateResourceKey = "ObjectEditor", ForcePropertyChanged = true)]
+        public Address SubObjectAsObject
+        {
+            get { return SubObject; }
+            set { SubObject = value; }
         }
 
         [PropertyGridOptions(SortOrder = 10)]
@@ -89,8 +133,8 @@ namespace SoftFluent.Windows.Samples
             {
                 if (SetProperty(value))
                 {
-                    OnPropertyChanged("StatusColor");
-                    OnPropertyChanged("StatusColorString");
+                    OnPropertyChanged(nameof(StatusColor));
+                    OnPropertyChanged(nameof(StatusColorString));
                 }
             }
         }
@@ -147,7 +191,7 @@ namespace SoftFluent.Windows.Samples
             {
                 if (SetProperty(value))
                 {
-                    OnPropertyChanged("PasswordString");
+                    OnPropertyChanged(nameof(PasswordString));
                 }
             }
         }
@@ -256,7 +300,7 @@ namespace SoftFluent.Windows.Samples
             {
                 if (SetProperty(value))
                 {
-                    OnPropertyChanged("PercentageOfSatisfactionInt");
+                    OnPropertyChanged(nameof(PercentageOfSatisfactionInt));
                 }
             }
         }
@@ -326,6 +370,7 @@ namespace SoftFluent.Windows.Samples
         }
     }
 
+    [TypeConverter(typeof(AddressConverter))]
     public class Address : AutoObject
     {
         [PropertyGridOptions(SortOrder = 10)]
@@ -343,9 +388,9 @@ namespace SoftFluent.Windows.Samples
         }
 
         [PropertyGridOptions(SortOrder = 30)]
-        public string ZipCode
+        public int? ZipCode
         {
-            get { return GetProperty<string>(); }
+            get { return GetProperty<int?>(); }
             set { SetProperty(value); }
         }
 
@@ -357,26 +402,126 @@ namespace SoftFluent.Windows.Samples
         }
 
         [PropertyGridOptions(SortOrder = 50)]
+        public string State
+        {
+            get { return GetProperty<string>(); }
+            set { SetProperty(value); }
+        }
+
+        [PropertyGridOptions(SortOrder = 60)]
         public string Country
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
 
-        public override string ToString()
+        protected override bool OnPropertyChanged(string name, bool setChanged, bool forceRaise)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(Line1);
-            if (!string.IsNullOrEmpty(Line2))
+            return base.OnPropertyChanged(name, setChanged, forceRaise);
+        }
+
+        // poor man's one line comma separated USA postal address parser
+        public static Address Parse(string text)
+        {
+            var address = new Address();
+            if (text != null)
             {
-                sb.AppendLine(Line2);
+                string[] split = text.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                if (split.Length > 0)
+                {
+                    int zip = 0;
+                    int index = -1;
+                    string state = null;
+                    for (int i = 0; i < split.Length; i++)
+                    {
+                        if (TryFindStateZip(split[i], out state, out zip))
+                        {
+                            index = i;
+                            break;
+                        }
+                    }
+
+                    if (index < 0)
+                    {
+                        address.DistributeOverProperties(split, 0, int.MaxValue, nameof(Line1), nameof(Line2), nameof(City), nameof(Country));
+                    }
+                    else
+                    {
+                        address.ZipCode = zip;
+                        address.State = state;
+                        address.DistributeOverProperties(split, 0, index, nameof(Line1), nameof(Line2), nameof(City));
+                        if (string.IsNullOrWhiteSpace(address.City) && address.Line2 != null)
+                        {
+                            address.City = address.Line2;
+                            address.Line2 = null;
+                        }
+                        address.DistributeOverProperties(split, index + 1, int.MaxValue, nameof(Country));
+                    }
+                }
+            }
+            return address;
+        }
+
+        private static bool TryFindStateZip(string text, out string state, out int zip)
+        {
+            zip = 0;
+            state = null;
+            string zipText = text;
+            int pos = text.LastIndexOfAny(new[] { ' ' });
+            if (pos >= 0)
+            {
+                zipText = text.Substring(pos + 1).Trim();
             }
 
-            sb.Append(City);
-            sb.Append(" ");
-            sb.AppendLine(ZipCode);
-            sb.Append(Country);
+            if (!int.TryParse(zipText, out zip) || zip <= 0)
+                return false;
+
+            state = text.Substring(0, pos).Trim();
+            return true;            
+        }
+
+        private void DistributeOverProperties(string[] split, int offset, int max, params string[] properties)
+        {
+            for (int i = 0; i < properties.Length; i++)
+            {
+                if ((offset + i) >= split.Length || (offset + i) >= max)
+                    return;
+
+                string s = split[offset + i].Trim();
+                if (s.Length == 0)
+                    continue;
+
+                SetProperty(properties[i], (object)s);
+            }
+        }
+
+        public override string ToString()
+        {
+            const string sep = ", ";
+            var sb = new StringBuilder();
+            AppendJoin(sb, Line1, string.Empty);
+            AppendJoin(sb, Line2, sep);
+            AppendJoin(sb, City, sep);
+            AppendJoin(sb, State, sep);
+            if (ZipCode.HasValue)
+            {
+                AppendJoin(sb, ZipCode.Value.ToString(), " ");
+            }
+            AppendJoin(sb, Country, sep);
             return sb.ToString();
+        }
+
+        private static void AppendJoin(StringBuilder sb, string value, string sep)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
+            string s = sb.ToString();
+            if (!s.EndsWith(" ") && !s.EndsWith(",") && !s.EndsWith(Environment.NewLine))
+            {
+                sb.Append(sep);
+            }
+            sb.Append(value);
         }
     }
 
@@ -413,16 +558,28 @@ namespace SoftFluent.Windows.Samples
         Valid
     }
 
+    public class AddressConverter : TypeConverter
+    {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            string s = value as string;
+            if (s != null)
+                return Address.Parse(s);
+
+            return base.ConvertFrom(context, culture, value);
+        }
+    }
+
     public class PointConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (sourceType == typeof(string))
-            {
-                return true;
-            }
-
-            return base.CanConvertFrom(context, sourceType);
+            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

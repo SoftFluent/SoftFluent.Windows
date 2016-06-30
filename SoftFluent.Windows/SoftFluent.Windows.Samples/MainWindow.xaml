@@ -7,6 +7,6 @@
     <Grid.Resources>
         <samples:Customer x:Key="Customer"/>
     </Grid.Resources>
-    <sfw:PropertyGrid xmlns:sfw="clr-namespace:SoftFluent.Windows;assembly=SoftFluent.Windows" SelectedObject="{StaticResource Customer}" />
+    <sfw:PropertyGrid Name="MyGrid" xmlns:sfw="clr-namespace:SoftFluent.Windows;assembly=SoftFluent.Windows" SelectedObject="{StaticResource Customer}" />
 </Grid>
 </Window>

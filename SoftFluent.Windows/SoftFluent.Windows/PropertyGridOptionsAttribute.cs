@@ -22,6 +22,7 @@ namespace SoftFluent.Windows
         public Type PropertyType { get; set; }
         public bool ForceReadWrite { get; set; }
         public bool HasDefaultValue { get; set; }
+        public bool ForcePropertyChanged { get; set; }
         public object DefaultValue { get; set; }
 
         public static DataTemplate SelectTemplate(PropertyGridProperty property, object item, DependencyObject container)
