@@ -108,10 +108,12 @@ namespace SoftFluent.Windows
             CommandBindings.Add(new CommandBinding(EmptyGuidCommand, OnGuidCommandExecuted, OnGuidCommandCanExecute));
             CommandBindings.Add(new CommandBinding(IncrementGuidCommand, OnGuidCommandExecuted, OnGuidCommandCanExecute));
             CommandBindings.Add(new CommandBinding(BrowseCommand, OnBrowseCommandExecuted));
+            DecamelizePropertiesDisplayNames = true;
         }
 
         public virtual string DefaultCategoryName { get; set; }
         public virtual double ChildEditorWindowOffset { get; set; }
+        public virtual bool DecamelizePropertiesDisplayNames { get; set; }
 
         public virtual DataGridColumn GetValueColumn()
         {

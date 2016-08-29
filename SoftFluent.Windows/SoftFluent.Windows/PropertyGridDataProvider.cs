@@ -93,7 +93,7 @@ namespace SoftFluent.Windows
             property.IsReadOnly = descriptor.IsReadOnly;
             property.Description = descriptor.Description;
             property.DisplayName = descriptor.DisplayName;
-            if (property.DisplayName == descriptor.Name)
+            if (Grid.DecamelizePropertiesDisplayNames && property.DisplayName == descriptor.Name)
             {
                 property.DisplayName = DecamelizationService.Decamelize(property.DisplayName);
             }
