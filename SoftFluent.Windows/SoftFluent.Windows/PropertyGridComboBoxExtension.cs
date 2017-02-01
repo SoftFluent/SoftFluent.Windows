@@ -133,9 +133,9 @@ namespace SoftFluent.Windows
 
                     if (index >= 0)
                     {
-                        if (sb.Length > 0)
+                        if (sb.Length > 0 && options.EnumSeparator != null)
                         {
-                            sb.Append(", ");
+                            sb.Append(options.EnumSeparator);
                         }
                         sb.Append(options.EnumNames[index]);
                     }
@@ -152,9 +152,9 @@ namespace SoftFluent.Windows
                         int index = IndexOf(options.EnumValues, b);
                         if (index >= 0)
                         {
-                            if (sb.Length > 0)
+                            if (sb.Length > 0 && options.EnumSeparator != null)
                             {
-                                sb.Append(", ");
+                                sb.Append(options.EnumSeparator);
                             }
                             sb.Append(options.EnumNames[index]);
                         }
@@ -179,7 +179,7 @@ namespace SoftFluent.Windows
         private static List<string> ParseEnum(string text)
         {
             var enums = new List<string>();
-            string[] split = text.Split(',', ';', '|');
+            string[] split = text.Split(',', ';', '|', ' ');
             if (split.Length >= 0)
             {
                 foreach (string sp in split)
