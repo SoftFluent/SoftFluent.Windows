@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>SoftFluent.Windows</id>
-    <version>1.0.1.5</version>
+    <version>1.0.1.6</version>
     <authors>SoftFluent</authors>
     <owners>SoftFluent</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package contains an easy to use but powerful WPF Property Grid, and useful WPF converters and objects.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright (C) 2005-2016 SoftFluent S.A.S. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2005-2017 SoftFluent S.A.S. All rights reserved.</copyright>
     <tags>WPF PropertyGrid AutoObject UniversalConverter</tags>
   </metadata>
 </package>

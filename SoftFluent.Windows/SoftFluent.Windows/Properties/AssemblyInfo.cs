@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: AssemblyCompany("SoftFluent S.A.S - http://www.softfluent.com")]
 [assembly: AssemblyProduct("SoftFluent.Windows")]
-[assembly: AssemblyCopyright("Copyright (C) 2014-2015 SoftFluent S.A.S. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright (C) 2014-2017 SoftFluent S.A.S. All rights reserved.")]
 [assembly: AssemblyTrademark("SoftFluent Windows (TM) is a trademark of SoftFluent S.A.S.")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
