@@ -97,7 +97,7 @@ With some options:
 
 Here’s a list of examples using different operators.
 
-###Check if a string contains NewLine using JavaScript:
+### Check if a string contains NewLine using JavaScript:
 
 ````xaml
 <cfr:UniversalConverter x:Key="HasMultipleLinesConverter" DefaultValue="False">
@@ -108,7 +108,7 @@ Here’s a list of examples using different operators.
 </cfr:UniversalConverter>
 ````
 
-###Set error message background and foreground color
+### Set error message background and foreground color
 ````xaml
 <cfr:UniversalConverter x:Key="ErrorTextBackgroundConverter" DefaultValue="Red">
     <cfr:UniversalConverter.Switch>
@@ -121,7 +121,7 @@ Here’s a list of examples using different operators.
     </cfr:UniversalConverter.Switch>
 </cfr:UniversalConverter>
 ````
-###Test if a value is over 21
+### Test if a value is over 21
 ````xaml
 <cfr:UniversalConverter x:Key="IsOver21Converter" DefaultValue="false">
     <cfr:UniversalConverter.Switch>
@@ -129,7 +129,7 @@ Here’s a list of examples using different operators.
     </cfr:UniversalConverter.Switch>
 </cfr:UniversalConverter>
 ````
-###Is teenager
+### Is teenager
 ````xaml
 <cfr:UniversalConverter x:Key="IsTeenagerConverter" DefaultValue="false">
     <cfr:UniversalConverter.Switch>
@@ -137,7 +137,7 @@ Here’s a list of examples using different operators.
     </cfr:UniversalConverter.Switch>
 </cfr:UniversalConverter>
 ````
-###Compare types
+### Compare types
 ````xaml
 <cfr:UniversalConverter x:Key="TypeConverter" DefaultValue="false">
     <cfr:UniversalConverter.Switch>
@@ -147,7 +147,7 @@ Here’s a list of examples using different operators.
     </cfr:UniversalConverter.Switch>
 </cfr:UniversalConverter>
 ````
-###Is empty
+### Is empty
 ````xaml
 <cfr:UniversalConverter x:Key="IsEmptyConverter" DefaultValue="Not empty">
     <cfr:UniversalConverter.Switch>
